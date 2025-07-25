@@ -3,6 +3,7 @@ from utils.fusion import multimodal_fusion_model
 from utils.metrics import evaluate_model, plot_metrics
 from models.cnn_backbones import load_cnn_model
 from models.trained import train_model
+import torch
 
 def define_steps(modality_choice, mri_types=None):
     data = prepare_data(modality_choice, mri_types)
@@ -46,8 +47,8 @@ def run_pipeline(modality_choice, model_choice, mri_types=None):
     print("\n📈 Évaluation du modèle...")
     results = evaluate_model(model, data)
     
-    if ui:
-        return history, results
-    else:
-        plot_metrics(history, results)
+    # if ui:
+    #     return history, results
+    # else:
+    plot_metrics(history, results)
 

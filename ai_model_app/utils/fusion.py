@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch
+from models.cnn_backbones import load_cnn_model
 
 class MultimodalFusion(nn.Module):
     def __init__(self, image_dim, text_dim=768, tabular_dim=16):

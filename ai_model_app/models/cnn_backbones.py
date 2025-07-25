@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torchvision.models as models
-from monai.networks.nets import resnet, EfficientNetBN
+from monai.networks.nets import ResNet, EfficientNetBN
 
 def load_cnn_model(model_name, input_shape):
     """
@@ -14,18 +14,20 @@ def load_cnn_model(model_name, input_shape):
     Returns:
         nn.Module: modèle PyTorch prêt à entraîner
     """
+    torch.set_float32_matmul_precision('medium')
     is_3d = len(input_shape) == 4  # [C, D, H, W] pour 3D, [C, H, W] pour 2D
     num_classes = 2  # Modifier si besoin
 
     if model_name == "resnet18":
-        if is_3d:
-            # Utilise MONAI pour un ResNet 3D
-            model = resnet.generate_model(model_depth=18, n_input_channels=1, n_classes=num_classes)
-        else:
-            model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
-            model.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)  # grayscale
-            model.fc = nn.Linear(model.fc.in_features, num_classes)
-
+        spatial_dims = 3 if len(input_shape) == 4 else 2  # [C, D, H, W] → 3D, sinon 2D
+        return ResNet(
+            spatial_dims=spatial_dims,
+            n_input_channels=input_shape[0],
+            num_classes=num_classes,
+            block="basic",
+            layers=(1,1,1,1),
+            block_inplanes=(16, 32, 64, 128)
+        )
     elif model_name == "efficientnet":
         if is_3d:
             raise ValueError("EfficientNet B0 3D non disponible. Utilisez ResNet18 pour les IRM 3D.")

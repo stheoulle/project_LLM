@@ -41,7 +41,6 @@ def load_dicom_images_filtered(patient_dir, mri_types=["MRI"], target_size=(224,
 def load_clinical_metadata(path='../../Breast-diagnosis/TCIA-Breast-clinical-data-public-7_16_11.xlsx'):
     return pd.read_excel(path)
 
-
 def prepare_data(modality, mri_types=["MRI"]):
     data = {'type': None}
 
@@ -51,28 +50,30 @@ def prepare_data(modality, mri_types=["MRI"]):
 
     data['images'] = []
     valid_patient_ids = []
+    max_patients = 4  # 🔸 Test avec seulement 4 patients valides
 
     if modality == "images":
         data['type'] = 'image'
         for pid in patient_ids:
+            if len(data['images']) >= max_patients:
+                break  # 🔸 Arrêter une fois 4 patients valides traités
+
             patient_dir = os.path.join(patient_root, pid)
 
             if not os.path.isdir(patient_dir):
-                continue  # Ignore les fichiers non dossiers
+                continue
 
             imgs = load_dicom_images_filtered(patient_dir, mri_types)
 
-            
             if imgs is not None and isinstance(imgs, torch.Tensor):
                 print(f"✅ Patient {pid} : {imgs.shape} images chargées")
                 data['images'].append(imgs)
+                valid_patient_ids.append(pid)
             else:
                 print(f"⚠️ Patient {pid} ignoré (aucune image trouvée ou format incorrect)")
 
-
     if "meta" in modality:
         metadata = load_clinical_metadata()
-        # Filtrer les métadonnées selon les patients valides (si applicable)
         data['tabular'] = [metadata[pid] for pid in valid_patient_ids if pid in metadata]
 
     if len(data['images']) == 0:
@@ -80,4 +81,3 @@ def prepare_data(modality, mri_types=["MRI"]):
 
     data['labels'] = torch.randint(0, 2, (len(data['images']),))  # à adapter plus tard
     return data
-
