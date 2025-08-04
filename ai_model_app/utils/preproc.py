@@ -38,19 +38,19 @@ def load_dicom_images_filtered(patient_dir, mri_types=["MRI"], target_size=(224,
         return volume
     return None
 
-def load_clinical_metadata(path='/home/light/Documents/Perso/Internship/project/Breast-diagnosis/TCIA-Breast-clinical-data-public-7_16_11.xlsx'):
+def load_clinical_metadata(path='Breast-diagnosis/TCIA-Breast-clinical-data-public-7_16_11.xlsx'):
     return pd.read_excel(path)
 
 def prepare_data(modality, mri_types=["MRI"]):
     data = {'type': None}
 
-    patient_root = "/home/light/Documents/Perso/Internship/project/Breast-diagnosis/manifest-BbshIhaG7188578559074019493/BREAST-DIAGNOSIS"
+    patient_root = "Breast-diagnosis/manifest-BbshIhaG7188578559074019493/BREAST-DIAGNOSIS"
     patient_ids = os.listdir(patient_root)
     print(f"Nombre de patients trouvés : {len(patient_ids)}")
 
     data['images'] = []
     valid_patient_ids = []
-    max_patients = 1  # 🔸 Test avec seulement 4 patients valides
+    max_patients = 1  # 🔸 Test avec seulement 1 patients valides
 
     if modality == "images":
         data['type'] = 'image'

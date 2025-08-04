@@ -40,10 +40,16 @@ def run_pipeline(modality_choice, model_choice, mri_types=None):
     history = train_model(image_model, data)
     results = evaluate_model(image_model, data)
     plot_metrics(history, results)
+    print("Phase 1 terminée : modèle image entraîné et évalué.")
+    print(f"Début de la phase 2 avec le modèle {model_choice} et les données préparées.")
 
     # Phase 2 — entraînement du modèle multimodal (avec le modèle image déjà entraîné)
     fusion_model = multimodal_fusion_model(image_model, data)
+    print(f"Modèle de fusion multimodal créé avec {model_choice} comme backbone.")
     fusion_history = train_model(fusion_model, data)
+    print("Phase 2 terminée : modèle multimodal entraîné.")
     fusion_results = evaluate_model(fusion_model, data)
+    print("Évaluation du modèle multimodal terminée.")
     plot_metrics(fusion_history, fusion_results)
+    print("Pipeline complet : modèle multimodal entraîné et évalué.")
 
