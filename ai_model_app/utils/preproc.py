@@ -38,7 +38,7 @@ def load_dicom_images_filtered(patient_dir, mri_types=["MRI"], target_size=(224,
         return volume
     return None
 
-def load_clinical_metadata(path='../../Breast-diagnosis/TCIA-Breast-clinical-data-public-7_16_11.xlsx'):
+def load_clinical_metadata(path='/home/light/Documents/Perso/Internship/project/Breast-diagnosis/TCIA-Breast-clinical-data-public-7_16_11.xlsx'):
     return pd.read_excel(path)
 
 def prepare_data(modality, mri_types=["MRI"]):
@@ -50,7 +50,7 @@ def prepare_data(modality, mri_types=["MRI"]):
 
     data['images'] = []
     valid_patient_ids = []
-    max_patients = 4  # 🔸 Test avec seulement 4 patients valides
+    max_patients = 1  # 🔸 Test avec seulement 4 patients valides
 
     if modality == "images":
         data['type'] = 'image'
@@ -72,9 +72,8 @@ def prepare_data(modality, mri_types=["MRI"]):
             else:
                 print(f"⚠️ Patient {pid} ignoré (aucune image trouvée ou format incorrect)")
 
-    if "meta" in modality:
-        metadata = load_clinical_metadata()
-        data['tabular'] = [metadata[pid] for pid in valid_patient_ids if pid in metadata]
+    metadata = load_clinical_metadata()
+    data['tabular'] = [metadata[pid] for pid in valid_patient_ids if pid in metadata]
 
     if len(data['images']) == 0:
         raise RuntimeError("Aucune image valide chargée pour les patients.")

@@ -9,28 +9,22 @@ def define_steps(modality_choice, mri_types=None):
     data = prepare_data(modality_choice, mri_types)
     return data
 
-def initialize_model(model_choice, data):
-    if data['type'] == 'image':
-        print(f"🧪 data['images'] contient {len(data['images'])} éléments")
+def get_input_shape_from_sample(image):
+    if isinstance(image, list):
+        if len(image) == 0:
+            raise ValueError("Le premier élément de data['images'] est une liste vide.")
+        image = image[0]
+    if not isinstance(image, torch.Tensor):
+        image = torch.tensor(image)
+    return image.shape
 
-        if len(data['images']) == 0:
-            raise ValueError("Aucune image n'a été trouvée dans les données.")
-
-        sample_image = data['images'][0]
-
-        if isinstance(sample_image, list):
-            if len(sample_image) == 0:
-                raise ValueError("Le premier élément de data['images'] est une liste vide.")
-            sample_image = sample_image[0]
-
-        if not isinstance(sample_image, torch.Tensor):
-            sample_image = torch.tensor(sample_image)
-
-        input_shape = sample_image.shape
-        print(f"📐 input_shape détectée : {input_shape}")
-        return load_cnn_model(model_choice, input_shape)
-    else:
-        return multimodal_fusion_model(model_choice, data)
+def initialize_image_model(model_choice, data):
+    if 'images' not in data or len(data['images']) == 0:
+        raise ValueError("Aucune image n'a été trouvée dans les données.")
+    print(f"🧪 data['images'] contient {len(data['images'])} éléments")
+    input_shape = get_input_shape_from_sample(data['images'][0])
+    print(f"📐 input_shape détectée : {input_shape}")
+    return load_cnn_model(model_choice, input_shape)
 
 def run_pipeline(modality_choice, model_choice, mri_types=None):
     print(f"Modèle choisi : {model_choice}")
@@ -38,17 +32,18 @@ def run_pipeline(modality_choice, model_choice, mri_types=None):
     if mri_types:
         print(f"Types de MRI sélectionnés : {mri_types}")
 
+    # 🧩 Préparation des données
     data = define_steps(modality_choice, mri_types)
-    model = initialize_model(model_choice, data)
-    
-    print("\n🚀 Entraînement du modèle...")
-    history = train_model(model, data)
-    
-    print("\n📈 Évaluation du modèle...")
-    results = evaluate_model(model, data)
-    
-    # if ui:
-    #     return history, results
-    # else:
+
+    # Phase 1 — entraînement du modèle image only
+    image_model = initialize_image_model(model_choice, data)
+    history = train_model(image_model, data)
+    results = evaluate_model(image_model, data)
     plot_metrics(history, results)
+
+    # Phase 2 — entraînement du modèle multimodal (avec le modèle image déjà entraîné)
+    fusion_model = multimodal_fusion_model(image_model, data)
+    fusion_history = train_model(fusion_model, data)
+    fusion_results = evaluate_model(fusion_model, data)
+    plot_metrics(fusion_history, fusion_results)
 

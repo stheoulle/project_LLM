@@ -7,3 +7,4 @@ model
 *.h5
 CMMD copy
 Breast-diagnosis
+ai_model_app/*/

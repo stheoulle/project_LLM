@@ -18,16 +18,18 @@ def load_cnn_model(model_name, input_shape):
     is_3d = len(input_shape) == 4  # [C, D, H, W] pour 3D, [C, H, W] pour 2D
     num_classes = 2  # Modifier si besoin
 
-    if model_name == "resnet18":
-        spatial_dims = 3 if len(input_shape) == 4 else 2  # [C, D, H, W] → 3D, sinon 2D
-        return ResNet(
-            spatial_dims=spatial_dims,
+    if model_name == "resnet18" or model_name == ResNet:
+        model = ResNet(
+            spatial_dims=3,
             n_input_channels=input_shape[0],
-            num_classes=num_classes,
+            num_classes=2,  # ← utilisé uniquement si tu gardes la classification
             block="basic",
-            layers=(1,1,1,1),
-            block_inplanes=(16, 32, 64, 128)
+            layers=(2, 2, 2, 2),
+            block_inplanes=(64, 128, 256, 512),
         )
+        # Retirer la couche fc si tu veux les features
+        model.fc = torch.nn.Identity()
+        return model
     elif model_name == "efficientnet":
         if is_3d:
             raise ValueError("EfficientNet B0 3D non disponible. Utilisez ResNet18 pour les IRM 3D.")

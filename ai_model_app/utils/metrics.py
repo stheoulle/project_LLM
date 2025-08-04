@@ -1,32 +1,55 @@
-import matplotlib.pyplot as plt
-from sklearn.metrics import classification_report, confusion_matrix
-import streamlit as st
 import torch
+from sklearn.metrics import classification_report, confusion_matrix
 import torch.nn.functional as F
+import matplotlib.pyplot as plt
 import seaborn as sns
+import streamlit as st
 
-# 🔧 Redimensionne un volume 3D à une profondeur fixe (D)
 def resize_volume(volume, target_depth=128):
-    # volume: [C, D, H, W]
     volume = volume.unsqueeze(0)  # [1, C, D, H, W]
-    resized = F.interpolate(volume, size=(target_depth, volume.shape[3], volume.shape[4]),
+    resized = F.interpolate(volume, size=(target_depth, volume.shape[2], volume.shape[3]),
                             mode='trilinear', align_corners=False)
-    return resized.squeeze(0)  # [C, D, H, W]
+    return resized.squeeze(0)
 
-# 🧪 Évalue le modèle après avoir redimensionné les images
 def evaluate_model(model, data, target_depth=128):
     model.eval()
+    y_true, y_pred = [], []
 
-    # Resize all volumes to fixed depth
-    resized_images = [resize_volume(img, target_depth) for img in data['images']]
-    inputs = torch.stack(resized_images)
-    labels = data['labels']
+    if 'text' in data and 'tabular' in data:
+        multimodal = True
+        samples = zip(data['images'], data['text'], data['tabular'], data['labels'])
+    else:
+        multimodal = False
+        samples = zip(data['images'], data['labels'])
 
     with torch.no_grad():
-        preds = model(inputs).argmax(1)
+        for sample in samples:
+            if multimodal:
+                img, txt, tab, label = sample
+                img = resize_volume(img, target_depth).unsqueeze(0)  # Add batch dim
+                txt = txt.unsqueeze(0)
+                tab = tab.unsqueeze(0)
+                pred = model(img, txt, tab).argmax(1)
+            else:
+                img, label = sample
+                img = resize_volume(img, target_depth).unsqueeze(0)
+                pred = model(img).argmax(1)
 
-    report = classification_report(labels.cpu(), preds.cpu(), output_dict=True)
-    return {"y_true": labels, "y_pred": preds, "report": report}
+            y_true.append(label.item() if torch.is_tensor(label) else label)
+            y_pred.append(pred.item())
+
+    y_true_tensor = torch.tensor(y_true)
+    y_pred_tensor = torch.tensor(y_pred)
+
+    report = classification_report(y_true, y_pred, output_dict=True)
+    matrix = confusion_matrix(y_true, y_pred)
+
+    return {
+        "y_true": y_true_tensor,
+        "y_pred": y_pred_tensor,
+        "report": report,
+        "confusion_matrix": matrix
+    }
 
 def plot_metrics(history, results, streamlit=False):
     # 📈 Courbes de perte et d'accuracy
@@ -53,7 +76,7 @@ def plot_metrics(history, results, streamlit=False):
         st.pyplot(cm_fig)
         st.json(results['report'])
     else:
-        plt.show()  # courbes + confusion matrix
+        plt.show()  # affiche courbes + matrice
         print("📊 Rapport de classification :")
         for label, metrics in results['report'].items():
             if isinstance(metrics, dict):
