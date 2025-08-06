@@ -38,8 +38,21 @@ def load_dicom_images_filtered(patient_dir, mri_types=["MRI"], target_size=(224,
         return volume
     return None
 
-def load_clinical_metadata(path='Breast-diagnosis/TCIA-Breast-clinical-data-public-7_16_11.xlsx'):
-    return pd.read_excel(path)
+import pandas as pd
+
+def load_clinical_metadata(file_path='Breast-diagnosis/TCIA-Breast-clinical-data-public-7_16_11.xlsx'):
+    try:
+        df = pd.read_excel(file_path)
+        metadata = {}
+        for _, row in df.iterrows():
+            patient_id = row['Breast Dx Case']
+            metadata[patient_id] = row.to_dict()
+        return metadata
+    except Exception as e:
+        print(f"Erreur lors du chargement des métadonnées : {e}")
+        return {}
+
+
 
 def prepare_data(modality, mri_types=["MRI"]):
     data = {'type': None}
@@ -73,10 +86,31 @@ def prepare_data(modality, mri_types=["MRI"]):
                 print(f"⚠️ Patient {pid} ignoré (aucune image trouvée ou format incorrect)")
 
     metadata = load_clinical_metadata()
-    data['tabular'] = [metadata[pid] for pid in valid_patient_ids if pid in metadata]
+    # print(metadata)
+    print(f"Nombre de patients dans les métadonnées : {len(metadata)}")
+    print(f"Nombre de patients valides avec images : {len(valid_patient_ids)}")
+    data['tabular'] = []
+    print(metadata.keys())
+    for pid in valid_patient_ids:
+        for key in metadata.keys():
+            if not isinstance(key, str):
+                continue  # ignore Nan
+            pid_upper = pid.upper()
+            key_upper = key.upper()
+            if pid_upper == key_upper:
+                print(f"✅ Patient {pid} : métadonnées chargées")
+                # add metadata to data['tabular']
+                tabular_data = metadata[key]
+                if isinstance(tabular_data, dict):
+                    data['tabular'].append(list(tabular_data.values()))
+                else:
+                    data['tabular'].append(tabular_data)
+                    
+                break       
+    print(f"Nombre de patients valides avec données tabulaires : {len(data['tabular'])}")
 
     if len(data['images']) == 0:
-        raise RuntimeError("Aucune image valide chargée pour les patients.")
+        raise RuntimeError("🔴 Aucune image valide chargée pour les patients.")
 
     data['labels'] = torch.randint(0, 2, (len(data['images']),))  # à adapter plus tard
     return data
