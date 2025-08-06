@@ -6,5 +6,6 @@ CDD-CESM
 model
 *.h5
 CMMD copy
-Breast-diagnosis
+ai_model_app/Breast-diagnosis/manifest-BbshIhaG7188578559074019493
+ai_model_app/Breast-diagnosis/.~lock.TCIA-Breast-clinical-data-public-7_16_11.xlsx#
 ai_model_app/*/__pycache__
