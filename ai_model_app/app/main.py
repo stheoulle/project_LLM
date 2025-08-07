@@ -1,6 +1,11 @@
 from app.pipeline import run_pipeline
 import sys
 
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow logging
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Disable oneDNN if needed
+
+
 if __name__ == "__main__":
     print("📌 Bienvenue dans AI Model App")
     #model_choice = input("Choisissez un modèle (resnet18 / radimagenet / efficientnet): ").strip().lower()

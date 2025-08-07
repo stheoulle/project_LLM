@@ -53,6 +53,10 @@ def load_clinical_metadata(file_path='Breast-diagnosis/TCIA-Breast-clinical-data
         return {}
 
 
+import os
+import torch
+import math
+from collections import Counter
 
 def prepare_data(modality, mri_types=["MRI"]):
     data = {'type': None}
@@ -63,21 +67,19 @@ def prepare_data(modality, mri_types=["MRI"]):
 
     data['images'] = []
     valid_patient_ids = []
-    max_patients = 1  # 🔸 Test avec seulement 1 patients valides
+    max_patients = 89  # for testing
 
     if modality == "images":
         data['type'] = 'image'
         for pid in patient_ids:
             if len(data['images']) >= max_patients:
-                break  # 🔸 Arrêter une fois 4 patients valides traités
+                break
 
             patient_dir = os.path.join(patient_root, pid)
-
             if not os.path.isdir(patient_dir):
                 continue
 
             imgs = load_dicom_images_filtered(patient_dir, mri_types)
-
             if imgs is not None and isinstance(imgs, torch.Tensor):
                 print(f"✅ Patient {pid} : {imgs.shape} images chargées")
                 data['images'].append(imgs)
@@ -86,31 +88,81 @@ def prepare_data(modality, mri_types=["MRI"]):
                 print(f"⚠️ Patient {pid} ignoré (aucune image trouvée ou format incorrect)")
 
     metadata = load_clinical_metadata()
-    # print(metadata)
     print(f"Nombre de patients dans les métadonnées : {len(metadata)}")
     print(f"Nombre de patients valides avec images : {len(valid_patient_ids)}")
+
     data['tabular'] = []
-    print(metadata.keys())
+    raw_labels = []
+
     for pid in valid_patient_ids:
+        matched = False
         for key in metadata.keys():
             if not isinstance(key, str):
-                continue  # ignore Nan
-            pid_upper = pid.upper()
-            key_upper = key.upper()
-            if pid_upper == key_upper:
+                continue  # ignore NaN keys
+            if pid.upper() == key.upper():
                 print(f"✅ Patient {pid} : métadonnées chargées")
-                # add metadata to data['tabular']
                 tabular_data = metadata[key]
                 if isinstance(tabular_data, dict):
                     data['tabular'].append(list(tabular_data.values()))
+                    label = tabular_data.get("Pathology", None)
+                    raw_labels.append(label)
+                    print(f"🔍 Label brut : {label}")
                 else:
                     data['tabular'].append(tabular_data)
-                    
-                break       
+                    raw_labels.append(None)
+                    print("⚠️ label is None")
+                matched = True
+                break
+        if not matched:
+            raw_labels.append(None)
+
     print(f"Nombre de patients valides avec données tabulaires : {len(data['tabular'])}")
 
     if len(data['images']) == 0:
         raise RuntimeError("🔴 Aucune image valide chargée pour les patients.")
 
-    data['labels'] = torch.randint(0, 2, (len(data['images']),))  # à adapter plus tard
+    # === 🔧 Process and normalize labels ===
+    normalized_labels = []
+    final_images = []
+    final_tabular = []
+
+    for img, tab, lbl in zip(data['images'], data['tabular'], raw_labels):
+        if lbl is None or (isinstance(lbl, float) and math.isnan(lbl)):
+            continue  # skip missing labels
+
+        # Normalize integer labels if 0 is used for 'Benign'
+        if lbl == 0:
+            lbl = "Benign"
+
+        if isinstance(lbl, str) or isinstance(lbl, int):
+            norm_label = str(lbl).strip().lower()
+            normalized_labels.append(norm_label)
+            final_images.append(img)
+            final_tabular.append(tab)
+
+    if not normalized_labels:
+        raise RuntimeError("🔴 Aucun label utilisable après nettoyage.")
+
+    # === 🔢 Encode labels ===
+    unique_labels = sorted(set(normalized_labels))
+    label_to_int = {label: idx for idx, label in enumerate(unique_labels)}
+    print(f"🔁 Encodage des labels : {label_to_int}")
+
+    encoded_labels = [label_to_int[lbl] for lbl in normalized_labels]
+
+    # === ✅ Final data assignment ===
+    data['images'] = final_images
+    data['tabular'] = final_tabular
+    data['labels'] = torch.tensor(encoded_labels)
+
+    # === 📊 Print class distribution ===
+    class_counts = Counter(encoded_labels)
+    print("\n📊 Répartition des classes :")
+    for class_id, count in class_counts.items():
+        label_name = [k for k, v in label_to_int.items() if v == class_id][0]
+        print(f"  Classe '{label_name}' (id={class_id}): {count} patients")
+
+    print(f"\n✅ Nombre total de labels : {len(data['labels'])}")
+    print(f"📐 Images : {len(data['images'])}, Labels : {data['labels'].shape}")
+
     return data

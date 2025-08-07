@@ -17,7 +17,7 @@ def load_cnn_model(model_name, input_shape):
     torch.set_float32_matmul_precision('medium')
     is_3d = len(input_shape) == 4  # [C, D, H, W] pour 3D, [C, H, W] pour 2D
     num_classes = 2  # Modifier si besoin
-
+    print(f"Chargement du modèle {model_name} avec input_shape {input_shape}")
     if model_name == "resnet18" or model_name == ResNet:
         model = ResNet(
             spatial_dims=3,
@@ -48,5 +48,5 @@ def load_cnn_model(model_name, input_shape):
 
     else:
         raise ValueError(f"Modèle inconnu : {model_name}")
-
+    print(f"Modèle {model_name} chargé avec succès.")
     return model

@@ -37,9 +37,12 @@ def run_pipeline(modality_choice, model_choice, mri_types=None):
 
     # Phase 1 — entraînement du modèle image only
     image_model = initialize_image_model(model_choice, data)
+    print(f"Début de la phase 1 avec le modèle {model_choice} et les données préparées.")
     history = train_model(image_model, data)
+    print("Phase 1 terminée : modèle image entraîné.")
+    print("Évaluation du modèle image...")
     results = evaluate_model(image_model, data)
-    plot_metrics(history, results)
+    #plot_metrics(history, results)
     print("Phase 1 terminée : modèle image entraîné et évalué.")
     print(f"Début de la phase 2 avec le modèle {model_choice} et les données préparées.")
 

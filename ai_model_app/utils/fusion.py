@@ -4,37 +4,53 @@ import numpy as np
 
 import torch
 import torch.nn as nn
+import torch
+import torch.nn as nn
 
 class MultimodalTransformerFusion(nn.Module):
-    def __init__(self, image_backbone, image_dim=512, tabular_dim=16, text_dim=0, hidden_dim=256, n_heads=4, n_layers=2):
+    def __init__(
+        self,
+        image_backbone,
+        image_dim=512,
+        tabular_dim=16,
+        text_dim=0,
+        hidden_dim=256,
+        n_heads=4,
+        n_layers=2,
+        num_classes=4  # 🔸 Make this dynamic
+    ):
         super().__init__()
         self.image_backbone = image_backbone
         self.has_text = text_dim > 0
         self.has_tabular = tabular_dim > 0
 
-        # Project modalities to same hidden dimension
+        # 🔹 Project each modality to the same hidden dimension
         self.image_proj = nn.Linear(image_dim, hidden_dim)
         if self.has_tabular:
             self.tabular_proj = nn.Linear(tabular_dim, hidden_dim)
         if self.has_text:
             self.text_proj = nn.Linear(text_dim, hidden_dim)
 
-        # Positional embedding for modality tokens (image, tabular, text)
-        self.positional_encoding = nn.Parameter(torch.randn(1, 3, hidden_dim))  # up to 3 modalities
+        # 🔹 Positional encoding for up to 3 modalities (image, tabular, text)
+        self.positional_encoding = nn.Parameter(torch.randn(1, 3, hidden_dim))
 
-        encoder_layer = nn.TransformerEncoderLayer(d_model=hidden_dim, nhead=n_heads, batch_first=True)
+        # 🔹 Transformer encoder
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=hidden_dim, nhead=n_heads, batch_first=True
+        )
         self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=n_layers)
 
-        # Final classifier
+        # 🔹 Final classifier with dynamic output size
         self.classifier = nn.Sequential(
             nn.Linear(hidden_dim, 128),
             nn.ReLU(),
-            nn.Linear(128, 2)  # binary classification
+            nn.Linear(128, num_classes)  # ✅ Now dynamic
         )
 
     def forward(self, image, tabular=None, text=None):
+        # 🔹 Extract and project features
         image_feat = self.image_backbone(image)
-        image_feat = image_feat.view(image_feat.size(0), -1)  # flatten
+        image_feat = image_feat.view(image_feat.size(0), -1)
         tokens = [self.image_proj(image_feat)]
 
         if self.has_tabular and tabular is not None:
@@ -42,17 +58,17 @@ class MultimodalTransformerFusion(nn.Module):
         if self.has_text and text is not None:
             tokens.append(self.text_proj(text))
 
-        # Stack into a "sequence" of tokens
-        x = torch.stack(tokens, dim=1)  # shape: [batch_size, num_modalities, hidden_dim]
-        x = x + self.positional_encoding[:, :x.size(1), :]  # add positional encoding
+        # 🔹 Stack and apply positional encoding
+        x = torch.stack(tokens, dim=1)
+        x = x + self.positional_encoding[:, :x.size(1), :]
 
-        x = self.transformer_encoder(x)  # shape: [batch_size, num_modalities, hidden_dim]
+        # 🔹 Transformer encoding
+        x = self.transformer_encoder(x)
 
-        # Pooling: use first token (e.g., image) or mean pooling
-        pooled = x.mean(dim=1)  # [batch_size, hidden_dim]
+        # 🔹 Pool over modalities (mean pooling)
+        pooled = x.mean(dim=1)
 
         return self.classifier(pooled)
-
 
 def multimodal_fusion_model(image_model, data, patient_idx=0, hidden_dim=256, n_heads=4, n_layers=2):
     """
@@ -91,13 +107,12 @@ def multimodal_fusion_model(image_model, data, patient_idx=0, hidden_dim=256, n_
     tabular_sample = data["tabular"][patient_idx]
     tabular_dim = len(tabular_sample) if isinstance(tabular_sample, (list, np.ndarray, torch.Tensor)) else 1
 
-    # 🔀 3. Construire le modèle de fusion avec Transformer
-    return MultimodalTransformerFusion(
+    num_classes = len(set(data['labels'].tolist()))
+    model = MultimodalTransformerFusion(
         image_backbone=image_model,
-        image_dim=image_dim,
+        image_dim=image_dim,  # adjust to match output of your image model
         tabular_dim=tabular_dim,
-        text_dim=text_dim,
-        hidden_dim=hidden_dim,
-        n_heads=n_heads,
-        n_layers=n_layers
+        num_classes=num_classes
     )
+
+    return model

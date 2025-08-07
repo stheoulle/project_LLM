@@ -41,7 +41,7 @@ def evaluate_model(model, data, target_depth=128):
     y_true_tensor = torch.tensor(y_true)
     y_pred_tensor = torch.tensor(y_pred)
 
-    report = classification_report(y_true, y_pred, output_dict=True)
+    report = classification_report(y_true, y_pred, output_dict=True, zero_division=0)
     matrix = confusion_matrix(y_true, y_pred)
 
     return {
