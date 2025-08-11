@@ -1,0 +1,8 @@
+monai
+torch==2.5.1
+torchvision==0.20.1
+streamlit
+openai
+pandas
+pydicom
+pdfplumber

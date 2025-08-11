@@ -9,3 +9,7 @@ CMMD copy
 ai_model_app/Breast-diagnosis/manifest-BbshIhaG7188578559074019493
 ai_model_app/Breast-diagnosis/.~lock.TCIA-Breast-clinical-data-public-7_16_11.xlsx#
 ai_model_app/*/__pycache__
+ai_model_app_third/Breast-diagnosis/manifest-BbshIhaG7188578559074019493
+ai_model_app_third/Breast-diagnosis/.~lock.TCIA-Breast-clinical-data-public-7_16_11.xlsx#
+ai_model_app_third/Breast-diagnosis/__pycache__
+ai_model_app_third/*/__pycache__
