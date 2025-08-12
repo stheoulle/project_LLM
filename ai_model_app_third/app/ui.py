@@ -49,15 +49,68 @@ with tabs[0]:
     st.subheader("Chat — provide descriptions and images")
     col1, col2 = st.columns([3,1])
     with col1:
-        message = st.text_area("Message (medical report / description)", height=150, key='msg')
-        images = st.file_uploader("Attach images (optional)", type=["png","jpg","jpeg"], accept_multiple_files=True, key='chat_images')
-        if st.button("Send"):
+        # Chat input area (use form to avoid trying to reset widget state)
+        with st.form("chat_form"):
+            message = st.text_area("Message (medical report / description)", key="message_input", height=150)
+            images = st.file_uploader("Attach images (optional)", type=["png", "jpg", "jpeg"], accept_multiple_files=True, key="image_uploader")
+            submitted = st.form_submit_button("Send")
+
+        if submitted:
             if not message and not images:
                 st.warning("Add text or images before sending")
             else:
-                st.session_state.chat_history.append({'role':'user','text': message or '', 'images': images or []})
-                st.session_state.msg = ''
-                st.experimental_rerun()
+                # append user message to chat history
+                st.session_state.chat_history.append({'role': 'user', 'text': message or '', 'images': images or []})
+
+                # Try to answer the question by retrieval over local docs (RAG-style extractive answer)
+                assistant_text = None
+                try:
+                    retr = llm.get_indexer('docs')
+                    # Prefer semantic query if available; indexer.query handles both embedding and TF-IDF
+                    hits = retr.query(message, top_k=4)
+
+                    if hits and len(hits) > 0:
+                        parts = []
+                        for h in hits:
+                            # h may contain 'text' and 'path' and 'score'
+                            snippet = ''
+                            if isinstance(h, dict):
+                                snippet = h.get('text','')
+                                path = h.get('path') or h.get('path') if 'path' in h else h.get('path', None)
+                            else:
+                                snippet = str(h)
+                                path = None
+
+                            # Extract a short snippet: first 300 chars, or first 2 sentences
+                            s = snippet.replace('\n', ' ').strip()
+                            if not s:
+                                continue
+                            # take first two sentences if possible
+                            sentences = [seg.strip() for seg in s.split('.') if seg.strip()]
+                            short = (sentences[0] + ('. ' + sentences[1] + '.') if len(sentences) > 1 else sentences[0]) if sentences else s[:300]
+                            parts.append({'source': os.path.basename(path) if path else 'doc', 'score': h.get('score', 0) if isinstance(h, dict) else None, 'snippet': short})
+
+                        # Build assistant answer: list sources + combined synthesis
+                        answer_lines = ["I found the following relevant documents and passages:"]
+                        for p in parts:
+                            score_str = f" (score={p['score']:.3f})" if p.get('score') is not None else ''
+                            answer_lines.append(f"- {p['source']}{score_str}: {p['snippet']}")
+
+                        # naive synthesis: combine snippets
+                        synthesis = ' '.join([p['snippet'] for p in parts])
+                        if len(synthesis) > 800:
+                            synthesis = synthesis[:800].rsplit(' ',1)[0] + '...'
+
+                        answer_lines.append('\nSynthesis: ' + synthesis)
+                        assistant_text = '\n'.join(answer_lines)
+                    else:
+                        assistant_text = "No relevant documents found in the local index. Try ingesting PDFs or add documents to docs/."
+                except Exception as e:
+                    assistant_text = f"Retrieval failed: {e}"
+
+                # Append assistant reply if produced
+                if assistant_text:
+                    st.session_state.chat_history.append({'role': 'assistant', 'text': assistant_text, 'images': []})
 
     with col2:
         st.markdown("**LLM Assistant**")
@@ -69,17 +122,23 @@ with tabs[0]:
                 st.info(res['assistant_text'])
 
     st.write("---")
-    st.subheader("Conversation")
-    for m in st.session_state.chat_history[::-1]:
-        if m['role']=='user':
-            st.markdown(f"**You:** {m.get('text','')}")
+
+    # Display chat history
+    for i, m in enumerate(reversed(st.session_state.chat_history)):
+        role = m.get('role', 'user')
+        text = m.get('text', '')
+        imgs = m.get('images', [])
+        if role == 'user':
+            st.markdown(f"**You:** {text}")
         else:
-            st.markdown(f"**Assistant:** {m.get('text','')}")
-        for f in m.get('images', []) or []:
-            try:
-                st.image(f, use_column_width=True)
-            except Exception:
-                st.write('[image]')
+            st.markdown(f"**Assistant:** {text}")
+        if imgs:
+            cols = st.columns(min(3, len(imgs)))
+            for idx, f in enumerate(imgs):
+                try:
+                    cols[idx % 3].image(f, caption=getattr(f, 'name', 'image'), use_column_width=True)
+                except Exception:
+                    cols[idx % 3].write("[image]")
 
 # --- Ingest PDFs tab ---
 with tabs[1]:
