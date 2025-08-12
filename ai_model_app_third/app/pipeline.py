@@ -202,6 +202,137 @@ def build_doc_embeddings(docs_dir='docs', output_path=None):
         raise RuntimeError(f"Failed to build document embeddings or TF-IDF: {e}")
 
 
+# --- RAG support functions ---
+
+def build_rag_index(embeddings_path, meta_path=None, index_path=None):
+    """Build a nearest-neighbor index (FAISS if available, else sklearn) from a dense embeddings .npz or a scipy sparse .npz.
+    Returns dict with index_path and n_docs.
+    """
+    if index_path is None:
+        index_path = os.path.join(os.path.dirname(embeddings_path), 'rag_index')
+
+    emb = None
+    paths = []
+
+    # Try numpy .npz with named arrays
+    try:
+        arr = np.load(embeddings_path, allow_pickle=True)
+        files = getattr(arr, 'files', None)
+        if files and 'embeddings' in files:
+            emb = arr['embeddings']
+            if 'paths' in files:
+                p = arr['paths']
+                # convert to python list
+                try:
+                    paths = p.tolist()
+                except Exception:
+                    paths = list(p)
+    except Exception:
+        emb = None
+
+    # If not loaded, try scipy sparse .npz
+    if emb is None:
+        try:
+            import scipy.sparse as sp
+            mat = sp.load_npz(embeddings_path)
+            emb = mat.toarray()
+            # try to load meta JSON for paths
+            if meta_path and os.path.exists(meta_path):
+                try:
+                    with open(meta_path, 'r', encoding='utf-8') as mf:
+                        meta = json.load(mf)
+                        paths = meta.get('paths', []) or []
+                except Exception:
+                    paths = []
+        except Exception:
+            emb = None
+
+    if emb is None:
+        raise RuntimeError(f"Could not read embeddings from {embeddings_path}")
+
+    emb = np.asarray(emb)
+    n_docs = emb.shape[0]
+
+    # try faiss
+    try:
+        import faiss
+        d = emb.shape[1]
+        index = faiss.IndexFlatL2(d)
+        index.add(emb.astype(np.float32))
+        faiss.write_index(index, index_path + '.faiss')
+        meta = {'index_type': 'faiss', 'index_file': index_path + '.faiss', 'n_docs': n_docs}
+        with open(index_path + '.meta.json', 'w', encoding='utf-8') as mf:
+            json.dump({'paths': paths, **meta}, mf)
+        return {'index_path': index_path + '.faiss', 'n_docs': n_docs, 'paths': paths}
+    except Exception:
+        # fallback to sklearn nearest neighbors
+        try:
+            from sklearn.neighbors import NearestNeighbors
+            import pickle
+            nn = NearestNeighbors(n_neighbors=min(10, max(1, n_docs)), algorithm='auto').fit(emb)
+            with open(index_path, 'wb') as fh:
+                pickle.dump({'nn': nn, 'paths': paths}, fh)
+            return {'index_path': index_path, 'n_docs': n_docs, 'paths': paths}
+        except Exception as e:
+            raise RuntimeError(f"Failed to build RAG index: {e}")
+
+
+def prepare_rag_dataset_from_docs(docs_dir='docs', chunk_size=400):
+    """Prepare simple RAG dataset by chunking documents into contexts.
+    Returns list of dicts {'context': str, 'source': path}
+    """
+    contexts = []
+    for root, _, files in os.walk(docs_dir):
+        for f in files:
+            if f.lower().endswith('.txt') or f.lower().endswith('.md'):
+                full = os.path.join(root, f)
+                try:
+                    text = open(full, 'r', encoding='utf-8').read()
+                    # split into paragraphs
+                    paras = [p.strip() for p in text.split('\n\n') if len(p.strip()) > 50]
+                    for p in paras:
+                        # further chunk large paragraphs
+                        for i in range(0, len(p), chunk_size):
+                            ctx = p[i:i+chunk_size]
+                            contexts.append({'context': ctx, 'source': full})
+                except Exception:
+                    continue
+    return contexts
+
+
+def train_rag_generator(contexts, out_dir='docs/rag_generator', epochs=1, model_name='t5-small'):
+    """Optional: fine-tune a small T5 generator on (input=context -> target=context) autoencoding.
+    This is a lightweight placeholder; requires transformers and datasets.
+    """
+    try:
+        from transformers import T5ForConditionalGeneration, T5TokenizerFast, Trainer, TrainingArguments
+        import datasets
+    except Exception as e:
+        raise RuntimeError(f"Transformers or datasets not available: {e}")
+
+    # build dataset
+    src_texts = [c['context'] for c in contexts]
+    # use same text as target (autoencoder-like) — weak but useful for synthesis
+    tgt_texts = src_texts
+    ds = datasets.Dataset.from_dict({'src': src_texts, 'tgt': tgt_texts})
+
+    tokenizer = T5TokenizerFast.from_pretrained(model_name)
+    def preprocess(ex):
+        inp = ['answer: ' + t for t in ex['src']]
+        model_inputs = tokenizer(inp, max_length=512, truncation=True)
+        labels = tokenizer(ex['tgt'], max_length=256, truncation=True)
+        model_inputs['labels'] = labels['input_ids']
+        return model_inputs
+    ds = ds.map(preprocess, batched=True, remove_columns=['src','tgt'])
+
+    model = T5ForConditionalGeneration.from_pretrained(model_name)
+    training_args = TrainingArguments(output_dir=out_dir, num_train_epochs=epochs, per_device_train_batch_size=2, save_total_limit=2)
+    trainer = Trainer(model=model, args=training_args, train_dataset=ds)
+    trainer.train()
+    trainer.save_model(out_dir)
+    return {'model_dir': out_dir, 'n_examples': len(src_texts)}
+
+
 def run_pipeline(modality_choice, model_choice, mri_types=None, llm_context=None, extra_inputs=None):
     """
     Run the training pipeline. Accepts optional llm_context (assistant suggestion text or dict)
@@ -346,4 +477,28 @@ def run_pipeline(modality_choice, model_choice, mri_types=None, llm_context=None
             'text_training': text_res,
             'text_evaluation': eval_results
         }
+
+    # Special case: rag training — build embeddings, index and optionally train generator
+    if modality_choice in ('rag', 'rag_train'):
+        docs_dir = 'docs'
+        # Build embeddings (dense or tfidf as needed)
+        summary = build_doc_embeddings(docs_dir=docs_dir)
+        emb_path = summary.get('output')
+        # Build index
+        idx_res = build_rag_index(emb_path, meta_path=summary.get('meta'), index_path=os.path.join(docs_dir,'rag_index'))
+        print(f"RAG index built: {idx_res}")
+
+        train_res = None
+        # Prepare contexts for generator training
+        contexts = prepare_rag_dataset_from_docs(docs_dir=docs_dir, chunk_size=400)
+        if len(contexts) < 10:
+            print(f"Warning: only {len(contexts)} contexts found; generator training may be ineffective.")
+        # Attempt to train generator if transformers available
+        try:
+            train_res = train_rag_generator(contexts, out_dir=os.path.join(docs_dir,'rag_generator'), epochs=1)
+            print(f"RAG generator trained: {train_res}")
+        except Exception as e:
+            print(f"RAG generator training skipped: {e}")
+
+        return {'rag_index': idx_res, 'rag_train': train_res, 'docs_summary': summary}
 

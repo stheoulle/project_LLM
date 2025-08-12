@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import streamlit as st
 from app.pipeline import run_pipeline, train_text_model_from_embeddings
 from app import llm
+from app import rag
 from utils.pdf_ingest import ingest_pdf_file
 from utils.metrics import plot_metrics, evaluate_model
 from pathlib import Path
@@ -107,6 +108,13 @@ with tabs[0]:
                         assistant_text = "No relevant documents found in the local index. Try ingesting PDFs or add documents to docs/."
                 except Exception as e:
                     assistant_text = f"Retrieval failed: {e}"
+
+                # Use RAG answerer (retriever + optional generator)
+                try:
+                    rag_res = rag.answer_question(message, top_k=4, generator_dir=os.path.join('docs','rag_generator'))
+                    assistant_text = rag_res.get('answer')
+                except Exception as e:
+                    assistant_text = f"RAG answering failed: {e}"
 
                 # Append assistant reply if produced
                 if assistant_text:
@@ -284,6 +292,25 @@ with tabs[3]:
                                 st.warning('Trained model not found for evaluation')
                 except Exception as e:
                     st.error(f"Manual training failed: {e}")
+    st.write("---")
+    st.subheader("RAG (Retriever-Augmented Generation) training")
+    rag_train_gen = st.checkbox("Train generator model (T5) after building index", value=False)
+    rag_epochs = st.number_input("Generator training epochs", min_value=1, max_value=50, value=1)
+    rag_chunk = st.number_input("Context chunk size (chars)", min_value=100, max_value=2000, value=400)
+
+    if st.button("Train RAG (build index + optional generator)"):
+        with st.spinner("Building RAG index and optionally training generator..."):
+            try:
+                # call pipeline rag training; it will build embeddings + index and attempt generator training
+                res = run_pipeline('rag_train' if rag_train_gen else 'rag', model_choice)
+                st.success("RAG pipeline finished")
+                st.json(res)
+                # If generator trained, show summary
+                if isinstance(res, dict) and res.get('rag_train'):
+                    st.subheader('Generator training summary')
+                    st.json(res.get('rag_train'))
+            except Exception as e:
+                st.error(f"RAG training failed: {e}")
 
 # --- Logs tab ---
 with tabs[4]:
