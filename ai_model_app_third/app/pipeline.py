@@ -300,36 +300,65 @@ def prepare_rag_dataset_from_docs(docs_dir='docs', chunk_size=400):
     return contexts
 
 
-def train_rag_generator(contexts, out_dir='docs/rag_generator', epochs=1, model_name='t5-small'):
-    """Optional: fine-tune a small T5 generator on (input=context -> target=context) autoencoding.
-    This is a lightweight placeholder; requires transformers and datasets.
+def train_rag_generator(contexts, out_dir='docs/rag_generator', epochs=1, model_name='t5-small', input_max_length=512, target_max_length=256):
+    """Fine-tune a T5 generator robustly using transformers Seq2SeqTrainer.
+
+    Uses DataCollatorForSeq2Seq to handle padding and label padding with -100 so loss ignores padded tokens.
     """
     try:
-        from transformers import T5ForConditionalGeneration, T5TokenizerFast, Trainer, TrainingArguments
+        from transformers import T5ForConditionalGeneration, T5TokenizerFast, DataCollatorForSeq2Seq, Seq2SeqTrainer, Seq2SeqTrainingArguments
         import datasets
     except Exception as e:
-        raise RuntimeError(f"Transformers or datasets not available: {e}")
+        raise RuntimeError(f"Transformers/datasets not available for generator training: {e}")
 
-    # build dataset
+    if len(contexts) == 0:
+        raise RuntimeError("No contexts provided for generator training")
+
+    # Build source/target pairs (here we use autoencoding-style: context -> context)
     src_texts = [c['context'] for c in contexts]
-    # use same text as target (autoencoder-like) — weak but useful for synthesis
     tgt_texts = src_texts
+
     ds = datasets.Dataset.from_dict({'src': src_texts, 'tgt': tgt_texts})
 
     tokenizer = T5TokenizerFast.from_pretrained(model_name)
-    def preprocess(ex):
-        inp = ['answer: ' + t for t in ex['src']]
-        model_inputs = tokenizer(inp, max_length=512, truncation=True)
-        labels = tokenizer(ex['tgt'], max_length=256, truncation=True)
-        model_inputs['labels'] = labels['input_ids']
-        return model_inputs
-    ds = ds.map(preprocess, batched=True, remove_columns=['src','tgt'])
-
     model = T5ForConditionalGeneration.from_pretrained(model_name)
-    training_args = TrainingArguments(output_dir=out_dir, num_train_epochs=epochs, per_device_train_batch_size=2, save_total_limit=2)
-    trainer = Trainer(model=model, args=training_args, train_dataset=ds)
+
+    def preprocess(batch):
+        inputs = ["answer: " + s for s in batch['src']]
+        model_inputs = tokenizer(inputs, max_length=input_max_length, truncation=True)
+        labels = tokenizer(batch['tgt'], max_length=target_max_length, truncation=True)
+        # replace pad token id in labels by -100 so it is ignored by loss
+        label_ids = labels['input_ids']
+        label_ids = [[(l if l != tokenizer.pad_token_id else -100) for l in seq] for seq in label_ids]
+        model_inputs['labels'] = label_ids
+        return model_inputs
+
+    tokenized = ds.map(preprocess, batched=True, remove_columns=['src','tgt'])
+
+    training_args = Seq2SeqTrainingArguments(
+        output_dir=out_dir,
+        per_device_train_batch_size=2,
+        num_train_epochs=epochs,
+        save_total_limit=2,
+        fp16=False,
+        logging_steps=50,
+        gradient_accumulation_steps=1,
+        save_strategy='no'
+    )
+
+    data_collator = DataCollatorForSeq2Seq(tokenizer, model=model, label_pad_token_id=-100)
+
+    trainer = Seq2SeqTrainer(
+        model=model,
+        args=training_args,
+        train_dataset=tokenized,
+        tokenizer=tokenizer,
+        data_collator=data_collator
+    )
+
     trainer.train()
     trainer.save_model(out_dir)
+
     return {'model_dir': out_dir, 'n_examples': len(src_texts)}
 
 

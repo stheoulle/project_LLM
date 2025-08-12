@@ -15,3 +15,4 @@ ai_model_app_third/Breast-diagnosis/__pycache__
 ai_model_app_third/*/__pycache__
 ai_model_app_third/docs/*.npz.*
 ai_model_app_third/docs/text_model.pth
+ai_model_app_third/docs/rag_generator
