@@ -23,7 +23,7 @@ class MultimodalDataset(Dataset):
     def __getitem__(self, idx):
         return self.images[idx], self.text[idx], self.tabular[idx], self.labels[idx]
 
-def train_model(model, data, epochs=2, target_depth=128):
+def train_model(model, data, epochs=3, target_depth=128):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
     history = {'loss': [], 'acc': []}

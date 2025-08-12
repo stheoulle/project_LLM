@@ -1,0 +1,1595 @@
+Source: docs/uploads/8577.00.pdf
+Extracted: 2025-08-11T13:06:38.534989Z
+---
+
+cancer.org | 1.800.227.2345
+About Breast Cancer
+Get basic information about breast cancer, such as the different types, where they start,
+important statistics, and current research topics.
+Breast Cancer Basics
+Get an overview of the different types of breast cancer and where they start.
+What Is Breast Cancer?
+l
+What Causes Breast Cancer?
+l
+Types of Breast Cancer
+There are several types of breast cancer. The type of breast cancer you have depends
+on where in the breast it started and other factors.
+Types of Breast Cancer Overview
+l
+Ductal Carcinoma in Situ (DCIS)
+l
+Invasive Breast Cancer (IDC/ILC)
+l
+Triple-negative Breast Cancer
+l
+Angiosarcoma of the Breast
+l
+Inflammatory Breast Cancer
+l
+Paget Disease of the Breast
+l
+Phyllodes Tumors
+l
+Research and Statistics
+See the latest estimates for new cases and deaths of breast cancer in the US and what
+research is being done.
+1
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Key Statistics for Breast Cancer
+l
+What’s New in Breast Cancer Research?
+l
+What Is Breast Cancer?
+Breast cancer is a type of cancer that starts in the breast. It can start in one or both
+breasts.
+How breast cancer starts
+l
+Where breast cancer starts
+l
+How breast cancer spreads
+l
+Types of breast cancer
+l
+How breast cancer starts
+Breast cancer occurs almost entirely in women, but men can get breast cancer1, too.
+Cancer starts when cells begin to grow out of control. (To learn more about how
+cancers start and spread, see What Is Cancer?2)
+It’s important to understand that most breast lumps are benign and not cancer
+(malignant). Non-cancer breast tumors are abnormal growths, but they do not spread
+outside of the breast. They are not life threatening, but some types of benign breast
+lumps can increase a woman's risk of getting breast cancer.
+Any breast lump or change needs to be checked by a health care professional to find
+out if it is benign or malignant (cancer) and if it might affect your future cancer risk. See
+Non-cancerous Breast Conditions3 to learn more.
+Where breast cancer starts
+Breast cancers can start from different parts of the breast. The breast is an organ that
+sits on top of the upper ribs and chest muscles. There is a left and right breast and each
+one has mainly glands, ducts, and fatty tissue. In women, the breast makes and delivers
+milk to feed newborns and infants. The amount of fatty tissue in the breast determines
+the size of each breast.
+The breast has different parts:
+2
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Lobules are the glands that make breast milk. Cancers that start here are called
+l
+lobular cancers.
+Ducts are small canals that come out from the lobules and carry the milk to the
+l
+nipple. This is the most common place for breast cancer to start. Cancers that start
+here are called ductal cancers.
+The nipple is the opening in the skin of the breast where the ducts come together
+l
+and turn into larger ducts so the milk can leave the breast. The nipple is surrounded
+by slightly darker thicker skin called the areola. A less common type of breast
+cancer called Paget disease of the breast can start in the nipple.
+The fat and connective tissue (stroma) surround the ducts and lobules and help
+l
+keep them in place. A less common type of breast cancer called phyllodes tumor4
+can start in the stroma.
+Blood vessels and lymph vessels are also found in each breast. Angiosarcoma is
+l
+a less common type of breast cancer that can start in the lining of these vessels.
+The lymph system is described below.
+A small number of cancers start in other tissues in the breast. These cancers are called
+sarcomas5 and lymphomas6 and are not really thought of as breast cancers.
+To learn more, see Types of Breast Cancer.
+3
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+How breast cancer spreads
+Breast cancer can spread when the cancer cells get into the blood or lymph system and
+then are carried to other parts of the body.
+The lymph (or lymphatic) system is a part of your body's immune system. It is a network
+of lymph nodes (small, bean-sized glands), ducts or vessels, and organs that work
+together to collect and carry clear lymph fluid through the body tissues to the blood. The
+clear lymph fluid inside the lymph vessels contains tissue by-products and waste
+material, as well as immune system cells.
+The lymph vessels carry lymph fluid away from the breast. In the case of breast cancer,
+cancer cells can enter those lymph vessels and start to grow in lymph nodes. Most of
+the lymph vessels of the breast drain into:
+4
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Lymph nodes under the arm (axillary lymph nodes)
+l
+Lymph nodes inside the chest near the breastbone (internal mammary lymph
+l
+nodes)
+Lymph nodes around the collar bone (supraclavicular [above the collar bone] and
+l
+infraclavicular [below the collar bone] lymph nodes)
+If cancer cells have spread to your lymph nodes, there is a higher chance that the cells
+could have traveled through the lymph system and spread (metastasized) to other parts
+of your body. Still, not all women with cancer cells in their lymph nodes develop
+metastases, and some women with no cancer cells in their lymph nodes might develop
+metastases later.
+5
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Types of breast cancer
+There are many different types of breast cancer. The type is determined by the specific
+kind of cells in the breast that are affected. Most breast cancers are carcinomas. The
+6
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+most common breast cancers such as ductal carcinoma in situ (DCIS) and invasive
+carcinoma are adenocarcinomas, since the cancers start in the gland cells in the milk
+ducts or the lobules (milk-producing glands). Other kinds of cancers can grow in the
+breast, like angiosarcoma or sarcoma7, but are not considered breast cancer since they
+start in different cells of the breast.
+Breast cancers are also classified by certain types of proteins or genes each cancer
+might make. After a biopsy is done, breast cancer cells are tested for proteins called
+estrogen receptors and progesterone receptors8, and the HER2 gene or protein9. The
+tumor cells are also closely looked at in the lab to find out what grade10 it is. The specific
+proteins found and the tumor grade can help decide the stage of the cancer and
+treatment options.
+To learn more about the specific tests done on breast cancer cells, see Understanding a
+Breast Cancer Diagnosis11.
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer-in-men.html
+2. www.cancer.org/cancer/understanding-cancer/what-is-cancer.html
+3. www.cancer.org/cancer/types/breast-cancer/non-cancerous-breast-conditions.html
+4. www.cancer.org/cancer/types/breast-cancer/non-cancerous-breast-
+conditions/phyllodes-tumors-of-the-breast.html
+5. www.cancer.org/cancer/types/soft-tissue-sarcoma.html
+6. www.cancer.org/cancer/types/lymphoma.html
+7. www.cancer.org/cancer/types/soft-tissue-sarcoma.html
+8. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-hormone-receptor-status.html
+9. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-her2-status.html
+10. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-grades.html
+11. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis.html
+References
+Henry NL, Shah PD, Haider I, Freer PE, Jagsi R, Sabel MS. Chapter 88: Cancer of the
+7
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Breast. In: Niederhuber JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE,
+eds. Abeloff’s Clinical Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+Jagsi R, King TA, Lehman C, Morrow M, Harris JR, Burstein HJ. Chapter 79: Malignant
+Tumors of the Breast. In: DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA, eds.
+DeVita, Hellman, and Rosenberg’s Cancer: Principles and Practice of Oncology. 11th
+ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2019.
+National Cancer Institute. Physician Data Query (PDQ). Breast Cancer Treatment –
+Patient Version. 2021. Accessed at https://www.cancer.gov/types/breast/patient/breast-
+treatment-pdq on June 24, 2021.
+Last Revised: November 19, 2021
+What Causes Breast Cancer?
+We don't know what causes each case of breast cancer. But we do know many of the
+risk factors for these cancers. We also know that normal breast cells can become
+cancer because of changes or mutations in genes. Hormones also seem to play a role
+in many cases of breast cancer, but just how this happens is not fully understood.
+Lifestyle-related risk factors
+l
+Hormones
+l
+Gene mutations
+l
+How gene changes can lead to breast cancer
+l
+Inherited gene changes
+l
+Acquired gene changes
+l
+Lifestyle-related risk factors
+Lifestyle-related risk factors, such as what you eat and how much you exercise, can
+increase your chance of developing breast cancer, but it’s not yet known exactly how
+some of these risk factors cause normal cells to become cancer.
+See Lifestyle-related Breast Cancer Risk Factors1 and Breast Cancer Risk Factors You
+Cannot Change2.
+8
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Hormones
+Hormones also seem to play a role in many cases of breast cancer, but just how this
+happens is not fully understood.
+Gene mutations
+We do know that normal breast cells can become cancer because of changes or
+mutations in genes. But only about 1 in 10 breast cancers (10%) are linked with known
+abnormal genes that are passed on from parents (inherited). Many genes have not yet
+been discovered, so women with a family history of breast cancer might have inherited
+an abnormal gene that doesn't show on a genetic test3. Most breast cancers (about
+90%) develop from acquired (not inherited) gene changes that have not yet been
+identified.
+How gene changes can lead to breast cancer
+Genes4 control how our cells function. They are made up of a chemical called DNA,
+which comes from both our parents. DNA affects more than just how we look; it also can
+influence our risk for developing certain diseases, including some kinds of cancer.
+Normal cells have genes called proto-oncogenes, which help control when the cells
+grow, divide to make new cells, or stay alive. If a proto-oncogene is mutated (changed)
+in a certain way, it becomes an oncogene. Cells that have these mutated oncogenes
+can become cancer.
+Normal cells also have genes called tumor suppressor genes, which help control how
+often normal cells divide in two, repair DNA mistakes, or cause cells to die at the right
+time. If a cell has a mutated tumor suppressor gene, then the cell can turn into cancer.
+Cancers can be caused by gene changes that turn on oncogenes or turn off tumor
+suppressor genes. Changes in many different genes are usually needed to cause
+breast cancer.
+Inherited gene changes
+Some gene changes (mutations) are inherited or passed to you from your
+parents. This means the mutations are in all your cells when you are born.
+Certain inherited gene changes can greatly increase the risk for developing certain
+9
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+cancers and are linked to many of the cancers that run in some families. For instance,
+the BRCA genes (BRCA1 and BRCA2) are tumor suppressor genes. When one of
+these genes changes, it no longer suppresses abnormal cell growth, and cancer is more
+likely to develop. A change in one of these genes can be passed from a parent to a
+child.
+Women have already begun to benefit from advances in understanding the genetic
+basis of breast cancer. Genetic testing can identify some women who have inherited
+mutations in the BRCA1 or BRCA2 tumor suppressor genes as well as other less
+common genes such as PALB2, ATM, or CHEK2. These women can then take steps to
+reduce their risk of breast cancer by increasing awareness of their breasts and following
+appropriate screening recommendations5 to help find cancer at an earlier, more
+treatable stage. Since these mutations are also often associated with other cancers
+(besides breast), women with these mutations might also consider early screening and
+preventive actions for other cancers.
+Mutations in tumor suppressor genes like the BRCA genes are considered “high
+penetrance” because they often lead to cancer. Although many women with high
+penetrance mutations develop cancer, most cases of cancer (including breast cancer)
+are not caused by this kind of mutation.
+More often, low-penetrance mutations or gene variations are a factor in cancer
+development. Each of these may have a small effect on cancer occurring in any one
+person, but the overall effect on the population can be large because the mutations are
+common, and people often have more than one at the same time. The genes involved
+can affect things like hormone levels, metabolism, or other factors that impact risk for
+breast cancer. These genes might also cause much of the risk of breast cancer that
+runs in families.
+Acquired gene changes
+Most gene mutations linked to breast cancer are acquired. This means the change
+takes place in breast cells during a person's life rather than having been inherited or
+born with them. Acquired DNA mutations take place over time and are only in the breast
+cancer cells.
+These acquired mutations of oncogenes and/or tumor suppressor genes may result
+from other factors, like radiation or cancer-causing chemicals. But some gene changes
+may just be random events that sometimes happen inside a cell, without having an
+outside cause. So far, the causes of most acquired mutations that could lead to breast
+cancer are still unknown. Most breast cancers have several acquired gene mutations.
+10
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer/risk-and-prevention/lifestyle-related-
+breast-cancer-risk-factors.html
+2. www.cancer.org/cancer/types/breast-cancer/risk-and-prevention/breast-cancer-
+risk-factors-you-cannot-change.html
+3. www.cancer.org/cancer/types/breast-cancer/risk-and-prevention/genetic-
+testing.html
+4. www.cancer.org/cancer/understanding-cancer/genes-and-cancer.html
+5. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/american-cancer-society-recommendations-for-the-early-detection-of-
+breast-cancer.html
+References
+Berger AH and Pandolfi PP. Chapter 5: Cancer Susceptibility Syndromes. In: DeVita
+VT, Lawrence TS, Lawrence TS, Rosenberg SA, eds. DeVita, Hellman, and
+Rosenberg’s Cancer: Principles and Practice of Oncology. 11th ed. Philadelphia, Pa:
+Lippincott Williams & Wilkins; 2019.
+Byrnes GB, Southey MC, Hopper JL. Are the so-called low penetrance breast cancer
+genes, ATM, BRIP1, PALB2 and CHEK2, high risk for women with strong family
+histories? Breast Cancer Res. 2008;10(3):208.
+National Comprehensive Cancer Network (NCCN). Genetic/Familial High-Risk
+Assessment: Breast, Ovarian, and Pancreatic. Version 1.2022 – August 11, 2021.
+Accessed at https://www.nccn.org/professionals/physician_gls/pdf/genetics_bop.pdf on
+September 17, 2021.
+Walsh MF, Cadoo K, Salo-Mullen EE, Dubard-Gault M, Stadler ZK and Offit K. Chapter
+13: Genetic Factors – Hereditary Cancer Predisposition Syndromes. In: Niederhuber
+JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE, eds. Abeloff’s Clinical
+Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+Last Revised: November 19, 2021
+11
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Types of Breast Cancer
+There are many types of breast cancer, and many different ways to describe them. It’s
+easy to get confused.
+A breast cancer's type is determined by the specific cells in the breast that
+become cancer.
+Ductal or lobular carcinoma
+l
+Less common types of breast cancer
+l
+Ductal or lobular carcinoma
+Most breast cancers are carcinomas, which are tumors that start in the epithelial cells
+that line organs and tissues throughout the body. When carcinomas form in the breast,
+they are usually a more specific type called adenocarcinoma, which starts in cells in
+the ducts (the milk ducts) or the lobules (glands in the breast that make milk).
+In situ vs. invasive breast cancers
+The type of breast cancer can also refer to whether the cancer has spread or not. In
+situ breast cancer (ductal carcinoma in situ or DCIS) is a pre-cancer that starts in a
+milk duct and has not grown into the rest of the breast tissue. The term invasive (or
+infiltrating) breast cancer is used to describe any type of breast cancer that has spread
+(invaded) into the surrounding breast tissue.
+Ductal carcinoma in situ (DCIS)
+Ductal carcinoma in situ (DCIS; also known as intraductal carcinoma) is a non-invasive
+or pre-invasive breast cancer.
+Invasive breast cancer (ILC or IDC)
+Invasive (or infiltrating) breast cancer has spread into surrounding breast tissue. The
+most common types are invasive ductal carcinoma and invasive lobular
+carcinoma. Invasive ductal carcinoma makes up about 70-80% of all breast cancers.
+Special types of invasive breast cancers
+Some invasive breast cancers have special features or develop in different ways that
+influence their treatment and outlook. These cancers are less common but can be more
+serious than other types of breast cancer.
+12
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Triple-negative breast cancer
+Triple-negative breast cancer is an aggressive type of invasive breast cancer in which
+the cancer cells don’t have estrogen or progesterone receptors (ER or PR) and also
+don’t make any or too much of the protein called HER2. (The cells test "negative" on all
+3 tests.) It accounts for about 15% of all breast cancers and can be a difficult cancer to
+treat.
+Inflammatory breast cancer
+Inflammatory breast cancer is an aggressive type of invasive breast cancer in which
+cancer cells block lymph vessels in the skin, causing the breast to look "inflamed." It is
+rare and accounts for about 1% to 5% of all breast cancers.
+Less common types of breast cancer
+There are other types of breast cancers that start to grow in other types of cells in the
+breast. These cancers are much less common, and sometimes need different types of
+treatment.
+Paget disease of the breast
+Paget disease of the breast is rare, accounting for only about 1-3% of all cases of
+breast cancer. It starts in the breast ducts and spreads to the skin of the nipple and
+then to the areola (the dark circle around the nipple).
+Angiosarcoma
+Sarcomas of the breast are rare making up less than 1% of all breast
+cancers. Angiosarcoma starts in cells that line blood vessels or lymph vessels. It can
+involve the breast tissue or the skin of the breast. Some may be related to prior
+radiation therapy in that area.
+Phyllodes tumor
+Phyllodes tumors are rare breast tumors. They develop in the connective tissue
+(stroma) of the breast, in contrast to carcinomas, which develop in the ducts or lobules.
+Most are benign, but there are others that are malignant (cancer).
+References
+Anders CK and Carey LA. ER/PR negative, HER2-negative (triple-negative) breast
+cancer. UpToDate website. https://www.uptodate.com/contents/er-pr-negative-her2-
+negative-triple-negative-breast-cancer. Updated June 06, 2019. Accessed July 23,
+2019.
+13
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Calhoun KE, Allison KH, Kim JN et al. Chapter 62: Phyllodes Tumors. In: Harris JR,
+Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Dillon DA, Guidi AJ, Schnitt SJ. Ch. 25: Pathology of invasive breast cancer. In: Harris
+JR, Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Esteva FJ and Gutiérrez C. Chapter 64: Nonepithelial Malignancies of the Breast. In:
+Harris JR, Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Henry NL, Shah PD, Haider I, Freer PE, Jagsi R, Sabel MS. Chapter 88: Cancer of the
+Breast. In: Niederhuber JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE, eds.
+Abeloff’s Clinical Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+Jagsi R, King TA, Lehman C, Morrow M, Harris JR, Burstein HJ. Chapter 79: Malignant
+Tumors of the Breast. In: DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA, eds.
+DeVita, Hellman, and Rosenberg’s Cancer: Principles and Practice of Oncology. 11th
+ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2019.
+National Cancer Institute. Inflammatory Breast Cancer. 2016. Accessed at
+https://www.cancer.gov/types/breast/ibc-fact-sheet on August 30, 2021.
+National Comprehensive Cancer Network (NCCN). Practice Guidelines in Oncology:
+Breast Cancer. Version 7.2021. Accessed at
+https://www.nccn.org/professionals/physician_gls/pdf/breast.pdf on August 30, 2021.
+Nora M. Hansen. Chapter 63: Paget's Disease. In: Harris JR, Lippman ME, Morrow M,
+Osborne CK, eds. Diseases of the Breast. 5th ed. Philadelphia, Pa: Lippincott-Williams
+& Wilkins; 2014.
+Overmoyer B and Pierce LJ. Chapter 59: Inflammatory Breast Cancer. In: Harris JR,
+Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Last Revised: November 19, 2021
+14
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Ductal Carcinoma in Situ (DCIS)
+Ductal carcinoma in situ (DCIS) is a non-invasive or pre-invasive breast cancer. It is
+also known as intraductal carcinoma.
+Treating DCIS
+l
+About 1 in 5 new breast cancers will be ductal carcinoma in situ (DCIS). Nearly all
+women with this early stage of breast cancer can be cured.
+DCIS is also called intraductal carcinoma or stage 0 breast cancer. DCIS is a non-
+invasive or pre-invasive breast cancer. This means the cells that line the ducts have
+changed to cancer cells but they have not spread through the walls of the ducts into the
+nearby breast tissue.
+15
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Because DCIS hasn’t spread into the breast tissue around it, it can’t spread
+(metastasize) beyond the breast to other parts of the body.
+However, DCIS can sometimes become an invasive cancer. At that time, the cancer
+has spread out of the duct into nearby tissue, and from there, it could metastasize to
+other parts of the body.
+Right now, there’s no good way to know for sure which will become invasive cancer and
+which ones won’t, so almost all women with DCIS will be treated.
+Treating DCIS
+16
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+In most cases, a woman with DCIS can choose between breast-conserving surgery
+(BCS) and simple mastectomy. Radiation is usually given after BCS. Tamoxifen or an
+aromatase inhibitor after surgery might also be an option if the DCIS is hormone-
+receptor positive1.
+See Treatment for Ductal Carcinoma in Situ (DCIS)2 to learn more.
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-hormone-receptor-status.html
+2. www.cancer.org/cancer/types/breast-cancer/treatment/treatment-of-breast-cancer-
+by-stage/treatment-of-ductal-carcinoma-in-situ-dcis.html
+References
+Corben AD and Brogi E. Chapter 21: Ductal Carcinoma In Situ and Other Intraductal
+Lesions: Pathology, Immunohistochemistry, and Molecular Alterations. In: Harris JR,
+Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Henry NL, Shah PD, Haider I, Freer PE, Jagsi R, Sabel MS. Chapter 88: Cancer of the
+Breast. In: Niederhuber JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE, eds.
+Abeloff’s Clinical Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+Jagsi R, King TA, Lehman C, Morrow M, Harris JR, Burstein HJ. Chapter 79: Malignant
+Tumors of the Breast. In: DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA, eds.
+DeVita, Hellman, and Rosenberg’s Cancer: Principles and Practice of Oncology. 11th
+ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2019.
+National Cancer Institute. Physician Data Query (PDQ). Breast Cancer Treatment –
+Health Professional Version. 2021. Accessed at
+https://www.cancer.gov/types/breast/hp/breast-treatment-pdq on August 30, 2021.
+National Comprehensive Cancer Network (NCCN). Practice Guidelines in Oncology:
+Breast Cancer. Version 7.2021. Accessed at
+https://www.nccn.org/professionals/physician_gls/pdf/breast.pdf on August 30, 2021.
+Van Zee KJ, White J, Morrow M, and Harris JR. Chapter 23: Ductal Carcinoma In Situ
+17
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+and Microinvasive Carcinoma. In: Harris JR, Lippman ME, Morrow M, Osborne CK,
+eds. Diseases of the Breast. 5th ed. Philadelphia, Pa: Lippincott-Williams & Wilkins;
+2014.
+Last Revised: November 19, 2021
+Invasive Breast Cancer (IDC/ILC)
+Breast cancers that have spread into surrounding breast tissue are known as invasive
+breast cancers. Most breast cancers are invasive, but there are different types of
+invasive breast cancer. The two most common types are invasive ductal carcinoma
+(IDC) and invasive lobular carcinoma (ILC).
+Inflammatory breast cancer and triple negative breast cancer are also types of
+invasive breast cancer.
+Invasive (infiltrating) ductal carcinoma (IDC)
+l
+Invasive lobular carcinoma (ILC)
+l
+Less common types of invasive breast cancer
+l
+Treating invasive breast cancer
+l
+Invasive (infiltrating) ductal carcinoma (IDC)
+This is the most common type of breast cancer. About 8 in 10 invasive breast cancers
+are invasive (or infiltrating) ductal carcinomas (IDC).
+IDC starts in the cells that line a milk duct in the breast. From there, the cancer breaks
+through the wall of the duct, and grows into the nearby breast tissues. At this point, it
+may be able to spread (metastasize) to other parts of the body through the lymph
+system and bloodstream.
+Invasive lobular carcinoma (ILC)
+About 1 in 10 invasive breast cancers is an invasive lobular carcinoma (ILC).
+ILC starts in the breast glands that make milk (lobules). Like IDC, it can spread
+18
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+(metastasize) to other parts of the body. Invasive lobular carcinoma may be harder to
+detect on physical exam and imaging, like mammograms, than invasive ductal
+carcinoma. And compared to other kinds of invasive carcinoma, it is more likely to affect
+both breasts. About 1 in 5 women with ILC might have cancer in both breasts at the
+time they are diagnosed.
+Less common types of invasive breast cancer
+There are some special types of breast cancer that are sub-types of invasive
+carcinoma. They are less common than the breast cancers named above and each
+typically make up fewer than 5% of all breast cancers. These are often named after
+features of the cancer cells, like the ways the cells are arranged.
+Some of these may have a better prognosis than the more common IDC. These include:
+Adenoid cystic (or adenocystic) carcinoma
+l
+Low-grade adenosquamous carcinoma (this is a type of metaplastic carcinoma)
+l
+Medullary carcinoma
+l
+Mucinous (or colloid) carcinoma
+l
+Papillary carcinoma
+l
+Tubular carcinoma
+l
+Some sub-types have the same or maybe worse prognoses than IDC. These include:
+Metaplastic carcinoma (most types, including spindle cell and squamous, except
+l
+low grade adenosquamous carcinoma)
+Micropapillary carcinoma
+l
+Mixed carcinoma (has features of both invasive ductal and invasive lobular)
+l
+In general, all of these sub-types are still treated like IDC.
+Treating invasive breast cancer
+Treatment of invasive breast cancer depends on how advanced the cancer is (the stage
+of the cancer) and other factors. Most women will have some type of surgery to remove
+the tumor. Depending on the type of breast cancer and how advanced it is, you might
+need other types of treatment as well, either before or after surgery, or sometimes both.
+See Treating Breast Cancer1 for details on different types of treatment, as well as
+19
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+common treatment approaches based on the stage or other factors.
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer/treatment.html
+References
+Arpino G, Infiltrating lobular carcinoma of the breast:tumor board characteristics and
+clinical outcome. Breast Cancer Research. 2004; 6: 149.
+Dillon DA, Guidi AJ, Schnitt SJ. Ch. 25: Pathology of invasive breast cancer. In: Harris
+JR, Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Henry NL, Shah PD, Haider I, Freer PE, Jagsi R, Sabel MS. Chapter 88: Cancer of the
+Breast. In: Niederhuber JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE, eds.
+Abeloff’s Clinical Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+Huober J, Gelber S, Goldhirsch A, et al. Prognosis of medullary breast cancer: analysis
+of 13 International Breast Cancer Study Group (IBCSG) trials. Ann Oncol.
+2012;23(11):2843–2851.
+Jagsi R, King TA, Lehman C, Morrow M, Harris JR, Burstein HJ. Chapter 79: Malignant
+Tumors of the Breast. In: DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA, eds.
+DeVita, Hellman, and Rosenberg’s Cancer: Principles and Practice of Oncology. 11th
+ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2019.
+Last Revised: November 19, 2021
+Triple-negative Breast Cancer
+Triple-negative breast cancer (TNBC) is an aggressive type of invasive breast cancer.
+20
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+TNBC differs from other types of invasive breast cancer in that it tends to grow and
+spread faster, has fewer treatment options, and tends to have a worse prognosis
+(outlook).
+The term triple-negative breast cancer refers to the fact that the cancer cells don’t
+have estrogen or progesterone receptors1 (ER or PR) and also don’t have too much of
+the HER22 protein. (The cells test "negative" on all 3 tests.)
+How common is triple-negative breast cancer?
+l
+Signs and symptoms of triple-negative breast cancer
+l
+How is triple-negative breast cancer diagnosed?
+l
+Survival rates for triple-negative breast cancer
+l
+Treating triple-negative breast cancer
+l
+How common is triple-negative breast cancer?
+Triple-negative breast cancer accounts for about 10-15% of all breast cancers. These
+cancers tend to be more common in women younger than age 40, who are Black, or
+who have a BRCA1 mutation.
+Signs and symptoms of triple-negative breast cancer
+Triple-negative breast cancer can have the same signs and symptoms3 as other
+common types of breast cancer.
+How is triple-negative breast cancer diagnosed?
+Once a breast cancer diagnosis has been made using imaging tests and a biopsy4, the
+cancer cells will be checked for certain proteins. If the cells do not have estrogen or
+progesterone receptors (ER or PR), and also do not have too much of the HER2
+protein, the cancer is considered to be triple-negative breast cancer.
+Survival rates for triple-negative breast cancer
+TNBC tends to grow quickly, is more likely to have spread at the time it’s found, and is
+more likely to come back after treatment than other types of breast cancer. Because of
+this, the survival rates for TNBC are generally not quite as high as they are for other
+types of breast cancer.
+21
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Survival rates can give you an idea of what percentage of people with the same type
+and stage of cancer are still alive a certain amount of time (usually 5 years) after they
+were diagnosed. They can’t tell you how long you will live, but they may help give you a
+better understanding of how likely it is that your treatment will be successful.
+Keep in mind that survival rates are estimates and are often based on previous
+outcomes of large numbers of people who had a specific cancer, but they can’t
+predict what will happen in any particular person’s case. These statistics can be
+confusing and may lead you to have more questions. Talk with your doctor about
+how these numbers may apply to you, as they are familiar with your situation.
+What is a 5-year relative survival rate?
+A relative survival rate compares women with the same type and stage of breast
+cancer to women in the overall population. For example, if the 5-year relative survival
+rate for a specific stage of breast cancer is 90%, it means that women who have that
+cancer are, on average, about 90% as likely as women who don’t have that cancer to
+live for at least 5 years after being diagnosed.
+Where do these numbers come from?
+The American Cancer Society relies on information from the Surveillance,
+Epidemiology, and End Results Program (SEER) database, maintained by the National
+Cancer Institute (NCI), to provide survival statistics for different types of cancer.
+The SEER database tracks 5-year relative survival rates for breast cancer in the United
+States, based on how far the cancer has spread. The SEER database, however, does
+not group cancers by AJCC TNM stages5 (stage 1, stage 2, stage 3, etc.). Instead, it
+groups cancers into localized, regional, and distant stages:
+Localized: There is no sign that the cancer has spread outside of the breast.
+l
+Regional: The cancer has spread outside the breast to nearby structures or lymph
+l
+nodes.
+Distant: The cancer has spread to distant parts of the body such as the lungs, liver,
+l
+or bones.
+5-year relative survival rates for triple-negative breast cancer
+These numbers are based on women diagnosed with TNBC between 2015 and 2021.
+22
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+SEER Stage 5-year Relative Survival Rate
+Localized 92%
+Regional 67%
+Distant 15%
+78%
+All stages combined
+Understanding the numbers
+Women now being diagnosed with TNBC may have a better outlook than
+l
+these numbers show. Treatments improve over time, and these numbers are
+based on women who were diagnosed and treated at least 5 years earlier.
+These numbers apply only to the stage of the cancer when it is first
+l
+diagnosed. They do not apply later on if the cancer grows, spreads, or comes back
+after treatment.
+These numbers don’t take everything into account. Survival rates are grouped
+l
+based on how far the cancer has spread, but your age and overall health, how well
+the cancer responds to treatment, tumor grade6, and other factors can also affect
+your outlook.
+Treating triple-negative breast cancer
+Triple-negative breast cancer has fewer treatment options than other types of invasive
+breast cancer. This is because the cancer cells do not have the estrogen or
+progesterone receptors or enough of the HER2 protein to make hormone therapy or
+HER2-targeted drugs work. Because hormone therapy and anti-HER2 drugs are not
+choices for women with triple-negative breast cancer, chemotherapy is often used.
+If the cancer has not spread to distant sites, surgery is an option. Chemotherapy might
+be given first to shrink a large tumor, followed by surgery. Chemotherapy is often
+recommended after surgery to reduce the chances of the cancer coming back.
+Radiation might also be an option depending on certain features of the tumor and the
+type of surgery you had.
+In cases where the cancer has spread to other parts of the body (stage IV), platinum
+chemotherapy, targeted drugs like a PARP inhibitor or antibody-drug conjugate, or
+23
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+immunotherapy with chemotherapy might be considered.
+For details, see Treatment of Triple-negative Breast Cancer7.
+Triple-Negative Breast Cancer 8
+Get easy-to-read information about triple-negative breast cancer including risk factors,
+signs and symptoms, how to lower your risk, and recommended breast cancer
+screening tests.
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-hormone-receptor-status.html
+2. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-her2-status.html
+3. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-cancer-signs-and-symptoms.html
+4. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection.html
+5. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/stages-of-breast-cancer.html
+6. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-grades.html
+7. www.cancer.org/cancer/types/breast-cancer/treatment/treatment-of-triple-
+negative.html
+8. www.cancer.org/content/dam/cancer-org/cancer-control/en/booklets-flyers/triple-
+negative-breast-cancer.pdf
+References
+Anders CK and Carey LA. ER/PR negative, HER2-negative (triple-negative) breast
+cancer. In Vora SR, ed. UpToDate. Waltham, Mass.: UpToDate, 2021.
+https://www.uptodate.com. Last updated July 21, 2021. Accessed August 30, 2021.
+Henry NL, Shah PD, Haider I, Freer PE, Jagsi R, Sabel MS. Chapter 88: Cancer of the
+Breast. In: Niederhuber JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE,
+eds. Abeloff’s Clinical Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+24
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Jagsi R, King TA, Lehman C, Morrow M, Harris JR, Burstein HJ. Chapter 79: Malignant
+Tumors of the Breast. In: DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA, eds.
+DeVita, Hellman, and Rosenberg’s Cancer: Principles and Practice of Oncology. 11th
+ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2019.
+Jhan JR, Andrechek ER. Triple-negative breast cancer and the potential for targeted
+therapy. Pharmacogenomics. 2017;18(17):1595–1609.
+Li X, Yang J, Peng L, Sahin AA, Huo L, Ward KC, O'Regan R, Torres MA, Meisel JL.
+Triple-negative breast cancer has worse overall survival and cause-specific survival
+than non-triple-negative breast cancer. Breast Cancer Res Treat. 2017 Jan;161(2):279-
+287.
+National Comprehensive Cancer Network (NCCN). Practice Guidelines in Oncology:
+Breast Cancer. Version 7.2021. Accessed at
+https://www.nccn.org/professionals/physician_gls/pdf/breast.pdf on August 30, 2021.
+SEER*Explorer: An interactive website for SEER cancer statistics [Internet].
+Surveillance Research Program, National Cancer Institute. Accessed
+at https://seer.cancer.gov/explorer/ on June 13, 2025.
+Last Revised: June 25, 2025
+Inflammatory Breast Cancer
+Inflammatory breast cancer (IBC) is a rare and aggressive type of invasive breast
+cancer in which cancer cells block lymph vessels in the skin. This causes the breast to
+look “inflamed.”
+What is inflammatory breast cancer?
+l
+Signs and symptoms of inflammatory breast cancer
+l
+How is inflammatory breast cancer diagnosed?
+l
+Stages of inflammatory breast cancer
+l
+Survival rates for inflammatory breast cancer
+l
+Treating inflammatory breast cancer
+l
+What is inflammatory breast cancer?
+25
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Inflammatory breast cancer (IBC) is rare. It accounts for only 1% to 5% of all breast
+cancers. Although it is a type of invasive ductal carcinoma, its symptoms, outlook, and
+treatment are different. IBC causes symptoms of breast inflammation like swelling and
+redness, which is caused by cancer cells blocking lymph vessels in the skin causing the
+breast to look "inflamed."
+Inflammatory breast cancer (IBC) differs from other types of breast cancer in many
+ways:
+IBC doesn't look like a typical breast cancer. It often does not cause a breast lump,
+l
+and it might not show up on a mammogram. This makes it harder to diagnose.
+IBC tends to occur in younger women (younger than 40 years of age).
+l
+Black women appear to develop IBC more often than White women.
+l
+IBC is more common among women who have excess body weight (overweight or
+l
+obesity).
+IBC tends to be more aggressive—it grows and spreads much more quickly—than
+l
+more common types of breast cancer.
+IBC is always at least at a locally advanced stage when it’s first diagnosed because
+l
+the breast cancer cells have grown into the skin. (This means it is at least stage III.)
+In about 1 of 3 cases, IBC has already spread (metastasized) to distant parts of the
+l
+body when it is diagnosed. This makes it harder to treat successfully.
+Women with IBC tend to have a worse prognosis (outcome) than women with other
+l
+common types of breast cancer.
+Signs and symptoms of inflammatory breast cancer
+Inflammatory breast cancer (IBC) can cause a number of signs and symptoms, most of
+which develop quickly (within 3 to 6 months), including:
+Swelling (edema) of the skin of the breast
+l
+Redness involving more than one-third of the breast
+l
+Pitting or thickening of the skin of the breast so that it may look and feel like an
+l
+orange peel
+A retracted or inverted nipple
+l
+One breast looking larger than the other because of swelling
+l
+One breast feeling warmer and heavier than the other
+l
+A breast that may be tender, painful, or itchy
+l
+Swelling of the lymph nodes under the arms or near the collarbone
+l
+26
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+If you have any of these symptoms, it does not mean that you have IBC, but you should
+see a doctor right away. Tenderness, redness, warmth, and itching are also common
+symptoms of a breast infection or inflammation, such as mastitis1 if you’re pregnant or
+breastfeeding. Because these problems are much more common than IBC, your doctor
+might suspect infection at first as a cause and treat you with antibiotics.
+Treatment with antibiotics may be a good first step, but if your symptoms don’t get
+better in 7 to 10 days, more tests need to be done to look for cancer. Let your doctor
+know if it doesn't help, especially if the symptoms get worse or the affected area gets
+larger. The possibility of IBC should be considered more strongly if you have these
+symptoms and are not pregnant or breastfeeding, or have been through menopause.
+Ask to see a specialist (like a breast surgeon) if you’re concerned.
+IBC grows and spreads quickly, so the cancer may have already spread to nearby
+lymph nodes by the time symptoms are noticed. This spread can cause swollen lymph
+27
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+nodes under your arm or above your collar bone. If the diagnosis is delayed, the cancer
+can spread to distant sites.
+How is inflammatory breast cancer diagnosed?
+Imaging tests
+If inflammatory breast cancer (IBC) is suspected, one or more of the following imaging
+tests may be done:
+Mammogram2
+l
+Breast ultrasound3
+l
+Breast MRI (magnetic resonance imaging) scan4
+l
+Often a photo of the breast is taken to help record the amount of redness and swelling
+before starting treatment.
+Biopsy
+Inflammatory breast cancer is diagnosed by a biopsy5, taking out a small piece of the
+breast tissue and looking at it in the lab. This might mean a punch biopsy6 of the breast
+skin that is abnormal. Your physical exam and other tests may show findings that are
+"suspicious for" IBC, but only a biopsy can tell for sure that it is cancer.
+Tests on biopsy samples
+The cancer cells in the biopsy will be examined in the lab to determine their grade7.
+They will also be tested for certain proteins that help decide which treatments will be
+helpful. Women whose breast cancer cells have hormone receptors8 are likely to benefit
+from treatment with hormone therapy drugs.
+Cancer cells that make too much of a protein called HER29 or too many copies of the
+gene for that protein may be treated by certain drugs that target HER2.
+In certain cases, other gene mutations (changes) or proteins10 might be tested for to see
+if specific drugs might be helpful.
+Stages of inflammatory breast cancer
+28
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+All inflammatory breast cancers start as stage III (T4dNXM0) since they involve the
+skin. If the cancer has spread outside the breast to distant parts of the body, it is stage
+IV.
+For more information, read about breast cancer staging11.
+Survival rates for inflammatory breast cancer
+Inflammatory breast cancer (IBC) tends to grow quickly, is more likely to have spread at
+the time it’s found, and is more likely to come back after treatment than most other
+types of breast cancer. Because of this, the survival rates are generally not as high as
+they are for other types of breast cancer.
+Survival rates can give you an idea of what percentage of people with the same type
+and stage of cancer are still alive a certain amount of time (usually 5 years) after they
+were diagnosed. They can’t tell you how long you will live, but they may help give you a
+better understanding of how likely it is that your treatment will be successful.
+Keep in mind that survival rates are estimates and are often based on previous
+outcomes of large numbers of people who had a specific cancer, but they can’t
+predict what will happen in any particular person’s case. These statistics can be
+confusing and may lead you to have more questions. Ask your doctor how these
+numbers may apply to you, as they are familiar with your situation.
+What is a 5-year relative survival rate?
+A relative survival rate compares women with the same type and stage of breast
+cancer to women in the overall population. For example, if the 5-year relative survival
+rate for a specific stage of breast cancer is 70%, it means that women who have that
+cancer are, on average, about 70% as likely as women who don’t have that cancer to
+live for at least 5 years after being diagnosed.
+Where do these numbers come from?
+The American Cancer Society relies on information from the Surveillance,
+Epidemiology, and End Results (SEER) database, maintained by the National Cancer
+Institute (NCI), to provide survival statistics for different types of cancer.
+The SEER database tracks 5-year relative survival rates for breast cancer in the United
+States, based on how far the cancer has spread. The SEER database, however, does
+not group cancers by AJCC TNM stages12 (stage 1, stage 2, stage 3, etc.). Instead, it
+29
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+groups cancers into localized, regional, and distant stages:
+Localized: There is no sign that the cancer has spread outside of the breast.
+l
+Regional: The cancer has spread outside the breast to nearby structures or lymph
+l
+nodes.
+Distant: The cancer has spread to distant parts of the body such as the lungs, liver,
+l
+or bones.
+5-year relative survival rates for inflammatory breast cancer
+These numbers are based on women diagnosed with IBC between 2015 and 2021.
+(There is no localized SEER stage for IBC since it has already reached the skin when
+first diagnosed.)
+SEER Stage 5-year Relative Survival Rate
+Regional 53%
+Distant 22%
+All SEER Stages 40%
+Understanding the numbers
+Women now being diagnosed with inflammatory breast cancer may have a
+l
+better outlook than these numbers show. Treatments improve over time, and
+these numbers are based on women who were diagnosed and treated at least 5
+years earlier.
+These numbers apply only to the stage of the cancer when it is first
+l
+diagnosed. They do not apply later on if the cancer grows, spreads, or comes back
+after treatment.
+These numbers don’t take everything into account. Survival rates are grouped
+l
+based on how far the cancer has spread, but your age and overall health, how well
+the cancer responds to treatment, tumor grade13, and other factors can also affect
+your outlook.
+Treating inflammatory breast cancer
+Inflammatory breast cancer (IBC) that has not spread outside the breast is stage III. In
+30
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+most cases, treatment is chemotherapy first to try to shrink the tumor, followed by
+surgery to remove the cancer. Radiation and often other treatments, like more
+chemotherapy or targeted drug therapy, are given after surgery. Because IBC is so
+aggressive, breast conserving surgery (lumpectomy) and sentinel lymph node biopsy
+are typically not part of the treatment.
+IBC that has spread to other parts of the body (stage IV) may be treated with
+chemotherapy, hormone therapy, and/or targeted drugs.
+For details, see Treatment of Inflammatory Breast Cancer14.
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer/non-cancerous-breast-
+conditions/mastitis.html
+2. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/mammograms.html
+3. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-ultrasound.html
+4. www.cancer.org/cancer/diagnosis-staging/tests/imaging-tests/mri-for-cancer.html
+5. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-biopsy.html
+6. www.cancer.org/cancer/types/skin-cancer/skin-biopsy-treatment-
+procedures/punch-biopsy.html
+7. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-grades.html
+8. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-hormone-receptor-status.html
+9. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-her2-status.html
+10. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/other-breast-cancer-gene-protein-blood-tests.html
+11. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/stages-of-breast-cancer.html
+12. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/stages-of-breast-cancer.html
+31
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+13. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-grades.html
+14. www.cancer.org/cancer/types/breast-cancer/treatment/treatment-of-inflammatory-
+breast-cancer.html
+References
+American Joint Committee on Cancer. Breast. In: AJCC Cancer Staging Manual. 8th ed.
+New York, NY: Springer; 2017:589.
+Curigliano G. Inflammatory breast cancer and chest wall disease: The oncologist
+perspective. Eur J Surg Oncol. 2018 Aug;44(8):1142-1147.
+Hennessy BT, Gonzalez-Angulo AM, Hortobagyi GN, et al. Disease-free and overall
+survival after pathologic complete disease remission of cytologically proven
+inflammatory breast carcinoma axillary lymph node metastases after primary systemic
+chemotherapy. Cancer. 2006;106:10001006.
+Henry NL, Shah PD, Haider I, Freer PE, Jagsi R, Sabel MS. Chapter 88: Cancer of the
+Breast. In: Niederhuber JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE,
+eds. Abeloff’s Clinical Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+Howlader N, Noone AM, Krapcho M, Miller D, Brest A, Yu M, Ruhl J, Tatalovich Z,
+Mariotto A, Lewis DR, Chen HS, Feuer EJ, Cronin KA (eds). SEER Cancer Statistics
+Review, 1975-2017, National Cancer Institute. Bethesda, MD,
+https://seer.cancer.gov/csr/1975_2017/, based on November 2019 SEER data
+submission, posted to the SEER web site, April 2020.
+Jagsi R, King TA, Lehman C, Morrow M, Harris JR, Burstein HJ. Chapter 79: Malignant
+Tumors of the Breast. In: DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA,
+eds. DeVita, Hellman, and Rosenberg’s Cancer: Principles and Practice of Oncology.
+11th ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2019.
+Menta A, Fouad TM, Lucci A, Le-Petross H, Stauder MC, Woodward WA, Ueno NT, Lim
+B. Inflammatory Breast Cancer: What to Know About This Unique, Aggressive Breast
+Cancer. Surg Clin North Am. 2018 Aug;98(4):787-800.
+National Cancer Institute. Inflammatory Breast Cancer. 2016. Accessed at
+https://www.cancer.gov/types/breast/ibc-fact-sheet on August 30, 2021.
+32
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+National Comprehensive Cancer Network (NCCN). Practice Guidelines in Oncology:
+Breast Cancer. Version 7.2021. Accessed at
+https://www.nccn.org/professionals/physician_gls/pdf/breast.pdf on August 30, 2021.
+Overmeyer B and Pierce LJ. Chapter 59: Inflammatory Breast Cancer. In: Harris JR,
+Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Schlichting JA, Soliman AS, Schairer C, Schottenfeld D, Merajver SD. Inflammatory and
+non-inflammatory breast cancer survival by socioeconomic position in the Surveillance,
+Epidemiology, and End Results database, 1990-2008. Breast Cancer Res Treat. 2012
+Aug;134(3):1257-68. Epub 2012 Jun 26.
+SEER*Explorer: An interactive website for SEER cancer statistics [Internet].
+Surveillance Research Program, National Cancer Institute. Accessed at
+https://seer.cancer.gov/explorer/ on June 13, 2025.
+Taghian A and Merajver SD. Inflammatory breast cancer: Clinical features and
+treatment. In Vora SR, ed. UpToDate. Waltham, Mass.: UpToDate, 2021.
+https://www.uptodate.com. Last updated November 25, 2020. Accessed August 24,
+2021.
+Yang WT, Le-Petross HT, Macapinlac H, Carkaci S, Gonzalez-Angulo AM, Dawood S,
+Resetkova E, Hortobagyi GN, Cristofanilli M: Inflammatory breast cancer: PET/CT, MRI,
+mammography and sonography findings. Breast Cancer Res Treat. 2008
+Jun;109(3):417-26. Epub 2007 Jul 26. Review.
+Last Revised: June 25, 2025
+Angiosarcoma of the Breast
+Angiosarcoma is a rare cancer that starts in the cells that line blood vessels or lymph
+vessels. It is often a complication of previous radiation treatment to the breast. It can
+happen 8-10 years after getting radiation treatment to the breast.
+Signs and symptoms of angiosarcoma
+l
+How is angiosarcoma of the breast diagnosed?
+l
+Treating angiosarcoma
+l
+33
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Signs and symptoms of angiosarcoma
+Angiosarcoma can cause skin changes like purple colored nodules and/or a lump in the
+breast. It can also occur in the affected arms of women with lymphedema, but this is not
+common. (Lymphedema1 is swelling that can develop after surgery or radiation therapy
+to treat breast cancer.)
+How is angiosarcoma of the breast diagnosed?
+One or more of the following imaging tests may be done to check for breast changes:
+Diagnostic mammogram2
+l
+Breast ultrasound3
+l
+Breast MRI (magnetic resonance imaging) scan4
+l
+Angiosarcoma is diagnosed by a biopsy5, removing a small piece of the breast tissue
+and looking at it closely in the lab. Only a biopsy can tell for sure that it is cancer.
+Treating angiosarcoma
+Angiosarcomas tend to grow and spread quickly. Treatment usually includes surgery6 to
+remove the breast (mastectomy). The axillary lymph nodes are typically not
+removed. Radiation7 might be given in certain cases of angiosarcomas that are not
+related to prior breast radiation. For more information on sarcomas, see Soft Tissue
+Sarcoma8.
+Hyperlinks
+1. www.cancer.org/cancer/managing-cancer/side-effects/swelling/lymphedema.html
+2. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/mammograms.html
+3. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-ultrasound.html
+4. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-mri-scans.html
+34
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+5. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-biopsy.html
+6. www.cancer.org/cancer/types/breast-cancer/treatment/surgery-for-breast-
+cancer.html
+7. www.cancer.org/cancer/types/breast-cancer/treatment/radiation-for-breast-
+cancer.html
+8. www.cancer.org/cancer/types/soft-tissue-sarcoma.html
+References
+Chugh R, Sabel MS, and Feng M. Breast sarcoma: Treatment. In Shah S, ed.
+UpToDate. Waltham, Mass.: UpToDate, 2021. https://www.uptodate.com. Last updated
+November 13, 2020. Accessed August 30, 2021.
+Chugh R, Sabel MS, and Feng M. Breast sarcoma: Epidemiology, risk factors, clinical
+presentation, diagnosis, and staging. In Shah S, ed. UpToDate. Waltham, Mass.:
+UpToDate, 2021. https://www.uptodate.com. Last updated March 30, 2021. Accessed
+August 30, 2021.
+Esteva FJ and Gutiérrez C. Chapter 64: Nonepithelial Malignancies of the Breast. In:
+Harris JR, Lippman ME, Morrow M, Osborne CK, eds. Diseases of the Breast. 5th ed.
+Philadelphia, Pa: Lippincott-Williams & Wilkins; 2014.
+Singer S, Tap WD, Kirsch DG, and Crago AM. Chapter 88: Soft Tissue Sarcoma. In:
+DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA, eds. DeVita, Hellman, and
+Rosenberg’s Cancer: Principles and Practice of Oncology. 11th ed. Philadelphia, Pa:
+Lippincott Williams & Wilkins; 2019.
+Van Tine BA. Chapter 90: Sarcomas of Soft Tissue. In: Niederhuber JE, Armitage JO,
+Doroshow JH, Kastan MB, Tepper JE, eds. Abeloff’s Clinical Oncology. 6th ed.
+Philadelphia, Pa: Elsevier; 2020.
+Last Revised: November 19, 2021
+35
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Paget Disease of the Breast
+Paget disease of the breast is a rare type of breast cancer involving the skin of the
+nipple and the areola (the dark circle around the nipple).
+Signs and symptoms of Paget disease of the breast
+l
+How is Paget disease of the breast diagnosed?
+l
+Treating Paget disease of the breast
+l
+Signs and symptoms of Paget disease of the breast
+The skin of the nipple and areola often looks crusted, scaly, and red. There may be
+blood or yellow fluid coming out of the nipple. Sometimes the nipple looks flat or
+inverted. It also might burn or itch. Your doctor might try to treat this as eczema first,
+and if it does not improve, recommend a biopsy.
+Paget disease usually affects only one breast. In 80-90% of cases, it’s usually found
+along with either ductal carcinoma in situ (DCIS) or infiltrating ductal carcinoma
+(invasive breast cancer).
+How is Paget disease of the breast diagnosed?
+Most people with Paget disease of the breast also have tumors in the same breast. One
+or more of the following imaging tests may be done to check for other breast changes:
+Diagnostic mammogram1
+l
+Breast ultrasound2
+l
+Breast MRI (magnetic resonance imaging) scan3
+l
+Paget disease of the breast is diagnosed by a biopsy4, removing a small piece of the
+breast tissue and looking at it closely in the lab. In some cases, the entire nipple may be
+removed. Only a biopsy can show for sure that it is cancer.
+Treating Paget disease of the breast
+Paget disease can be treated by removing the entire breast (mastectomy5) or breast-
+conserving surgery6 (BCS) followed by whole-breast radiation therapy7. If BCS is done,
+the entire nipple and areola area also needs to be removed. If invasive cancer is found,
+36
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+the lymph nodes under the arm will be checked for cancer.
+If no lump is felt in the breast tissue, and your biopsy results show the cancer has not
+spread within the breast tissue, the outlook (prognosis) is excellent.
+If the cancer has spread within the breast tissue (is invasive), the outlook is not as good,
+and the cancer will be staged8 and treated like any other invasive ductal carcinoma9.
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/mammograms.html
+2. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-ultrasound.html
+3. www.cancer.org/cancer/diagnosis-staging/tests/imaging-tests/mri-for-cancer.html
+4. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-biopsy.html
+5. www.cancer.org/cancer/types/breast-cancer/treatment/surgery-for-breast-
+cancer/mastectomy.html
+6. www.cancer.org/cancer/types/breast-cancer/treatment/surgery-for-breast-
+cancer/breast-conserving-surgery-lumpectomy.html
+7. www.cancer.org/cancer/types/breast-cancer/treatment/radiation-for-breast-
+cancer.html
+8. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/stages-of-breast-cancer.html
+9. www.cancer.org/cancer/types/breast-cancer/treatment/treatment-of-breast-cancer-
+by-stage.html
+References
+Henry NL, Shah PD, Haider I, Freer PE, Jagsi R, Sabel MS. Chapter 88: Cancer of the
+Breast. In: Niederhuber JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE,
+eds. Abeloff’s Clinical Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+Jagsi R, King TA, Lehman C, Morrow M, Harris JR, Burstein HJ. Chapter 79: Malignant
+Tumors of the Breast. In: DeVita VT, Lawrence TS, Lawrence TS, Rosenberg SA,
+eds. DeVita, Hellman, and Rosenberg’s Cancer: Principles and Practice of Oncology.
+11th ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2019.
+37
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+National Comprehensive Cancer Network (NCCN). Practice Guidelines in Oncology:
+Breast Cancer. Version 7.2021. Accessed at
+https://www.nccn.org/professionals/physician_gls/pdf/breast.pdf on August 30, 2021.
+Sabel MS and Weaver DL. Paget disease of the breast. In Chen W, ed. UpToDate.
+Waltham, Mass.: UpToDate, 2021. https://www.uptodate.com. Last updated June 2,
+2020. Accessed August 30, 2021.
+Last Revised: November 19, 2021
+Phyllodes Tumors of the Breast
+Who is most at risk for phyllodes tumors?
+l
+Diagnosis of phyllodes tumors
+l
+How do phyllodes tumors affect your risk for breast cancer?
+l
+Treatment of phyllodes tumors
+l
+Who is most at risk for phyllodes tumors?
+Phyllodes tumors are most common in women in their 40s, but women of any age
+can have them. Women with Li-Fraumeni syndrome1 (a rare, inherited genetic condition)
+have an increased risk for phyllodes tumors.
+Diagnosis of phyllodes tumors
+Phyllodes tumors are usually felt as a firm, painless breast lump, but some may hurt.
+They tend to grow large fairly quickly, and they often stretch the skin.
+Sometimes these tumors are seen first on an imaging test (like an ultrasound2 or
+mammogram3), in which case they’re often hard to tell apart from fibroadenomas4.
+The diagnosis can often be made with a core needle biopsy5, but sometimes the entire
+tumor needs to be removed (during an excisional biopsy6) to know for sure that it’s a
+phyllodes tumor, and whether it's malignant or not.
+How do phyllodes tumors affect your risk for breast cancer?
+38
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Having a benign phyllodes tumor does not affect your breast cancer risk. If you have a
+malignant phyllodes tumor, it does not affect your risk of getting other types of breast
+cancer. Still, you may be watched more closely and get regular imaging tests after
+treatment for a phyllodes tumor, because these tumors can sometimes come back after
+surgery.
+Treatment of phyllodes tumors
+Phyllodes tumors typically need to be removed completely with surgery.
+If the tumor is found to be benign, an excisional biopsy might be all that is needed, as
+long as the tumor was removed completely.
+If the tumor is borderline or malignant, a wider margin (area of normal tissue around
+the tumor) usually needs to be removed as well. This might be done with breast-
+conserving surgery7 (lumpectomy or partial mastectomy), in which part of the breast is
+removed. Or the entire breast might be removed with a mastectomy8, especially if a
+margin of normal breast tissue can't be taken out with breast-conserving surgery.
+Radiation therapy9 might be given to the area after surgery, especially if it’s not clear
+that all of the tumor was removed.
+Malignant phyllodes tumors are different from the more common types of breast cancer.
+They are less likely to respond to some of the treatments commonly used for breast
+cancer, such as the hormone therapy10 or chemotherapy11 drugs normally used for
+breast cancer. Phyllodes tumors that have spread to other parts of the body are often
+treated more like sarcomas12 (soft-tissue cancers) than breast cancers.
+Phyllodes tumors can sometimes come back in the same place. Because of this, close
+follow-up with frequent breast exams and imaging tests are usually recommended after
+treatment.
+Hyperlinks
+1. www.cancer.org/cancer/risk-prevention/genetics/family-cancer-syndromes.html
+2. www.cancer.org/cancer/diagnosis-staging/tests/imaging-tests/ultrasound-for-
+cancer.html
+3. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/mammograms/mammogram-basics.html
+39
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+4. www.cancer.org/cancer/types/breast-cancer/non-cancerous-breast-
+conditions/fibroadenomas-of-the-breast.html
+5. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-biopsy/core-needle-biopsy-of-the-breast.html
+6. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/breast-biopsy/surgical-breast-biopsy.html
+7. www.cancer.org/cancer/types/breast-cancer/treatment/surgery-for-breast-
+cancer/breast-conserving-surgery-lumpectomy.html
+8. www.cancer.org/cancer/types/breast-cancer/treatment/surgery-for-breast-
+cancer/mastectomy.html
+9. www.cancer.org/cancer/types/breast-cancer/treatment/radiation-for-breast-
+cancer.html
+10. www.cancer.org/cancer/types/breast-cancer/treatment/hormone-therapy-for-
+breast-cancer.html
+11. www.cancer.org/cancer/types/breast-cancer/treatment/chemotherapy-for-breast-
+cancer.html
+12. www.cancer.org/cancer/types/soft-tissue-sarcoma/about/soft-tissue-sarcoma.html
+References
+Calhoun KE, Allison KH, Kim JN, Rahbar H, Anderson BO. Chapter 62: Phyllodes
+tumors. In: Harris JR, Lippman ME, Morrow M, Osborne CK, eds. Diseases of the
+Breast. 5th ed. Philadelphia, Pa: Lippincott Williams & Wilkins; 2014.
+Grau AM, Chakravarthy AB, Chugh R. Phyllodes tumors of the breast. UpToDate. 2021.
+Accessed at https://www.uptodate.com/contents/phyllodes-tumors-of-the-breast on
+November 1, 2021.
+Guray M, Sahin AA. Benign breast diseases: Classification, diagnosis, and
+management. Oncologist. 2006;11;435-449.
+Hartmann LC, Sellers TA, Frost MH, et al. Benign breast disease and the risk of breast
+cancer. N Engl J Med. 2005;353:229-237.
+Henry NL, Shah PD, Haider I, et al. Chapter 88: Cancer of the breast. In: Niederhuber
+JE, Armitage JO, Doroshow JH, Kastan MB, Tepper JE, eds. Abeloff’s Clinical
+Oncology. 6th ed. Philadelphia, Pa: Elsevier; 2020.
+40
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Jagsi R, King TA, Lehman C, et al. Chapter 79: Malignant tumors of the breast. In:
+DeVita VT, Lawrence TS, Rosenberg SA, eds. DeVita, Hellman, and Rosenberg’s
+Cancer: Principles and Practice of Oncology. 11th ed. Philadelphia, Pa: Lippincott
+Williams & Wilkins; 2019.
+Moutte A, Chopin N, Faure C, et al. Surgical management of benign and borderline
+phyllodes tumors of the breast. Breast J. 2016;22(5):547-552.
+National Comprehensive Cancer Network. NCCN Clinical Practice Guidelines in
+Oncology. Breast Cancer. Version 8.2021. Accessed at
+www.nccn.org/professionals/physician_gls/pdf/breast.pdf on November 2, 2021.
+Orr B, Kelley JL. Benign breast diseases: Evaluation and management. Clin Obstet
+Gynecol. 2016;59(4):710-726.
+Last Revised: June 15, 2022
+Key Statistics for Breast Cancer
+The information below is an overview of the latest statistics for breast cancer in women
+in the United States in 2025.
+How common is breast cancer?
+l
+Lifetime chance of getting breast cancer
+l
+Trends in breast cancer incidence
+l
+Trends in breast cancer deaths
+l
+Differences by race and ethnicity
+l
+Breast cancer survivors
+l
+How common is breast cancer?
+Breast cancer is the most common cancer in women in the United States, except for
+skin cancers. It accounts for about 30% (or 1 in 3) of all new female cancers each year.
+The American Cancer Society's estimates for breast cancer in the United States for
+2025 are:
+41
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+About 316,950 new cases of invasive breast cancer will be diagnosed in women.
+l
+About 59,080 new cases of ductal carcinoma in situ (DCIS) will be diagnosed.
+l
+About 42,170 women will die from breast cancer.
+l
+Breast cancer mainly occurs in middle-aged and older women. The median age at the
+time of breast cancer diagnosis is 62. This means half of the women who developed
+breast cancer are 62 years of age or younger when they are diagnosed. A very small
+number of women diagnosed with breast cancer are younger than 45.
+Lifetime chance of getting breast cancer
+Overall, the average risk of a woman in the United States developing breast cancer
+sometime in her life is about 13%. This means there is a 1 in 8 chance she will develop
+breast cancer. This also means there is a 7 in 8 chance she will never have the disease.
+Trends in breast cancer incidence
+In recent years, incidence rates have increased by 1% per year. The rise in incidence
+rates is a little steeper in women younger than 50 (1.4%). This is thought to be due to
+risk factors of having excess body weight, not having children, or having a first child
+after age 30.
+Trends in breast cancer deaths
+Breast cancer is the second leading cause of cancer death in women. (Only lung cancer
+kills more women each year.) The chance that any woman will die from breast cancer is
+about 1 in 43 (about 2.3%).
+Breast cancer death rates have been decreasing steadily since 1989, for an overall
+decline of 44% through 2022. The decrease in death rates is believed to be the result of
+finding breast cancer earlier through screening and increased awareness, as well as
+better treatments.
+Differences by race and ethnicity
+Some variations in breast cancer can be seen in racial and ethnic groups. For example:
+Black women have the highest death rate from breast cancer. This is thought to be
+l
+42
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+partially because Black women have a higher risk of triple-negative breast cancer,
+more than any other racial or ethnic group.
+At every age, Black women are more likely to die from breast cancer than any other
+l
+race or ethnic group.
+White, Asian, and Pacific Islander women are more likely to be diagnosed with
+l
+localized breast cancer than Black, Hispanic, American Indian, and Alaska Native
+women.
+Asian and Pacific Islander women have the lowest death rate from breast cancer.
+l
+Breast cancer survivors
+At this time there are more than 4 million breast cancer survivors in the United States.
+This includes women still being treated and those who have completed treatment.
+Survival rates are discussed in Survival Rates for Breast Cancer1.
+Visit the American Cancer Society’s Cancer Statistics Center2 for more key statistics.
+Hyperlinks
+1. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-survival-rates.html
+2. cancerstatisticscenter.cancer.org/#/
+References
+American Cancer Society. Cancer Facts and Figures 2025. Atlanta: American Cancer
+Society; 2025.
+American Cancer Society. Breast Cancer Facts and Figures 2024-2025. Atlanta:
+American Cancer Society; 2024.
+SEER*Explorer: An interactive website for SEER cancer statistics. Surveillance
+Research Program, National Cancer Institute; 2024 Apr 17. Accessed on 2025 Jan 22.
+Available from: https://seer.cancer.gov/statistics-network/explorer/3.
+43
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Last Revised: May 5, 2025
+What’s New in Breast Cancer Research?
+Researchers around the world are working to find better ways to prevent, detect, and
+treat breast cancer, and to improve the quality of life of patients and survivors.
+Research studies
+l
+Breast cancer causes
+l
+Breast cancer prevention
+l
+New tests to personalize your treatment
+l
+New imaging tests
+l
+Breast cancer treatment
+l
+Supportive care
+l
+Research studies
+Current guidance on preventing and treating breast cancer as well as what might cause
+it (among other things) has come mainly from information discovered from research
+studies. Research studies can range from studies done in the lab to clinical trials done
+with hundreds of thousands of people. Clinical trials are carefully controlled studies that
+can gather specific information about certain diseases as well as explore promising new
+treatments.
+Clinical trials are one way to get the latest cancer treatments that are being
+investigated. Still, they are not right for everyone. If you would like to learn more about
+clinical trials that might be right for you, start by asking your doctor if your clinic or
+hospital conducts clinical trials, or see Clinical Trials1 to learn more.
+Breast cancer causes
+Studies continue to look at how certain lifestyle factors, habits, and other environmental
+44
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+factors, as well as inherited gene changes, might affect breast cancer risk. Here are a
+few examples:
+Several studies are looking at the effects of physical activity, weight gain or loss,
+l
+and diet on breast cancer risk.
+Some breast cancers run in families, but many of the gene mutations (changes)
+l
+that cause these breast cancers are not yet known. Research is being done to
+identify these gene changes.
+Several studies are focusing on the best use of genetic testing for inherited breast
+l
+cancer gene mutations.
+Scientists are exploring how common gene variants (small changes in genes that
+l
+are not as significant as mutations) may affect breast cancer risk. Gene variants
+typically have only a modest effect on risk by themselves, but when combined they
+could possibly have a large impact.
+Possible environmental causes of breast cancer have also received more attention
+l
+in recent years. While much of the science on this topic is still in its earliest stages,
+this is an area of active research.
+Breast cancer prevention
+Researchers are looking for ways to help reduce breast cancer risk, especially for
+women who are at high risk. Here are some examples:
+Studies continue to look at whether certain levels of physical activity, losing weight,
+l
+or eating certain foods, groups of foods, or types of diets might help lower breast
+cancer risk.
+Some hormonal medicines2 such as tamoxifen, raloxifene, exemestane, and
+l
+anastrozole have already been shown to help lower breast cancer risk for certain
+women at higher risk. Researchers continue to study which groups of women might
+benefit most from these drugs.
+Clinical trials are also looking at whether some non-hormonal drugs might lower
+l
+breast cancer risk, such as drugs used to treat blood or bone marrow disorders, like
+ruxolitinib.
+Studies are looking at vaccines that might help prevent certain types of breast
+l
+cancer in people who are at high risk for breast cancer (due to presence of
+hereditary gene mutations or breast cancer in the family).
+45
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+New tests to personalize your treatment
+Biomarkers
+Breast cancer tissue is routinely tested for the biomarkers ER3, PR4, and HER25 to help
+make treatment decisions. A biomarker6 is any gene, protein, or other substance that
+can be measured in blood, tissues, or other body fluids. Some studies are looking at
+whether testing for other biomarkers, such as HER3, might also be helpful, but research
+on this is still in early phases.
+Circulating tumor DNA (ctDNA) is DNA that is released into the bloodstream when
+cancer cells die. Identifying and testing the ctDNA in the blood for biomarkers is a
+rapidly growing area of study.
+Some ways ctDNA might potentially be used in breast cancer include:
+Looking for new biomarkers in the tumor cells that might mean the cancer has
+l
+become resistant to specific treatments (like chemo or targeted drug therapy)
+Determining if a certain drug will work on a tumor before trying it
+l
+Predicting if the breast cancer will recur (come back) in women with early-stage
+l
+breast cancer
+Predicting if neoadjuvant treatment is working to destroy the tumor instead of using
+l
+imaging tests like a CT scan or US
+Determining if breast cancer or a high-risk breast condition is present before
+l
+changes are found on an imaging test like a mammogram
+New imaging tests
+Newer types of tests are being developed for breast imaging. Some of these are already
+being used in certain situations, while others are still being studied. It will take time to
+see if they are as good as or better than those used today. Some of these tests include:
+Scintimammography (molecular breast imaging)
+l
+Positron emission mammography (PEM)
+l
+Electrical impedance imaging (EIT)
+l
+Elastography
+l
+New types of optical imaging tests
+l
+46
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+For more on these tests, see Newer and Experimental Breast Imaging Tests7.
+Breast cancer treatment
+New kinds of treatments for breast cancer are always being studied. For example, in
+recent years, several new targeted drugs8 have been approved to treat breast cancer.
+More and better treatment options are needed, especially for cancers like triple-negative
+breast cancer, where chemotherapy is the main option.
+Some areas of research involving breast cancer treatment include:
+Treating patients who have hormone-positive and HER2 negative advanced breast
+l
+cancer with a drug that targets the estrogen receptor (ie. camizestrant) if tumor
+cells were to who develop an ESR1 mutation.
+Studying if shorter courses of radiation therapy for very early-stage breast cancers
+l
+are at least as good as the longer courses now often used
+Testing if different types of radiation therapy, such as proton beam radiation, might
+l
+be better than standard radiation.
+Combining certain drugs (like 2 targeted drugs, a targeted drug with an
+l
+immunotherapy drug, or a hormone drug with a targeted drug) to see if they work
+better together
+Trying to find new drugs or drug combinations that might help treat breast cancer
+l
+that has spread to the brain
+Testing different immunotherapy drugs to treat triple-negative breast cancer
+l
+Giving cancer vaccines to see if this helps keep the cancer from either worsening or
+l
+coming back after treatment. There are many ways in which cancer vaccines work.
+For example, protein vaccines stimulate the immune system to recognize and
+attack specific cancer proteins. DNA vaccines contain DNA instructions so that
+once the vaccine is given, the DNA will instruct your body to make protein(s) to help
+the immune system recognize and attack cancer cells.
+Finding new ways to treat women with hereditary breast cancer, since they have a
+l
+higher chance of the cancer recurring (coming back)
+Determining if chemotherapy is needed to treat every woman with HER2-positive
+l
+breast cancer
+Finding new treatment options when breast cancer becomes resistant to current
+l
+treatments
+47
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Supportive care
+Supportive care helps patients and caregivers manage the symptoms of cancer and
+side effects of cancer treatment. Clinical trials are looking at different medicines and
+techniques to try to improve supportive care for people with breast cancer. For example,
+some studies are investigating:
+If there are better medicines or ways to prevent the damage to nerves9 that
+l
+sometimes happen with certain chemotherapy drugs
+If drugs or other treatments might be helpful in limiting memory problems and
+l
+other brain symptoms after chemotherapy10
+If certain heart or blood pressure drugs, can help prevent the heart damage
+l
+sometimes caused by common breast cancer drugs such as doxorubicin and
+trastuzumab
+If there are medicines that might be able to help treat the tired feeling that cancer
+l
+can cause
+Breast Cancer Research Highlights 11
+The Society's research program has played a crucial role in saving lives from breast
+cancer. See examples of our current research.
+Hyperlinks
+1. www.cancer.org/cancer/managing-cancer/making-treatment-decisions/clinical-
+trials.html
+2. www.cancer.org/cancer/types/breast-cancer/risk-and-prevention/deciding-whether-
+to-use-medicine-to-reduce-breast-cancer-risk.html
+3. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-hormone-receptor-status.html
+4. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-hormone-receptor-status.html
+5. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/breast-cancer-her2-status.html
+6. www.cancer.org/cancer/types/breast-cancer/understanding-a-breast-cancer-
+diagnosis/other-breast-cancer-gene-protein-blood-tests.html
+48
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+7. www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-
+detection/experimental-breast-imaging.html
+8. www.cancer.org/cancer/types/breast-cancer/treatment/targeted-therapy-for-breast-
+cancer.html
+9. www.cancer.org/cancer/managing-cancer/side-effects/pain/peripheral-
+neuropathy.html
+10. www.cancer.org/cancer/managing-cancer/side-effects/changes-in-mood-or-
+thinking/chemo-brain.html
+11. www.cancer.org/research/acs-research-highlights/breast-cancer-research-
+highlights.html
+References
+Chan JCH, Chow JCH, Ho CHM, Tsui TYM, Cho WC. Clinical application of circulating
+tumor DNA in breast cancer. J Cancer Res Clin Oncol. 2021;147(5):1431-1442.
+doi:10.1007/s00432-021-03588-5.
+Cullinane C, Fleming C, O’Leary DP, et al. Association of Circulating Tumor DNA With
+Disease-Free Survival in Breast Cancer: A Systematic Review and Meta-
+analysis. JAMA Netw Open. 2020;3(11):e2026921.
+doi:10.1001/jamanetworkopen.2020.26921.
+Cuzick, J et al. Anastrozole for prevention of breast cancer in high-risk postmenopausal
+women (IBIS-II): an international, double-blind, randomised placebo-controlled trial. The
+Lancet. 2014;383 (9922):1041 - 1048.
+Goss, P.E., et al., Exemestane for Breast-Cancer Prevention in Postmenopausal
+Women. New England Journal of Medicine, 2011. 364(25): p. 2381-2391.
+Greene LR, Wilkinson D. The role of general nuclear medicine in breast cancer. J Med
+Radiat Sci. 2015;62(1):54-65.
+Henry NL, Bedard PL, and DeMichele A. Standard and Genomic Tools for Decision
+Support in Breast Cancer Treatment. In Dizon DS, Pennel N, Rugo HS, Pickell LF, eds.
+rd
+2017 American Society of Clinical Oncology Educational Book. 53 Annual Meeting.
+2017.
+49
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+Ignatiadis M, Lee M, and Jeffrey SS. Circulating Tumor Cells and Circulating Tumor
+DNA: Challenges and Opportunities on the Path to Clinical Utility. Clin Cancer Res;
+21(21); 4786–800.
+Litton JK, Burstein HJ, Turner NC. Molecular Testing in Breast Cancer. Am Soc Clin
+Oncol Educ Book. 2019 Jan;39:e1-e7. doi: 10.1200/EDBK_237715. Epub 2019 May 17.
+Magbanua MJM, Swigart LB, Wu HT, et al. Circulating tumor DNA in neoadjuvant-
+treated breast cancer reflects response and survival. Ann Oncol. 2021;32(2):229-239.
+doi:10.1016/j.annonc.2020.11.007.
+Mayer IA, Dent R, Tan T, et al. Novel Targeted Agents and Immunotherapy in Breast
+Cancer. In Dizon DS, Pennel N, Rugo HS, Pickell LF, eds. 2017 American Society of
+rd
+Clinical Oncology Educational Book. 53 Annual Meeting. 2017.
+National Cancer Institute. https://www.cancer.gov/about-cancer/treatment/clinical-
+trials/search. A Vaccine (Alpha-Lactalbumin) for the Treatment of Stage II-III Triple-
+Negative Breast Cancer. Accessed January 19, 2022.
+National Cancer Institute. https://www.cancer.gov/about-cancer/treatment/clinical-
+trials/search. Bexarotene in Preventing Breast Cancer in Patients at High Risk for
+Breast Cancer. Accessed August 15, 2019.
+National Cancer Institute. https://www.cancer.gov/about-cancer/treatment/clinical-
+trials/search. Donepezil Hydrochloride in Improving Memory Performance in Breast
+Cancer Survivors after Chemotherapy. Accessed August 15, 2019.
+National Cancer Institute. https://www.cancer.gov/about-cancer/treatment/clinical-
+trials/search. Ruxolitinib in Preventing Breast Cancer in Patients with High Risk and
+Precancerous Breast Lesions. Accessed August 15, 2019.
+National Cancer Institute. https://www.cancer.gov/about-cancer/treatment/clinical-
+trials/search. Testing the Addition of a Blood Pressure Medication, Carvedilol, to HER-2
+Targeted Therapy for Metastatic Breast Cancer to Prevent Cardiac Toxicity. Accessed
+August 15, 2019.
+National Institute of Environmental Health Sciences. Breast Cancer. Last reviewed
+November 15, 2021. Accessed January 19, 2022.
+https://www.niehs.nih.gov/health/topics/conditions/breast-cancer/index.cfm.
+Rossi G, Mu Z, Rademaker AW, Austin LK, Strickland KS, Costa RLB et al. Cell-Free
+50
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+DNA and Circulating Tumor Cells: Comprehensive Liquid Biopsy Analysis in Advanced
+Breast Cancer. Clin Cancer Res. 2018 Feb 1;24(3):560-568.
+Shoukry M, Broccard S, Kaplan J, Gabriel E. The Emerging Role of Circulating Tumor
+DNA in the Management of Breast Cancer. Cancers (Basel). 2021;13(15):3813.
+Published 2021 Jul 29. doi:10.3390/cancers13153813.
+Solin LJ, Gray R, Baehner FL, et al. A multigene expression assay to predict local
+recurrence risk for ductal carcinoma in situ of the breast. J Natl Cancer Inst.
+2013;105:701-710.
+Turner N, Huang-Bartlett C, Kalinsky K, Cristofanilli M, Bianchini G, Chia S, Iwata H,
+Janni W, Ma CX, Mayer EL, Park YH, Fox S, Liu X, McClain S, Bidard FC. Design of
+SERENA-6, a phase III switching trial of camizestrant in ESR1-mutant breast cancer
+during first-line treatment. Future Oncol. 2023 Mar;19(8):559-573. doi: 10.2217/fon-
+2022-1196. Epub 2023 Apr 18. Erratum in: Future Oncol. 2024 Jan;20(3):159-161.
+Yu M, Bardia A, Aceto N et al. Ex vivo culture of circulating breast tumor cells for
+individualized testing of drug susceptibility. Science. 2014 Jul 11; 345(6193): 216–220.
+Last Revised: June 9, 2025
+Written by
+The American Cancer Society medical and editorial content team
+(https://www.cancer.org/cancer/acs-medical-content-and-news-staff.html)
+Our team is made up of doctors and oncology certified nurses with deep knowledge of
+cancer care as well as editors and translators with extensive experience in medical
+writing.
+American Cancer Society medical information is copyrighted material. For reprint
+requests, please see our Content Usage Policy (www.cancer.org/about-
+us/policies/content-usage.html).
+51
+_A_m__e_ri_ca_n_ _C_a_n_c_e_r_ S_o_c_i_e_ty_________________________________________c_a_n_c_e_r._o_rg_ _| _1_.8_0_0_._2_2_7_.2_3_4_5__
+cancer.org | 1.800.227.2345
+52

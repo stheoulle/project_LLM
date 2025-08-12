@@ -1,5 +1,5 @@
 Source: docs/uploads/2022-2024-breast-cancer-fact-figures-acs.pdf
-Extracted: 2025-08-11T11:46:16.987453Z
+Extracted: 2025-08-11T13:06:36.077817Z
 ---
 
 Breast Cancer
