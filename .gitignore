@@ -14,3 +14,4 @@ ai_model_app_third/Breast-diagnosis/.~lock.TCIA-Breast-clinical-data-public-7_16
 ai_model_app_third/Breast-diagnosis/__pycache__
 ai_model_app_third/*/__pycache__
 ai_model_app_third/docs/*.npz.*
+ai_model_app_third/docs/text_model.pth

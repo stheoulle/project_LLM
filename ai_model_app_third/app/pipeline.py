@@ -274,43 +274,76 @@ def run_pipeline(modality_choice, model_choice, mri_types=None, llm_context=None
         except Exception as e:
             raise RuntimeError(f"Text classifier training failed: {e}")
 
-        # Optionally, we could compute evaluation metrics here using the training history
-        return {'docs_summary': {'n_samples': emb_np.shape[0], 'emb_path': converted_path, 'paths_count': len(paths)}, 'text_training': text_res}
+        # Evaluate the trained text model using the embeddings + labels
+        try:
+            # load embeddings we saved
+            arr = np.load(converted_path, allow_pickle=True)
+            emb = arr['embeddings']
+            paths_loaded = arr['paths'].tolist() if 'paths' in getattr(arr, 'files', []) else []
 
-    # 🧩 Préparation des données
-    data = define_steps(modality_choice, mri_types)
+            # Determine labels CSV to use
+            eval_labels_csv = labels_csv_path or (os.path.join(docs_dir, 'labels.csv') if os.path.exists(os.path.join(docs_dir, 'labels.csv')) else None)
+            labels_array = None
+            if eval_labels_csv and os.path.exists(eval_labels_csv):
+                import pandas as _pd
+                df = _pd.read_csv(eval_labels_csv)
+                if 'filename' in df.columns and 'label' in df.columns:
+                    mapping = {str(r['filename']): r['label'] for _, r in df.iterrows()}
+                    # Build labels list in order of paths_loaded when possible
+                    if paths_loaded and len(paths_loaded) == emb.shape[0]:
+                        labels_list = []
+                        for p in paths_loaded:
+                            b = os.path.basename(p)
+                            labels_list.append(mapping.get(b))
+                        if all([l is not None and str(l).strip() != '' for l in labels_list]):
+                            uniques = sorted(list(set(labels_list)))
+                            label2idx = {lab: idx for idx, lab in enumerate(uniques)}
+                            labels_array = np.array([label2idx[l] for l in labels_list], dtype=int)
+                    else:
+                        # fallback: try based on filename order in df matching first N docs
+                        basenames = df['filename'].astype(str).tolist()
+                        if len(basenames) >= emb.shape[0]:
+                            labels_list = basenames[:emb.shape[0]]
+                            uniques = sorted(list(set(labels_list)))
+                            label2idx = {lab: idx for idx, lab in enumerate(uniques)}
+                            labels_array = np.array([label2idx[l] for l in labels_list], dtype=int)
 
-    # Phase 1 — entraînement du modèle image only
-    image_model = initialize_image_model(model_choice, data)
-    history = train_model(image_model, data)
-    results = evaluate_model(image_model, data)
-    try:
-        plot_metrics(history, results)
-    except Exception:
-        print("plot_metrics failed or running headless; continuing.")
-    print("Phase 1 terminée : modèle image entraîné et évalué.")
-    print(f"Début de la phase 2 avec le modèle {model_choice} et les données préparées.")
+            # If labels_array still None and prepare_data provided labels_tensor earlier use that
+            if labels_array is None and labels_tensor is not None:
+                labels_array = labels_tensor.detach().cpu().numpy() if hasattr(labels_tensor, 'detach') else np.asarray(labels_tensor)
 
-    # Phase 2 — entraînement du modèle multimodal (avec le modèle image déjà entraîné)
-    fusion_model = multimodal_fusion_model(image_model, data)
-    print(f"Modèle de fusion multimodal créé avec {model_choice} comme backbone.")
-    fusion_history = train_model(fusion_model, data)
-    print("Phase 2 terminée : modèle multimodal entraîné.")
-    fusion_results = evaluate_model(fusion_model, data)
-    print("Évaluation du modèle multimodal terminée.")
-    try:
-        plot_metrics(fusion_history, fusion_results)
-    except Exception:
-        print("plot_metrics failed for fusion model; continuing.")
-    print("Pipeline complet : modèle multimodal entraîné et évalué.")
+            if labels_array is None:
+                raise RuntimeError('No labels available for evaluation of text model.')
 
-    # Return a summary dictionary so callers (UI/CLI) can display or log info
-    return {
-        'phase1_history': history,
-        'phase1_results': results,
-        'fusion_history': fusion_history,
-        'fusion_results': fusion_results,
-        'llm_context': llm_context,
-        'extra_inputs': extra_inputs
-    }
+            # Build evaluation data dict
+            eval_data = {'embeddings': emb, 'labels': labels_array, 'paths': paths_loaded}
+
+            # Load trained model
+            ckpt_path = text_res.get('model_path') if isinstance(text_res, dict) and text_res.get('model_path') else os.path.join(docs_dir, 'text_model.pth')
+            if not os.path.exists(ckpt_path):
+                raise RuntimeError(f"Trained model not found at {ckpt_path}")
+
+            from models.text_classifier import SimpleTextClassifier
+            ckpt = torch.load(ckpt_path, map_location='cpu')
+            input_dim = ckpt.get('input_dim')
+            n_classes = ckpt.get('n_classes')
+            model_txt = SimpleTextClassifier(input_dim=input_dim, hidden_dim=128, n_classes=n_classes)
+            model_txt.load_state_dict(ckpt['model_state_dict'])
+
+            # Evaluate
+            eval_results = evaluate_model(model_txt, eval_data)
+            try:
+                plot_metrics(text_res.get('history'), eval_results)
+            except Exception:
+                print('Plot metrics failed for text model; continuing.')
+
+        except Exception as e:
+            raise RuntimeError(f"Text model evaluation failed: {e}")
+
+        # Return training + evaluation summary
+        return {
+            'docs_summary': {'n_samples': emb_np.shape[0], 'emb_path': converted_path, 'paths_count': len(paths)},
+            'text_training': text_res,
+            'text_evaluation': eval_results
+        }
 
