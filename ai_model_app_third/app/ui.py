@@ -26,6 +26,34 @@ import numpy as np
 import pandas as pd
 import threading
 import time
+import json
+
+# Background preload of the generator so Streamlit worker warms the model and we can see debug info
+def _bg_load_generator():
+    dbgpath = os.path.join('docs', 'rag_generator_debug.json')
+    try:
+        # attempt to lazy-load generator (will cache in rag module)
+        rag._load_generator(os.path.join('docs','rag_generator'))
+    except Exception as e:
+        # ensure any load error is captured
+        try:
+            dbg = rag.get_generator_debug()
+        except Exception:
+            dbg = {'loaded': False, 'device': None, 'load_error': str(e), 'load_trace': None}
+    else:
+        try:
+            dbg = rag.get_generator_debug()
+        except Exception:
+            dbg = {'loaded': False, 'device': None, 'load_error': 'unknown', 'load_trace': None}
+    try:
+        os.makedirs('docs', exist_ok=True)
+        with open(dbgpath, 'w', encoding='utf-8') as fh:
+            json.dump(dbg, fh, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+# Launch background thread (daemon so it won't block shutdown)
+threading.Thread(target=_bg_load_generator, daemon=True).start()
 
 st.set_page_config(page_title="AI Model App — Chat & Train", layout="wide")
 

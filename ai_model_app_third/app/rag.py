@@ -347,7 +347,35 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
                     continue
                 candidates.append({'full': full, 'path': path, 'score': score})
 
-            # Simple extractive synthesis: list top sources and short snippets
+            # Try generator using document-level candidates when available
+            try:
+                gen_model, gen_tokenizer, gen_device = _load_generator(os.path.join('docs','rag_generator'))
+                if gen_model is not None and gen_tokenizer is not None:
+                    prompt_ctx = '\n\n'.join([f"[{i+1}] {c['full']} (source: {os.path.basename(c.get('path') or 'doc')})" for i,c in enumerate(candidates)])
+                    PROMPT = (
+                        "You are an assistant that answers health questions in plain language for patients. "
+                        "Use ONLY the information in the contexts below. If the contexts do not contain an answer, say you do not know and advise consulting a healthcare professional. "
+                        "Answer concisely (1-3 short paragraphs) and list sources at the end in the format: Sources: [file1], [file2].\n\n"
+                        "CONTEXTS:\n{contexts}\n\nQUESTION: {question}\n\nAnswer:"
+                    )
+                    prompt = PROMPT.format(contexts=prompt_ctx, question=question)
+                    try:
+                        inputs = gen_tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512, padding='longest')
+                        inputs = {k: v.to(gen_device) for k, v in inputs.items()}
+                        gen_kwargs = dict(max_length=150, num_beams=4, early_stopping=True, no_repeat_ngram_size=3, length_penalty=1.0)
+                        import torch
+                        with torch.no_grad():
+                            out = gen_model.generate(**inputs, **gen_kwargs)
+                        gen = gen_tokenizer.decode(out[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
+                        if gen and isinstance(gen, str) and gen.strip():
+                            return {'answer': gen, 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates], 'snippets': candidates, 'used_generator': True, 'used_reranker': False}
+                    except Exception:
+                        # fall through to extractive fallback
+                        pass
+            except Exception:
+                # fall through to extractive fallback
+                pass
+
             lines = [f"- {os.path.basename(c.get('path') or 'doc')}: {c.get('full')[:300]}" for c in candidates]
             answer = '\n'.join(lines)
             return {'answer': answer, 'sources': [os.path.basename(c.get('path') or 'doc') for c in candidates], 'snippets': candidates, 'used_generator': False, 'used_reranker': False}
