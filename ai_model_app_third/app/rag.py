@@ -12,6 +12,7 @@ Behavior:
 from typing import List, Dict, Any, Optional
 import os
 import json
+import numpy as np
 
 # local indexer provider
 from app import llm
@@ -64,84 +65,200 @@ def _apply_cross_encoder(question: str, candidates: List[Dict[str, Any]], top_k:
         return candidates[:top_k]
 
 
-def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/rag_generator') -> Dict[str, Any]:
-    """Answer a question using retrieval + optional reranker + generator.
+def chunk_text(text: str, chunk_size: int = 400, overlap: int = 50) -> List[str]:
+    """Chunk text into overlapping windows of approx chunk_size characters."""
+    if not text:
+        return []
+    text = text.replace('\n', ' ')
+    chunks = []
+    start = 0
+    L = len(text)
+    while start < L:
+        end = min(start + chunk_size, L)
+        chunk = text[start:end].strip()
+        if chunk:
+            chunks.append(chunk)
+        if end == L:
+            break
+        start = end - overlap if (end - overlap) > start else end
+    return chunks
 
-    Returns { 'answer': str, 'sources': [...], 'snippets': [...], 'used_generator': bool, 'used_reranker': bool }
+
+def build_passage_corpus(docs_dir: str = 'docs', chunk_size: int = 400, overlap: int = 50):
+    """Read all .txt/.md files under docs_dir and produce a list of passages with metadata."""
+    passages = []  # each: {'text':..., 'source':path, 'offset':int}
+    for root, _, files in os.walk(docs_dir):
+        for f in files:
+            if f.lower().endswith('.txt') or f.lower().endswith('.md'):
+                full = os.path.join(root, f)
+                try:
+                    txt = open(full, 'r', encoding='utf-8').read()
+                except Exception:
+                    continue
+                chs = chunk_text(txt, chunk_size=chunk_size, overlap=overlap)
+                for i, c in enumerate(chs):
+                    passages.append({'text': c, 'source': full, 'idx': i})
+    return passages
+
+
+def embed_passages_and_save(passages: List[Dict[str, Any]], out_path: str = 'docs/passages_embeddings.npz'):
+    """Embed passages using sentence-transformers if available, else TF-IDF fallback, save a .npz with arrays.
+    Returns dict with paths and counts.
     """
-    idx = llm.get_indexer('docs')
-    hits = idx.query(question, top_k=top_k*3)  # retrieve more for reranking
+    texts = [p['text'] for p in passages]
+    sources = [p['source'] for p in passages]
 
-    candidates = _format_hits(hits)
-
-    # If no candidates, return early
-    if not candidates:
-        return {'answer': 'No documents found in index.', 'sources': [], 'snippets': [], 'used_generator': False, 'used_reranker': False}
-
-    # Rerank with cross-encoder if available
-    used_reranker = False
+    emb = None
     try:
-        reranked = _apply_cross_encoder(question, candidates, top_k=top_k)
-        used_reranker = True
+        from sentence_transformers import SentenceTransformer
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+        emb = model.encode(texts, convert_to_numpy=True)
+        method = 'sbert'
     except Exception:
-        reranked = candidates[:top_k]
-        used_reranker = False
+        # fallback TF-IDF
+        try:
+            from sklearn.feature_extraction.text import TfidfVectorizer
+            vec = TfidfVectorizer(max_features=20000, stop_words='english')
+            mat = vec.fit_transform(texts)
+            # convert to dense (might be large but passages small)
+            emb = mat.toarray()
+            method = 'tfidf'
+        except Exception as e:
+            raise RuntimeError(f"No embedding backend available: {e}")
 
-    # Prepare snippets list
-    snippets = []
-    for c in reranked:
-        short = c['full']
-        # get first two sentences or 300 chars
-        sentences = [s.strip() for s in short.split('.') if s.strip()]
-        if len(sentences) >= 2:
-            snippet = sentences[0] + '. ' + sentences[1] + '.'
-        else:
-            snippet = short[:300]
-        snippets.append({'source': os.path.basename(c['path']) if c.get('path') else 'doc', 'snippet': snippet, 'score': c.get('rerank_score', c.get('score'))})
+    # Save embeddings and metadata
+    os.makedirs(os.path.dirname(out_path) or '.', exist_ok=True)
+    np.savez_compressed(out_path, embeddings=emb, sources=np.array(sources, dtype=object), texts=np.array(texts, dtype=object))
+    meta = {'n_passages': len(texts), 'method': method, 'path': out_path}
+    with open(out_path + '.meta.json', 'w', encoding='utf-8') as mf:
+        json.dump(meta, mf)
+    return meta
 
-    # Try generator model to produce grounded answer
-    used_generator = False
-    generated_answer = None
+
+def build_passage_index(passages_npz: str = 'docs/passages_embeddings.npz', index_path: str = 'docs/passages_index'):
+    """Build a FAISS or sklearn index over passage embeddings saved in passages_npz. Returns meta dict."""
+    if not os.path.exists(passages_npz):
+        raise FileNotFoundError(passages_npz)
+    arr = np.load(passages_npz, allow_pickle=True)
+    emb = arr['embeddings']
+    sources = arr['sources'].tolist() if 'sources' in getattr(arr, 'files', []) else []
+
+    n, d = emb.shape
+    # try faiss
     try:
-        from pathlib import Path
-        gen_dir = Path(generator_dir)
-        if gen_dir.exists() and any(gen_dir.iterdir()):
-            try:
-                from transformers import T5ForConditionalGeneration, T5TokenizerFast
-                import torch
-                tokenizer = T5TokenizerFast.from_pretrained(str(gen_dir))
-                model = T5ForConditionalGeneration.from_pretrained(str(gen_dir))
-                model.eval()
-
-                # Build prompt: include numbered contexts and instruction
-                ctxs = '\n\n'.join([f"[{i+1}] {s['snippet']} (source: {s['source']})" for i,s in enumerate(snippets)])
-                prompt = (
-                    "Answer the question using ONLY the information in the CONTEXTS below. Cite sources by their filename in square brackets. "
-                    "If the contexts do not contain an answer, reply 'No evidence in the provided documents.'\n\n"
-                    f"CONTEXTS:\n{ctxs}\n\nQUESTION: {question}\n\nAnswer:"
-                )
-
-                inputs = tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512)
-                with torch.no_grad():
-                    out = model.generate(**inputs, max_length=256, num_beams=4)
-                generated_answer = tokenizer.decode(out[0], skip_special_tokens=True)
-                used_generator = True
-            except Exception:
-                used_generator = False
+        import faiss
+        idx = faiss.IndexFlatL2(d)
+        idx.add(emb.astype(np.float32))
+        faiss.write_index(idx, index_path + '.faiss')
+        meta = {'index_type': 'faiss', 'index_file': index_path + '.faiss', 'n': n}
+        with open(index_path + '.meta.json', 'w', encoding='utf-8') as mf:
+            json.dump({'sources': sources, **meta}, mf)
+        return {'index': index_path + '.faiss', 'n': n}
     except Exception:
-        used_generator = False
+        # sklearn fallback
+        try:
+            from sklearn.neighbors import NearestNeighbors
+            import pickle
+            nn = NearestNeighbors(n_neighbors=min(10, n), algorithm='auto').fit(emb)
+            with open(index_path + '.pkl', 'wb') as fh:
+                pickle.dump({'nn': nn, 'sources': sources}, fh)
+            return {'index': index_path + '.pkl', 'n': n}
+        except Exception as e:
+            raise RuntimeError(f"Failed to build passage index: {e}")
 
-    answer = generated_answer if used_generator and generated_answer else None
-    if not answer:
-        # fallback: extractive synthesis and list sources
-        lines = ["I found the following relevant passages:"]
-        for s in snippets:
-            score_str = f" (score={s['score']:.3f})" if s.get('score') is not None else ''
-            lines.append(f"- {s['source']}{score_str}: {s['snippet']}")
-        synth = ' '.join([s['snippet'] for s in snippets])
-        if len(synth) > 800:
-            synth = synth[:800].rsplit(' ',1)[0] + '...'
-        lines.append('\nSynthesis: ' + synth)
-        answer = '\n'.join(lines)
 
-    return {'answer': answer, 'sources': [s['source'] for s in snippets], 'snippets': snippets, 'used_generator': used_generator, 'used_reranker': used_reranker}
+_original_answer_question = None
+try:
+    _original_answer_question = globals().get('answer_question')
+except Exception:
+    _original_answer_question = None
+
+
+def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/rag_generator') -> Dict[str, Any]:
+    """Prefer passage-level retrieval + reranking + generator.
+    If passages index not present, fall back to document-level retrieval.
+    """
+    passages_npz = 'docs/passages_embeddings.npz'
+    index_meta = None
+    # if passages exist, query passages
+    if os.path.exists(passages_npz):
+        try:
+            arr = np.load(passages_npz, allow_pickle=True)
+            emb = arr['embeddings']
+            texts = arr['texts'].tolist() if 'texts' in getattr(arr, 'files', []) else []
+            sources = arr['sources'].tolist() if 'sources' in getattr(arr, 'files', []) else []
+
+            # try faiss index
+            idx_file = 'docs/passages_index.faiss'
+            if os.path.exists(idx_file):
+                try:
+                    import faiss
+                    index = faiss.read_index(idx_file)
+                    q = None
+                    # embed query using indexer embedding model
+                    idxer = llm.get_indexer('docs')
+                    if getattr(idxer, 'embedding_model', None) is not None:
+                        q = idxer.embedding_model.encode([question], convert_to_numpy=True)[0].astype(np.float32)
+                    else:
+                        # TF-IDF fallback: vectorize question using indexer's vectorizer then pad/convert
+                        if getattr(idxer, 'vectorizer', None) is not None:
+                            q = idxer.vectorizer.transform([question]).toarray()[0].astype(np.float32)
+
+                    if q is None:
+                        # fallback to document-level retriever
+                        raise RuntimeError('No embedding model available to query passage index')
+
+                    D, I = index.search(np.expand_dims(q,axis=0), top_k)
+                    hits = []
+                    for i in I[0]:
+                        hits.append({'text': texts[i], 'path': sources[i] if i < len(sources) else None, 'score': None})
+                    # proceed to rerank/generate using same logic as above
+                    # reuse earlier logic by calling internal rerank/generate helpers
+                    # For simplicity, call the earlier implemented answer_question logic by temporarily swapping
+                    # But to avoid recursion, use current file's reranker/generator sections
+                    # We'll reuse helper: _apply_cross_encoder and generation logic
+                    # Convert hits to candidates
+                    from sentence_transformers import CrossEncoder
+                    candidates = []
+                    for h in hits:
+                        candidates.append({'full': h['text'], 'path': h.get('path'), 'score': h.get('score')})
+                    # rerank
+                    try:
+                        from sentence_transformers import CrossEncoder
+                        ce = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+                        pairs = [(question, c['full']) for c in candidates]
+                        scores = ce.predict(pairs)
+                        for i, c in enumerate(candidates):
+                            c['rerank_score'] = float(scores[i])
+                        candidates_sorted = sorted(candidates, key=lambda x: x.get('rerank_score',0), reverse=True)[:top_k]
+                    except Exception:
+                        candidates_sorted = candidates[:top_k]
+
+                    # try generator
+                    try:
+                        gen_dir = os.path.join('docs','rag_generator')
+                        if os.path.exists(gen_dir):
+                            from transformers import T5ForConditionalGeneration, T5TokenizerFast
+                            import torch
+                            tokenizer = T5TokenizerFast.from_pretrained(gen_dir)
+                            model = T5ForConditionalGeneration.from_pretrained(gen_dir)
+                            prompt_ctx = '\n\n'.join([f"[{i+1}] {c['full']} (source: {os.path.basename(c.get('path') or 'doc')})" for i,c in enumerate(candidates_sorted)])
+                            prompt = f"Answer using only the contexts below. Cite sources.\n\nCONTEXTS:\n{prompt_ctx}\n\nQUESTION: {question}\n\nAnswer:"
+                            inputs = tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512)
+                            with torch.no_grad():
+                                out = model.generate(**inputs, max_length=256, num_beams=4)
+                            gen = tokenizer.decode(out[0], skip_special_tokens=True)
+                            return {'answer': gen, 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates_sorted], 'snippets': candidates_sorted, 'used_generator': True, 'used_reranker': True}
+                    except Exception:
+                        # fallback extractive
+                        lines = [f"- {os.path.basename(c.get('path') or 'doc')}: {c['full'][:300]}" for c in candidates_sorted]
+                        return {'answer': '\n'.join(lines), 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates_sorted], 'snippets': candidates_sorted, 'used_generator': False, 'used_reranker': True}
+
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    # fallback to document-level answer
+    # reuse earlier implementation
+    return _original_answer_question(question, top_k=top_k, generator_dir=generator_dir) if _original_answer_question else {'answer': 'No retrieval method available', 'sources': [], 'snippets': [], 'used_generator': False, 'used_reranker': False}

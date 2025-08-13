@@ -12,6 +12,8 @@ from utils.metrics import plot_metrics, evaluate_model
 from pathlib import Path
 import numpy as np
 import pandas as pd
+import threading
+import time
 
 st.set_page_config(page_title="AI Model App — Chat & Train", layout="wide")
 
@@ -297,25 +299,78 @@ with tabs[3]:
     rag_train_gen = st.checkbox("Train generator model (T5) after building index", value=False)
     rag_epochs = st.number_input("Generator training epochs", min_value=1, max_value=50, value=1)
     rag_chunk = st.number_input("Context chunk size (chars)", min_value=100, max_value=2000, value=400)
+    rag_overlap = st.number_input("Context chunk overlap (chars)", min_value=0, max_value=1000, value=50)
+
+    # Background passage-indexing: start thread and update session_state with progress
+    def _run_passage_build(chunk_size, overlap):
+        key = 'passage_build'
+        st.session_state.setdefault(key, {})
+        st.session_state[key].update({'status': 'running', 'progress': 0, 'error': None, 'result': None})
+        try:
+            passages = rag.build_passage_corpus('docs', chunk_size=int(chunk_size), overlap=int(overlap))
+            st.session_state[key]['progress'] = 25
+            meta = rag.embed_passages_and_save(passages, out_path='docs/passages_embeddings.npz')
+            st.session_state[key]['progress'] = 65
+            idx_res = rag.build_passage_index('docs/passages_embeddings.npz', index_path='docs/passages_index')
+            st.session_state[key]['progress'] = 100
+            st.session_state[key]['status'] = 'done'
+            st.session_state[key]['result'] = {'meta': meta, 'index': idx_res, 'n_passages': len(passages), 'sample': passages[:5]}
+        except Exception as e:
+            st.session_state[key]['status'] = 'error'
+            st.session_state[key]['error'] = str(e)
+
+    if 'passage_build' not in st.session_state:
+        st.session_state['passage_build'] = {'status': 'idle', 'progress': 0}
+
+    if st.button("Build passage-level index (chunk docs into passages)"):
+        if st.session_state['passage_build'].get('status') == 'running':
+            st.warning('Passage build already running in background')
+        else:
+            # start background thread
+            t = threading.Thread(target=_run_passage_build, args=(rag_chunk, rag_overlap), daemon=True)
+            t.start()
+            st.success('Passage indexing started in background — refresh status below')
+
+    # Status display
+    pb = st.session_state.get('passage_build', {})
+    st.write('Passage indexing status: ', pb.get('status'))
+    try:
+        prog = int(pb.get('progress', 0))
+    except Exception:
+        prog = 0
+    st.progress(prog)
+    if pb.get('status') == 'error':
+        st.error(f"Passage build error: {pb.get('error')}")
+    if pb.get('status') == 'done' and pb.get('result'):
+        res = pb['result']
+        st.success(f"Passage index ready — {res.get('n_passages')} passages. Index: {res.get('index')}")
+        st.subheader('Sample passages')
+        for i, p in enumerate(res.get('sample', [])):
+            st.markdown(f"**[{i+1}]** {os.path.basename(p['source'])} (chunk {p['idx']})")
+            st.write(p['text'][:600] + ('...' if len(p['text'])>600 else ''))
+    if st.button('Refresh passage indexing status'):
+        # Button click triggers a rerun by Streamlit naturally; set a timestamp to mark refresh
+        st.session_state['passage_build_refresh_ts'] = time.time()
+        st.success('Refreshed status')
 
     if st.button("Train RAG (build index + optional generator)"):
-        with st.spinner("Building RAG index and optionally training generator..."):
-            try:
-                # call pipeline rag training; it will build embeddings + index and attempt generator training
-                res = run_pipeline('rag_train' if rag_train_gen else 'rag', model_choice)
-                st.success("RAG pipeline finished")
-                st.json(res)
-                # If generator trained, show summary
-                if isinstance(res, dict) and res.get('rag_train'):
-                    st.subheader('Generator training summary')
-                    st.json(res.get('rag_train'))
-            except Exception as e:
-                st.error(f"RAG training failed: {e}")
+         with st.spinner("Building RAG index and optionally training generator..."):
+             try:
+                 # call pipeline rag training; it will build embeddings + index and attempt generator training
+                 res = run_pipeline('rag_train' if rag_train_gen else 'rag', model_choice)
+                 st.success("RAG pipeline finished")
+                 st.json(res)
+                 # If generator trained, show summary
+                 if isinstance(res, dict) and res.get('rag_train'):
+                     st.subheader('Generator training summary')
+                     st.json(res.get('rag_train'))
+             except Exception as e:
+                 st.error(f"RAG training failed: {e}")
+ 
+    st.caption('Notes: evaluation requires labels for the embeddings. Use the Labels tab to create docs/labels.csv.')
 
 # --- Logs tab ---
 with tabs[4]:
     st.subheader('Recent actions')
     st.markdown('- Last LLM suggestion shown in Chat tab (if any).')
     st.markdown('- Use Docs-only training to run end-to-end and automatically see evaluation results.')
-
-st.caption('Notes: evaluation requires labels for the embeddings. Use the Labels tab to create docs/labels.csv.')
