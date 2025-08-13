@@ -1,0 +1,101 @@
+idx,question,context_len,answer_len,refs,issues,is_duplicate
+0,How are breast cancers commonly treated?,2410,279,breast_blocks.txt,,False
+1,What does the document say about breast cancer screening?,290,179,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+2,Does finding breast cancer earlier change survival?,306,275,s41572-019-0111-2.txt;2022-2024-breast-cancer-fact-figures-acs.txt,,False
+3,How are breast cancers commonly treated?,666,238,breast_enhanced.txt,,False
+4,How are breast cancers commonly treated?,327,93,9789240065987-eng.txt,,False
+5,What does the document say about risk factors for breast cancer?,180,94,8577.00.txt,,False
+6,What does the document say about risk factors for breast cancer?,412,138,8577.00.txt,,False
+7,What are the signs of breast cancer I should watch for?,556,250,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+8,How are breast cancers commonly treated?,614,232,breast_enhanced.txt,,False
+9,What does the document say about breast cancer screening?,477,373,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+10,What does the document say about risk factors for breast cancer?,625,143,breast_blocks.txt,,False
+11,What does the document say about breast cancer screening?,3042,157,s41572-019-0111-2.txt,,False
+12,Does ethnicity affect breast cancer detection or outcomes?,644,373,s41572-019-0111-2.txt,,False
+13,What are the signs of breast cancer I should watch for?,568,313,breast.txt;10 mg every other day since 5-mg dose is not available in the United States,missing_files:10 mg every other day since 5-mg dose is not available in the United States,False
+14,What are the signs of breast cancer I should watch for?,573,425,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+15,What are the signs of breast cancer I should watch for?,541,61,breast.txt,,False
+16,How are breast cancers commonly treated?,290,194,breast-invasive-patient.txt,,False
+17,What does the document say about breast cancer screening?,364,292,2022-2024-breast-cancer-fact-figures-acs.txt;2022-2024-breast-cancer-fact-figures-acs.pdf Extracted: 2025-08-11T13:06:36.077817Z ---  Breast Cancer Facts & Figures 2022-2024 Contents Breast Cancer Basic Facts 1 Breast Cancer Screening 21 What is breast cancer? Sources:;uploads;docs,"missing_files:2022-2024-breast-cancer-fact-figures-acs.pdf Extracted: 2025-08-11T13:06:36.077817Z ---  Breast Cancer Facts & Figures 2022-2024 Contents Breast Cancer Basic Facts 1 Breast Cancer Screening 21 What is breast cancer? Sources:,docs",False
+18,I missed my mammogram appointment. What should I do?,233,202,8577.00.txt,,False
+19,Does finding breast cancer earlier change survival?,724,247,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+20,What does the document say about risk factors for breast cancer?,456,145,8577.00.txt,,False
+21,What does the document say about risk factors for breast cancer?,299,109,8577.00.txt,,False
+22,What does the document say about breast cancer screening?,749,504,breast.txt,,False
+23,What are the signs of breast cancer I should watch for?,498,184,breast.txt,,False
+24,What does the document say about risk factors for breast cancer?,2680,2530,s41572-019-0111-2.txt,,False
+25,What does the document say about risk factors for breast cancer?,878,301,breast.txt,,False
+26,What does the document say about risk factors for breast cancer?,811,123,8577.00.txt,,False
+27,What does the document say about breast cancer screening?,583,243,breast_enhanced.txt,,False
+28,What are the signs of breast cancer I should watch for?,2796,2624,breast_blocks.txt,,False
+29,What does the document say about breast cancer screening?,293,82,breast_blocks.txt,,False
+30,Does ethnicity affect breast cancer detection or outcomes?,733,438,s41572-019-0111-2.txt,,False
+31,What does the document say about risk factors for breast cancer?,257,136,breast-invasive-patient.txt,,False
+32,What does the document say about risk factors for breast cancer?,317,108,8577.00.txt,,False
+33,How are breast cancers commonly treated?,795,110,breast-invasive-patient.txt,,False
+34,Does finding breast cancer earlier change survival?,1015,316,breast.txt,,False
+35,How does access to care affect breast cancer outcomes?,553,200,9789240065987-eng.txt,,False
+36,At what age should I start getting mammograms?,360,337,2022-2024-breast-cancer-fact-figures-acs.txt;9789240065987-eng.txt,,False
+37,What are the signs of breast cancer I should watch for?,304,142,breast_enhanced.txt,,False
+38,How are breast cancers commonly treated?,340,133,8577.00.txt,,False
+39,Does finding breast cancer earlier change survival?,501,100,breast_blocks.txt,,False
+40,Does finding breast cancer earlier change survival?,497,330,s41572-019-0111-2.txt,,False
+41,Does finding breast cancer earlier change survival?,888,588,9789240065987-eng.txt,,False
+42,What does the document say about risk factors for breast cancer?,578,213,breast_enhanced.txt,,False
+43,What does the document say about risk factors for breast cancer?,377,196,8577.00.txt,,False
+44,How does access to care affect breast cancer outcomes?,876,103,s41572-019-0111-2.txt,,False
+45,What does the document say about risk factors for breast cancer?,395,252,breast_enhanced.txt,,False
+46,Does race have an impact on breast cancer detection?,652,446,9789240065987-eng.txt,,False
+47,What does the document say about risk factors for breast cancer?,512,164,s41572-019-0111-2.txt,,False
+48,Does finding breast cancer earlier change survival?,616,300,s41572-019-0111-2.txt,,False
+49,What does the document say about breast cancer screening?,568,207,9789240065987-eng.txt,,False
+50,What does the document say about breast cancer screening?,635,401,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+51,Does finding breast cancer earlier change survival?,482,205,9789240065987-eng.txt,,False
+52,What are the signs of breast cancer I should watch for?,764,306,9789240065987-eng.txt,,False
+53,What are the signs of breast cancer I should watch for?,625,426,s41572-019-0111-2.txt,,False
+54,How does access to care affect breast cancer outcomes?,163,105,8577.00.txt,,False
+55,When is ultrasound or MRI recommended in addition to mammography?,259,107,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+56,How are breast cancers commonly treated?,1171,246,breast_enhanced.txt,,False
+57,What is a mammogram and why is it done?,373,60,breast-invasive-patient.txt,,False
+58,What is a mammogram and why is it done?,696,282,breast.txt,,False
+59,What does the document say about risk factors for breast cancer?,337,194,North American Association of Central Cancer Registries (NAACCR);2022-2024-breast-cancer-fact-figures-acs.txt;2022. Sources:,"missing_files:North American Association of Central Cancer Registries (NAACCR),2022. Sources:",False
+60,How are breast cancers commonly treated?,691,197,9789240065987-eng.txt,,False
+61,What does the document say about breast cancer screening?,424,106,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+62,When is ultrasound or MRI recommended in addition to mammography?,334,220,breast.txt,,False
+63,Does finding breast cancer earlier change survival?,332,69,9789240065987-eng.txt,,False
+64,What does the document say about breast cancer screening?,756,511,breast_blocks.txt,,False
+65,What are the signs of breast cancer I should watch for?,568,117,breast_blocks.txt,,False
+66,How does access to care affect breast cancer outcomes?,445,182,9789240065987-eng.txt,,False
+67,What does the document say about breast cancer screening?,350,111,breast.txt,,False
+68,What does the document say about risk factors for breast cancer?,665,441,8577.00.txt,,False
+69,How are breast cancers commonly treated?,522,82,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+70,How are breast cancers commonly treated?,654,341,breast_enhanced.txt,,False
+71,What does the document say about risk factors for breast cancer?,343,238,breast_blocks.txt,,False
+72,What does the document say about risk factors for breast cancer?,347,138,8577.00.txt,,False
+73,Does finding breast cancer earlier change survival?,296,73,9789240065987-eng.txt,,False
+74,What does the document say about risk factors for breast cancer?,393,250,breast_blocks.txt,,False
+75,Does finding breast cancer earlier change survival?,615,511,s41572-019-0111-2.txt,,False
+76,What are the signs of breast cancer I should watch for?,761,91,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+77,Does finding breast cancer earlier change survival?,406,265,breast_enhanced.txt,,False
+78,What does the document say about risk factors for breast cancer?,516,391,breast_enhanced.txt,,False
+79,How are breast cancers commonly treated?,353,218,breast-invasive-patient.txt,,False
+80,What are the signs of breast cancer I should watch for?,934,482,breast_blocks.txt,,False
+81,Does finding breast cancer earlier change survival?,570,158,9789240065987-eng.txt,,False
+82,Does finding breast cancer earlier change survival?,268,137,8577.00.txt,,False
+83,What does the document say about breast cancer screening?,569,206,9789240065987-eng.txt,,False
+84,Does finding breast cancer earlier change survival?,690,183,9789240065987-eng.txt,,False
+85,What does the document say about breast cancer screening?,618,243,8577.00.txt,,False
+86,Does finding breast cancer earlier change survival?,259,122,9789240065987-eng.txt,,False
+87,What are the signs of breast cancer I should watch for?,594,299,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+88,Does finding breast cancer earlier change survival?,388,140,8577.00.txt,,False
+89,What does the document say about breast cancer screening?,809,272,breast.txt,,False
+90,What does the document say about risk factors for breast cancer?,898,231,s41572-019-0111-2.txt,,False
+91,How are breast cancers commonly treated?,570,360,breast_enhanced.txt,,False
+92,How are breast cancers commonly treated?,446,312,breast-invasive-patient.txt,,False
+93,How are breast cancers commonly treated?,2133,236,breast_blocks.txt,,False
+94,Does finding breast cancer earlier change survival?,249,92,9789240065987-eng.txt,,False
+95,How are breast cancers commonly treated?,738,582,breast.txt,,False
+96,What are the signs of breast cancer I should watch for?,340,195,breast_enhanced.txt,,False
+97,Does finding breast cancer earlier change survival?,287,105,9789240065987-eng.txt,,False
+98,Does finding breast cancer earlier change survival?,282,164,2022-2024-breast-cancer-fact-figures-acs.txt,,False
+99,What does the document say about breast cancer screening?,463,392,breast_blocks.txt,,False

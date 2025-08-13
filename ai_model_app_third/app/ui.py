@@ -3,6 +3,18 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Fix for torch 2.5.1 + Streamlit compatibility issue
+# Prevent Streamlit's file watcher from probing torch.classes
+try:
+    import torch
+    if 'torch.classes' in sys.modules:
+        import types
+        dummy = types.ModuleType("torch.classes")
+        dummy.__path__ = []  # Empty path list to satisfy watcher
+        sys.modules['torch.classes'] = dummy
+except Exception:
+    pass
+
 import streamlit as st
 from app.pipeline import run_pipeline, train_text_model_from_embeddings
 from app import llm
@@ -65,62 +77,93 @@ with tabs[0]:
                 # append user message to chat history
                 st.session_state.chat_history.append({'role': 'user', 'text': message or '', 'images': images or []})
 
-                # Try to answer the question by retrieval over local docs (RAG-style extractive answer)
+                # Try generator-based RAG answer first (prefers trained generator)
                 assistant_text = None
-                try:
-                    retr = llm.get_indexer('docs')
-                    # Prefer semantic query if available; indexer.query handles both embedding and TF-IDF
-                    hits = retr.query(message, top_k=4)
-
-                    if hits and len(hits) > 0:
-                        parts = []
-                        for h in hits:
-                            # h may contain 'text' and 'path' and 'score'
-                            snippet = ''
-                            if isinstance(h, dict):
-                                snippet = h.get('text','')
-                                path = h.get('path') or h.get('path') if 'path' in h else h.get('path', None)
-                            else:
-                                snippet = str(h)
-                                path = None
-
-                            # Extract a short snippet: first 300 chars, or first 2 sentences
-                            s = snippet.replace('\n', ' ').strip()
-                            if not s:
-                                continue
-                            # take first two sentences if possible
-                            sentences = [seg.strip() for seg in s.split('.') if seg.strip()]
-                            short = (sentences[0] + ('. ' + sentences[1] + '.') if len(sentences) > 1 else sentences[0]) if sentences else s[:300]
-                            parts.append({'source': os.path.basename(path) if path else 'doc', 'score': h.get('score', 0) if isinstance(h, dict) else None, 'snippet': short})
-
-                        # Build assistant answer: list sources + combined synthesis
-                        answer_lines = ["I found the following relevant documents and passages:"]
-                        for p in parts:
-                            score_str = f" (score={p['score']:.3f})" if p.get('score') is not None else ''
-                            answer_lines.append(f"- {p['source']}{score_str}: {p['snippet']}")
-
-                        # naive synthesis: combine snippets
-                        synthesis = ' '.join([p['snippet'] for p in parts])
-                        if len(synthesis) > 800:
-                            synthesis = synthesis[:800].rsplit(' ',1)[0] + '...'
-
-                        answer_lines.append('\nSynthesis: ' + synthesis)
-                        assistant_text = '\n'.join(answer_lines)
-                    else:
-                        assistant_text = "No relevant documents found in the local index. Try ingesting PDFs or add documents to docs/."
-                except Exception as e:
-                    assistant_text = f"Retrieval failed: {e}"
-
-                # Use RAG answerer (retriever + optional generator)
+                # Prefer generator-based RAG answer first (uses trained generator when available)
                 try:
                     rag_res = rag.answer_question(message, top_k=4, generator_dir=os.path.join('docs','rag_generator'))
                     assistant_text = rag_res.get('answer')
-                except Exception as e:
-                    assistant_text = f"RAG answering failed: {e}"
+                except Exception:
+                    assistant_text = None
 
-                # Append assistant reply if produced
+                # If generator did not produce an answer, fall back to document retrieval + naive synthesis
+                if not assistant_text:
+                    try:
+                        retr = llm.get_indexer('docs')
+                        # Prefer semantic query if available; indexer.query handles both embedding and TF-IDF
+                        hits = retr.query(message, top_k=4)
+
+                        if hits and len(hits) > 0:
+                            parts = []
+                            for h in hits:
+                                # h may contain 'text' and 'path' and 'score'
+                                snippet = ''
+                                if isinstance(h, dict):
+                                    snippet = h.get('text','')
+                                    path = h.get('path') or h.get('path') if 'path' in h else h.get('path', None)
+                                else:
+                                    snippet = str(h)
+                                    path = None
+
+                                # Extract a short snippet: first 300 chars, or first 2 sentences
+                                s = snippet.replace('\n', ' ').strip()
+                                if not s:
+                                    continue
+                                # take first two sentences if possible
+                                sentences = [seg.strip() for seg in s.split('.') if seg.strip()]
+                                short = (sentences[0] + ('. ' + sentences[1] + '.') if len(sentences) > 1 else sentences[0]) if sentences else s[:300]
+                                parts.append({'source': os.path.basename(path) if path else 'doc', 'score': h.get('score', 0) if isinstance(h, dict) else None, 'snippet': short})
+
+                            # Build assistant answer: list sources + combined synthesis
+                            answer_lines = ["I found the following relevant documents and passages:"]
+                            for p in parts:
+                                score_str = f" (score={p['score']:.3f})" if p.get('score') is not None else ''
+                                answer_lines.append(f"- {p['source']}{score_str}: {p['snippet']}")
+
+                            # naive synthesis: combine snippets
+                            synthesis = ' '.join([p['snippet'] for p in parts])
+                            if len(synthesis) > 800:
+                                synthesis = synthesis[:800].rsplit(' ',1)[0] + '...'
+
+                            answer_lines.append('\nSynthesis: ' + synthesis)
+                            assistant_text = '\n'.join(answer_lines)
+                        else:
+                            assistant_text = "No relevant documents found in the local index. Try ingesting PDFs or add documents to docs/."
+                    except Exception as e:
+                        assistant_text = f"Retrieval failed: {e}"
+
+                 # Append assistant reply if produced
                 if assistant_text:
+                    # Append assistant reply to session history
                     st.session_state.chat_history.append({'role': 'assistant', 'text': assistant_text, 'images': []})
+
+                    # Show simple RAG status (generator vs extractive) if available
+                    try:
+                        used_gen = bool(rag_res.get('used_generator')) if isinstance(rag_res, dict) else False
+                        sources = rag_res.get('sources') or [] if isinstance(rag_res, dict) else []
+                        status = "Generator (synthesized answer)" if used_gen else "Extractive fallback (snippets)"
+                        st.caption(f"RAG status: {status}. Sources: {', '.join(sources) if sources else 'none'}")
+                    except Exception:
+                        # defensive: do not break UI if rag_res shape unexpected
+                        pass
+
+                    # Debug: show generator load/generation status (safe access)
+                    try:
+                        dbg = rag.get_generator_debug()
+                        gen_loaded = dbg.get('loaded')
+                        gen_device = dbg.get('device')
+                        load_err = dbg.get('load_error')
+                        gen_err = dbg.get('last_gen_error')
+                        st.caption(f"Generator loaded={gen_loaded} device={gen_device} | load_error={'yes' if load_err else 'no'} gen_error={'yes' if gen_err else 'no'}")
+                        if load_err:
+                            trace = dbg.get('load_trace') or ''
+                            st.text_area('Generator load error (trace):', value=(str(load_err) + '\n\n' + trace).strip(), height=200)
+                        if gen_err:
+                            gtrace = dbg.get('last_gen_trace') or ''
+                            st.text_area('Generator last generation error (trace):', value=(str(gen_err) + '\n\n' + gtrace).strip(), height=200)
+                    except Exception:
+                        pass
+                
 
     with col2:
         st.markdown("**LLM Assistant**")
@@ -216,7 +259,8 @@ with tabs[2]:
         try:
             edited = st.data_editor(st.session_state.labels_df, num_rows='dynamic')
         except Exception:
-            edited = st.experimental_data_editor(st.session_state.labels_df)
+            # fallback: keep the existing dataframe if the newer editor is not available
+            edited = st.session_state.labels_df
         st.session_state.labels_df = edited
         if st.button("Save labels to docs/labels.csv"):
             out = os.path.join('docs','labels.csv')
@@ -272,8 +316,10 @@ with tabs[3]:
                             mapping = {r['filename']: r['label'] for _, r in df.iterrows()}
                             if paths and len(paths)==emb.shape[0]:
                                 labels = [mapping.get(os.path.basename(p)) for p in paths]
-                                if all([l is not None and str(l).strip()!='' for l in labels]):
-                                    uniques = sorted(list(set(labels)))
+                                # filter out empty/None labels before sorting to avoid type errors
+                                filtered = [l for l in labels if l is not None and str(l).strip()!='']
+                                if filtered and len(filtered) == len(labels):
+                                    uniques = sorted(list({l for l in filtered}))
                                     label2idx = {lab:i for i,lab in enumerate(uniques)}
                                     labels_array = np.array([label2idx[l] for l in labels], dtype=int)
                         if labels_array is None:
@@ -283,7 +329,7 @@ with tabs[3]:
                             # load model
                             ckpt = res if isinstance(res, dict) and res.get('model_path') else None
                             model_path = ckpt.get('model_path') if ckpt else os.path.join('docs','text_model.pth')
-                            if os.path.exists(model_path):
+                            if model_path and os.path.exists(model_path):
                                 from models.text_classifier import SimpleTextClassifier
                                 ck = __import__('torch').load(model_path, map_location='cpu')
                                 m = SimpleTextClassifier(input_dim=ck['input_dim'], hidden_dim=128, n_classes=ck['n_classes'])

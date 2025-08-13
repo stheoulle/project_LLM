@@ -17,6 +17,64 @@ import numpy as np
 # local indexer provider
 from app import llm
 
+# Generator cache (lazy loaded)
+_GEN_MODEL = None
+_GEN_TOKENIZER = None
+_GEN_DEVICE = None
+# Debug/log variables
+_GEN_LOAD_ERROR = None
+_GEN_LOAD_TRACE = None
+_GEN_LAST_GENERATION_ERROR = None
+_GEN_LAST_GENERATION_TRACE = None
+
+
+def _load_generator(generator_dir: str = 'docs/rag_generator'):
+    """Lazy load and cache generator model/tokenizer. Returns (model, tokenizer, device) or (None,None,None) on failure.
+    Debug info stored in module variables for inspection.
+    """
+    global _GEN_MODEL, _GEN_TOKENIZER, _GEN_DEVICE, _GEN_LOAD_ERROR, _GEN_LOAD_TRACE
+    if _GEN_MODEL is not None and _GEN_TOKENIZER is not None:
+        return _GEN_MODEL, _GEN_TOKENIZER, _GEN_DEVICE
+    try:
+        # import lazily to avoid import-time overhead
+        from transformers import T5ForConditionalGeneration, T5TokenizerFast
+        import torch, sys, traceback
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        if not os.path.exists(generator_dir):
+            _GEN_LOAD_ERROR = f"generator dir not found: {generator_dir}"
+            _GEN_LOAD_TRACE = None
+            print(f"[rag::_load_generator] { _GEN_LOAD_ERROR }", file=sys.stderr)
+            return None, None, None
+        tokenizer = T5TokenizerFast.from_pretrained(generator_dir)
+        model = T5ForConditionalGeneration.from_pretrained(generator_dir).to(device)
+        _GEN_MODEL = model
+        _GEN_TOKENIZER = tokenizer
+        _GEN_DEVICE = device
+        _GEN_LOAD_ERROR = None
+        _GEN_LOAD_TRACE = None
+        print(f"[rag::_load_generator] loaded generator from {generator_dir} on device={device}", file=sys.stderr)
+        return _GEN_MODEL, _GEN_TOKENIZER, _GEN_DEVICE
+    except Exception as e:
+        import sys, traceback
+        _GEN_LOAD_ERROR = str(e)
+        _GEN_LOAD_TRACE = traceback.format_exc()
+        # print to stderr for debug monitoring
+        print(f"[rag::_load_generator] ERROR loading generator: {e}", file=sys.stderr)
+        print(_GEN_LOAD_TRACE, file=sys.stderr)
+        return None, None, None
+
+
+def get_generator_debug():
+    """Return current debug status for generator loader and last generation."""
+    return {
+        'loaded': _GEN_MODEL is not None and _GEN_TOKENIZER is not None,
+        'device': str(_GEN_DEVICE) if _GEN_DEVICE is not None else None,
+        'load_error': _GEN_LOAD_ERROR,
+        'load_trace': _GEN_LOAD_TRACE,
+        'last_gen_error': _GEN_LAST_GENERATION_ERROR,
+        'last_gen_trace': _GEN_LAST_GENERATION_TRACE,
+    }
+
 
 def _format_hits(hits: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     out = []
@@ -236,20 +294,31 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
 
                     # try generator
                     try:
-                        gen_dir = os.path.join('docs','rag_generator')
-                        if os.path.exists(gen_dir):
-                            from transformers import T5ForConditionalGeneration, T5TokenizerFast
+                        # try generator — use cached loader
+                        model, tokenizer, device = _load_generator(os.path.join('docs', 'rag_generator'))
+                        if model is not None and tokenizer is not None:
                             import torch
-                            tokenizer = T5TokenizerFast.from_pretrained(gen_dir)
-                            model = T5ForConditionalGeneration.from_pretrained(gen_dir)
                             prompt_ctx = '\n\n'.join([f"[{i+1}] {c['full']} (source: {os.path.basename(c.get('path') or 'doc')})" for i,c in enumerate(candidates_sorted)])
-                            prompt = f"Answer using only the contexts below. Cite sources.\n\nCONTEXTS:\n{prompt_ctx}\n\nQUESTION: {question}\n\nAnswer:"
-                            inputs = tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512)
+                            PROMPT = (
+                                "You are an assistant that answers health questions in plain language for patients. "
+                                "Use ONLY the information in the contexts below. If the contexts do not contain an answer, say you do not know and advise consulting a healthcare professional. "
+                                "Answer concisely (1-3 short paragraphs) and list sources at the end in the format: Sources: [file1], [file2].\n\n"
+                                "CONTEXTS:\n{contexts}\n\nQUESTION: {question}\n\nAnswer:"
+                            )
+                            prompt = PROMPT.format(contexts=prompt_ctx, question=question)
+                            inputs = tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512, padding='longest')
+                            inputs = {k: v.to(device) for k, v in inputs.items()}
+                            gen_kwargs = dict(max_length=150, num_beams=4, early_stopping=True, no_repeat_ngram_size=3, length_penalty=1.0)
                             with torch.no_grad():
-                                out = model.generate(**inputs, max_length=256, num_beams=4)
-                            gen = tokenizer.decode(out[0], skip_special_tokens=True)
+                                out = model.generate(**inputs, **gen_kwargs)
+                            gen = tokenizer.decode(out[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
                             return {'answer': gen, 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates_sorted], 'snippets': candidates_sorted, 'used_generator': True, 'used_reranker': True}
-                    except Exception:
+                    except Exception as e:
+                        # log generation error
+                        _GEN_LAST_GENERATION_ERROR = str(e)
+                        _GEN_LAST_GENERATION_TRACE = traceback.format_exc()
+                        print(f"[rag::answer_question] ERROR in generation: {_GEN_LAST_GENERATION_ERROR}", file=sys.stderr)
+                        print(_GEN_LAST_GENERATION_TRACE, file=sys.stderr)
                         # fallback extractive
                         lines = [f"- {os.path.basename(c.get('path') or 'doc')}: {c['full'][:300]}" for c in candidates_sorted]
                         return {'answer': '\n'.join(lines), 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates_sorted], 'snippets': candidates_sorted, 'used_generator': False, 'used_reranker': True}
@@ -260,5 +329,30 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
             pass
 
     # fallback to document-level answer
-    # reuse earlier implementation
-    return _original_answer_question(question, top_k=top_k, generator_dir=generator_dir) if _original_answer_question else {'answer': 'No retrieval method available', 'sources': [], 'snippets': [], 'used_generator': False, 'used_reranker': False}
+    # reuse earlier implementation: if no passage index is present, try the document-level indexer
+    try:
+        idxer = llm.get_indexer('docs')
+        hits = idxer.query(question, top_k=top_k) if idxer is not None else []
+        if hits:
+            candidates = []
+            for h in hits:
+                if isinstance(h, dict):
+                    text = h.get('text','')
+                    path = h.get('path') or h.get('filepath') or h.get('source') or None
+                    score = h.get('score')
+                else:
+                    text = str(h); path = None; score = None
+                full = text.replace('\n',' ').strip()
+                if not full:
+                    continue
+                candidates.append({'full': full, 'path': path, 'score': score})
+
+            # Simple extractive synthesis: list top sources and short snippets
+            lines = [f"- {os.path.basename(c.get('path') or 'doc')}: {c.get('full')[:300]}" for c in candidates]
+            answer = '\n'.join(lines)
+            return {'answer': answer, 'sources': [os.path.basename(c.get('path') or 'doc') for c in candidates], 'snippets': candidates, 'used_generator': False, 'used_reranker': False}
+        else:
+            return {'answer': 'No relevant documents found in the local index.', 'sources': [], 'snippets': [], 'used_generator': False, 'used_reranker': False}
+    except Exception as e:
+        # last resort: return informative error
+        return {'answer': f'No retrieval method available: {e}', 'sources': [], 'snippets': [], 'used_generator': False, 'used_reranker': False}

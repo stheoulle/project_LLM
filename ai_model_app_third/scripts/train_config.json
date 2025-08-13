@@ -1,0 +1,15 @@
+{
+  "data_file": "docs/rag_training_examples_cleaned.jsonl",
+  "model_name": "t5-small",
+  "output_dir": "docs/rag_generator",
+  "epochs": 3,
+  "per_device_train_batch_size": 8,
+  "learning_rate": 3e-5,
+  "weight_decay": 0.01,
+  "max_input_length": 512,
+  "max_target_length": 150,
+  "fp16": false,
+  "logging_steps": 100,
+  "save_steps": null,
+  "eval_steps": null
+}
