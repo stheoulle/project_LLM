@@ -236,6 +236,7 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
     """Prefer passage-level retrieval + reranking + generator.
     If passages index not present, fall back to document-level retrieval.
     """
+    global _GEN_LAST_GENERATION_ERROR, _GEN_LAST_GENERATION_TRACE
     passages_npz = 'docs/passages_embeddings.npz'
     index_meta = None
     # if passages exist, query passages
@@ -306,13 +307,23 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
                                 "CONTEXTS:\n{contexts}\n\nQUESTION: {question}\n\nAnswer:"
                             )
                             prompt = PROMPT.format(contexts=prompt_ctx, question=question)
-                            inputs = tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512, padding='longest')
-                            inputs = {k: v.to(device) for k, v in inputs.items()}
-                            gen_kwargs = dict(max_length=150, num_beams=4, early_stopping=True, no_repeat_ngram_size=3, length_penalty=1.0)
-                            with torch.no_grad():
-                                out = model.generate(**inputs, **gen_kwargs)
-                            gen = tokenizer.decode(out[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
-                            return {'answer': gen, 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates_sorted], 'snippets': candidates_sorted, 'used_generator': True, 'used_reranker': True}
+
+                            # Use helper to generate and retry with an alternative prompt if the model echoes the prompt
+                            alt_prompt = (
+                                "Answer the QUESTION using ONLY the numbered CONTEXTS below. Provide a short, direct answer (1-3 short paragraphs).\n\n"
+                                "CONTEXTS:\n{contexts}\n\nQUESTION: {question}\n\nAnswer:"
+                            ).format(contexts=prompt_ctx, question=question)
+
+                            gen, used_alt = _generate_with_prompt_retry(model, tokenizer, device, prompt, alt_prompts=[alt_prompt])
+                            if gen is not None:
+                                return {'answer': gen, 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates_sorted], 'snippets': candidates_sorted, 'used_generator': True, 'used_reranker': True}
+
+                            # if generation failed or looked like an echo, fall back to extractive
+                            import sys, traceback
+                            _GEN_LAST_GENERATION_TRACE = _GEN_LAST_GENERATION_TRACE or None
+                            print(f"[rag::answer_question] generation failed or looked like prompt-echo: {_GEN_LAST_GENERATION_ERROR}", file=sys.stderr)
+                            lines = [f"- {os.path.basename(c.get('path') or 'doc')}: {c['full'][:300]}" for c in candidates_sorted]
+                            return {'answer': '\n'.join(lines), 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates_sorted], 'snippets': candidates_sorted, 'used_generator': False, 'used_reranker': True}
                     except Exception as e:
                         # log generation error
                         _GEN_LAST_GENERATION_ERROR = str(e)
@@ -359,6 +370,7 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
                         "CONTEXTS:\n{contexts}\n\nQUESTION: {question}\n\nAnswer:"
                     )
                     prompt = PROMPT.format(contexts=prompt_ctx, question=question)
+
                     try:
                         inputs = gen_tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512, padding='longest')
                         inputs = {k: v.to(gen_device) for k, v in inputs.items()}
@@ -367,9 +379,27 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
                         with torch.no_grad():
                             out = gen_model.generate(**inputs, **gen_kwargs)
                         gen = gen_tokenizer.decode(out[0], skip_special_tokens=True, clean_up_tokenization_spaces=True)
-                        if gen and isinstance(gen, str) and gen.strip():
-                            return {'answer': gen, 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates], 'snippets': candidates, 'used_generator': True, 'used_reranker': False}
-                    except Exception:
+                        # Post-process: if model echoed the prompt or returned empty, treat as failed generation and fall back
+                        if not gen or gen.strip() == '':
+                            # treat as failure — will fall back to extractive below
+                            _GEN_LAST_GENERATION_ERROR = 'empty_generation'
+                        else:
+                            low = gen.lower()
+                            # detect if model just returned the prompt/instructions unintentionally
+                            if 'you are an assistant' in low or 'contexts:' in low[:200].lower() or 'answer:' in low[:200].lower() or gen.strip().startswith(prompt.split('\n')[0]):
+                                # record debug note and fall back
+                                _GEN_LAST_GENERATION_ERROR = 'generation_looks_like_prompt_or_echo'
+                            else:
+                                # success — return generator answer
+                                return {'answer': gen, 'sources':[os.path.basename(c.get('path') or 'doc') for c in candidates], 'snippets': candidates, 'used_generator': True, 'used_reranker': False}
+                    except Exception as e:
+                        # record generation error for debugging and fall back to extractive
+                        try:
+                            import traceback
+                            _GEN_LAST_GENERATION_ERROR = str(e)
+                            _GEN_LAST_GENERATION_TRACE = traceback.format_exc()
+                        except Exception:
+                            _GEN_LAST_GENERATION_ERROR = str(e)
                         # fall through to extractive fallback
                         pass
             except Exception:
@@ -384,3 +414,111 @@ def answer_question(question: str, top_k: int = 4, generator_dir: str = 'docs/ra
     except Exception as e:
         # last resort: return informative error
         return {'answer': f'No retrieval method available: {e}', 'sources': [], 'snippets': [], 'used_generator': False, 'used_reranker': False}
+
+
+def _generate_with_prompt_retry(model, tokenizer, device, prompt, alt_prompts=None, gen_kwargs=None):
+    """Generate text and retry when output looks like a prompt-echo.
+
+    Enhancements:
+    - Detects common prompt tokens like 'CONTEXTS:', 'Source:', 'Extracted:'.
+    - Uses difflib.SequenceMatcher to measure overlap between prompt and generation.
+    - If no alt_prompts provided, constructs a couple of automatic shorter prompts to try.
+    Returns (generation_text or None, used_alt_flag or None).
+    """
+    import traceback
+    import difflib
+    global _GEN_LAST_GENERATION_ERROR, _GEN_LAST_GENERATION_TRACE
+    try:
+        import torch
+        if gen_kwargs is None:
+            gen_kwargs = dict(max_length=150, num_beams=4, early_stopping=True, no_repeat_ngram_size=3, length_penalty=1.0)
+
+        def _looks_like_echo(text, prompt_text):
+            """Return (bool, reason_str) indicating whether text likely echoes the prompt."""
+            if not text:
+                return True, 'empty_generation'
+            low = text.lower()
+            p_low = (prompt_text or '').lower()
+
+            # quick keyword checks
+            echo_keywords = ['you are an assistant', 'contexts:', 'answer:', 'source:', 'extracted:']
+            for kw in echo_keywords:
+                if kw in low:
+                    return True, f'keyword_echo:{kw}'
+
+            # if the generation begins with the beginning of the prompt
+            pstart = p_low.strip()[:80]
+            if pstart and low.startswith(pstart):
+                return True, 'starts_with_prompt'
+
+            # overlap ratio between prompt and generation
+            try:
+                ratio = difflib.SequenceMatcher(None, p_low, low).quick_ratio()
+            except Exception:
+                ratio = 0.0
+            # threshold: moderate overlap indicates echoing instructions/context
+            if ratio > 0.40:
+                return True, f'overlap_ratio:{ratio:.2f}'
+
+            return False, None
+
+        # prepare alt prompts if none provided
+        auto_alts = []
+        if not alt_prompts:
+            # alt 1: remove high-level instruction and ask directly to answer from contexts
+            auto_alts.append(
+                "Answer the QUESTION using ONLY the CONTEXTS listed below. Provide a concise answer (1-3 short paragraphs).\n\nCONTEXTS:\n{contexts}\n\nQUESTION: {question}\n\nAnswer:"
+            )
+            # alt 2: explicitly instruct NOT to repeat contexts/instructions
+            auto_alts.append(
+                "Using only the numbered contexts, give a brief direct answer. Do NOT repeat the contexts or instructions; return the answer only.\n\nCONTEXTS:\n{contexts}\n\nQUESTION: {question}\n\nAnswer:"
+            )
+        else:
+            auto_alts = list(alt_prompts)
+
+        # Try primary prompt
+        inputs = tokenizer(prompt, return_tensors='pt', truncation=True, max_length=512, padding='longest')
+        inputs = {k: v.to(device) for k, v in inputs.items()}
+        with torch.no_grad():
+            out = model.generate(**inputs, **gen_kwargs)
+        gen = tokenizer.decode(out[0], skip_special_tokens=True, clean_up_tokenization_spaces=True).strip()
+
+        is_echo, reason = _looks_like_echo(gen, prompt)
+        if not is_echo:
+            _GEN_LAST_GENERATION_ERROR = None
+            _GEN_LAST_GENERATION_TRACE = None
+            return gen, None
+
+        # record initial echo reason
+        _GEN_LAST_GENERATION_ERROR = f'generation_looks_like_echo:{reason}'
+
+        # Try alt prompts (formatting requires contexts/question placeholders to already be filled by caller)
+        for idx, alt in enumerate(auto_alts):
+            try:
+                inputs = tokenizer(alt, return_tensors='pt', truncation=True, max_length=512, padding='longest')
+                inputs = {k: v.to(device) for k, v in inputs.items()}
+                with torch.no_grad():
+                    out = model.generate(**inputs, **gen_kwargs)
+                gen2 = tokenizer.decode(out[0], skip_special_tokens=True, clean_up_tokenization_spaces=True).strip()
+                is_echo2, reason2 = _looks_like_echo(gen2, alt)
+                if not is_echo2:
+                    _GEN_LAST_GENERATION_ERROR = None
+                    _GEN_LAST_GENERATION_TRACE = None
+                    used_flag = 'used_alt' if alt_prompts else f'used_auto_alt_{idx}'
+                    return gen2, used_flag
+                # else record the most recent reason
+                _GEN_LAST_GENERATION_ERROR = f'generation_looks_like_echo_after_alt:{reason2}'
+            except Exception as e:
+                _GEN_LAST_GENERATION_ERROR = str(e)
+                _GEN_LAST_GENERATION_TRACE = traceback.format_exc()
+                # try next alt
+                continue
+
+        # All attempts looked like echoes — keep the last recorded reason
+        if _GEN_LAST_GENERATION_ERROR is None:
+            _GEN_LAST_GENERATION_ERROR = 'generation_looks_like_prompt_or_echo_after_retries'
+        return None, None
+    except Exception as e:
+        _GEN_LAST_GENERATION_ERROR = str(e)
+        _GEN_LAST_GENERATION_TRACE = traceback.format_exc()
+        return None, None
