@@ -1,0 +1,11 @@
+monai
+torch==2.6.0
+torchvision==0.21.0
+pandas
+pillow
+numpy
+tqdm
+scikit-learn
+seaborn
+streamlit
+pydicom
