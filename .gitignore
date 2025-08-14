@@ -20,3 +20,6 @@ ai_model_app_second/CBIS-DDSM
 ai_model_app_second/utils/__pycache__
 ai_model_app_second/app/__pycache__
 ai_model_app_second/models/__pycache__
+ai_model_app_third/docs/passages_embeddings.npz
+ai_model_app_third/docs/passages_index.pkl
+ai_model_app_third/docs/rag_index
