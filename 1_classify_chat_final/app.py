@@ -295,31 +295,298 @@ else:
                     except Exception as e:
                         st.error(f'Preprocessing failed: {e}')
 
-        vmin = float(np.nanmin(volume))
-        vmax = float(np.nanmax(volume))
-        # use a persistent slider value in session_state via key
-        threshold = st.slider("Surface level (threshold)", vmin, vmax, (vmin + vmax) / 2.0, key='threshold')
+        # Training UI
+        st.markdown("**Training**")
+        tr_col1, tr_col2 = st.columns([1,1])
+        with tr_col1:
+            train_dataset_choice = st.selectbox("Dataset to train on", options=["preprocessed", "preprocessed_all", "custom"], index=1, key='train_dataset_choice')
+            if train_dataset_choice == 'custom':
+                custom_train_path = st.text_input("Custom preprocessed root path", value=str(ROOT / 'preprocessed'), key='train_custom_path')
+            # labels excel file (optional)
+            default_labels = str(ROOT / 'Breast-diagnosis' / 'TCIA-Breast-clinical-data-public-7_16_11.xlsx')
+            labels_excel = st.text_input('Labels Excel path (optional)', value=default_labels, key='train_labels_excel')
+            labels_col = st.text_input('Labels column name', value='Pathology', key='train_labels_col')
+        with tr_col2:
+            model_name = st.selectbox("Backbone", options=['resnet50','resnet101','efficientnet_b4','convnext_tiny','convnext_base'], index=0, key='train_model')
 
-        if st.button("Render 3D", key='render_btn'):
-            with st.spinner("Extracting mesh (marching cubes)... this may take a while"):
+        epochs = st.number_input("Epochs", min_value=1, max_value=500, value=5, step=1, key='train_epochs')
+        batch_size = st.number_input("Batch size", min_value=1, max_value=128, value=8, step=1, key='train_batch')
+        lr = st.number_input("Learning rate", value=1e-4, format="%.6f", key='train_lr')
+        max_samples = st.number_input("Max samples (0 = all)", min_value=0, value=0, step=1, key='train_max_samples')
+
+        if st.button("Start Training", key='train_btn'):
+            # determine training root
+            import subprocess, sys, time
+            if train_dataset_choice == 'preprocessed':
+                train_root = ROOT / 'preprocessed'
+            elif train_dataset_choice == 'preprocessed_all':
+                train_root = ROOT / 'preprocessed_all'
+            else:
+                train_root = Path(custom_train_path)
+
+            if not train_root.exists() or not any(train_root.rglob('*.npy')):
+                st.error(f"No preprocessed .npy files found under: {train_root}")
+            else:
+                logs_dir = ROOT / 'training_logs'
+                logs_dir.mkdir(parents=True, exist_ok=True)
+                timestamp = int(time.time())
+                selected_label = st.session_state.get('selected_study', 'all')
+                log_path = logs_dir / f"train_{selected_label}_{timestamp}.log"
+                cmd = [sys.executable, str(ROOT / 'train.py'), '--preprocessed_root', str(train_root), '--model_name', str(model_name), '--epochs', str(int(epochs)), '--batch_size', str(int(batch_size)), '--lr', str(float(lr))]
+                if int(max_samples) > 0:
+                    cmd += ['--max_samples', str(int(max_samples))]
+                # include labels excel and column if provided
+                if labels_excel:
+                    cmd += ['--labels_excel', str(labels_excel)]
+                    if labels_col:
+                        cmd += ['--labels_col', str(labels_col)]
+                # start subprocess and log output
                 try:
-                    verts, faces = generate_mesh(volume, spacing, level=threshold)
-                    fig = plot_mesh_plotly(verts, faces)
-                    st.plotly_chart(fig, use_container_width=True)
+                    logf = open(str(log_path), 'wb')
+                    proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
+                    st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
+                    st.info("Check the training_logs folder for progress. The training runs in background.")
                 except Exception as e:
-                    st.error(f"Rendering failed: {e}")
+                    st.error(f"Failed to start training: {e}")
 
-        # show middle slice preview
-        mid = volume.shape[0] // 2
-        st.subheader("Middle slice preview")
-        import matplotlib.pyplot as plt
-        fig2, ax = plt.subplots()
-        ax.imshow(volume[mid, :, :], cmap='gray')
-        ax.axis('off')
-        st.pyplot(fig2)
-    else:
-        st.info("No study loaded. Select a study and click OK to load the DICOM series.")
+    st.markdown("---")
+    st.header("Training (quick start)")
+    # Top-level training UI so it's available even without loading a study
+    tr_col1, tr_col2 = st.columns([1,1])
+    with tr_col1:
+        train_dataset_choice_top = st.selectbox("Dataset to train on", options=["preprocessed", "preprocessed_all", "custom"], index=1, key='train_dataset_choice_top')
+        if train_dataset_choice_top == 'custom':
+            custom_train_path_top = st.text_input("Custom preprocessed root path", value=str(ROOT / 'preprocessed'), key='train_custom_path_top')
+        default_labels = str(ROOT / 'Breast-diagnosis' / 'TCIA-Breast-clinical-data-public-7_16_11.xlsx')
+        labels_excel_top = st.text_input('Labels Excel path (optional)', value=default_labels, key='train_labels_excel_top')
+        labels_col_top = st.text_input('Labels column name', value='Pathology', key='train_labels_col_top')
+    with tr_col2:
+        model_name_top = st.selectbox("Backbone", options=['resnet50','resnet101','efficientnet_b4','convnext_tiny','convnext_base'], index=0, key='train_model_top')
 
+    epochs_top = st.number_input("Epochs", min_value=1, max_value=500, value=5, step=1, key='train_epochs_top')
+    batch_size_top = st.number_input("Batch size", min_value=1, max_value=128, value=8, step=1, key='train_batch_top')
+    lr_top = st.number_input("Learning rate", value=1e-4, format="%.6f", key='train_lr_top')
+    max_samples_top = st.number_input("Max samples (0 = all)", min_value=0, value=0, step=1, key='train_max_samples_top')
 
-# footer
-st.write("\nNotes: This viewer uses pydicom, scikit-image and plotly. If missing, install them in your environment. For large volumes the mesh extraction can be memory/CPU-intensive.")
+    if st.button("Start Training (top)", key='train_btn_top'):
+        import subprocess, sys, time
+        from pathlib import Path as _P
+        if train_dataset_choice_top == 'preprocessed':
+            train_root = ROOT / 'preprocessed'
+        elif train_dataset_choice_top == 'preprocessed_all':
+            train_root = ROOT / 'preprocessed_all'
+        else:
+            train_root = _P(custom_train_path_top)
+
+        if not Path(train_root).exists() or not any(_P(train_root).rglob('*.npy')):
+            st.error(f"No preprocessed .npy files found under: {train_root}")
+        else:
+            logs_dir = ROOT / 'training_logs'
+            logs_dir.mkdir(parents=True, exist_ok=True)
+            timestamp = int(time.time())
+            log_path = logs_dir / f"train_top_{timestamp}.log"
+            cmd = [sys.executable, str(ROOT / 'train.py'), '--preprocessed_root', str(train_root), '--model_name', str(model_name_top), '--epochs', str(int(epochs_top)), '--batch_size', str(int(batch_size_top)), '--lr', str(float(lr_top))]
+            if int(max_samples_top) > 0:
+                cmd += ['--max_samples', str(int(max_samples_top))]
+            if labels_excel_top:
+                cmd += ['--labels_excel', str(labels_excel_top)]
+                if labels_col_top:
+                    cmd += ['--labels_col', str(labels_col_top)]
+            try:
+                logf = open(str(log_path), 'wb')
+                proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
+                st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
+                st.info("Check the training_logs folder for progress. The training runs in background.")
+            except Exception as e:
+                st.error(f"Failed to start training: {e}")
+
+    st.markdown("---")
+
+    # If we have a loaded volume in session state, use it
+    if st.session_state.get('volume') is not None:
+        volume = st.session_state['volume']
+        spacing = st.session_state['spacing']
+        selected_path = st.session_state.get('selected_path')
+
+        st.write("Selected study:", st.session_state.get('selected_study'))
+        st.write("Volume shape (slices, rows, cols):", volume.shape)
+
+        # Per-study Preprocessing controls
+        st.markdown("**Preprocessing (run on selected study)**")
+        col1, col2, col3 = st.columns([1,1,1])
+        with col1:
+            target_spacing = st.number_input("Target spacing (mm/px)", value=0.05, format="%.4f", key='pp_spacing')
+        with col2:
+            patch_size = st.number_input("Patch size (px, 0 to skip)", value=512, step=32, key='pp_patch_size')
+        with col3:
+            patch_stride = st.number_input("Patch stride (px)", value=256, step=32, key='pp_patch_stride')
+        remove_pect = st.checkbox("Remove pectoral muscle", value=False, key='pp_remove_pect')
+
+        if st.button("Preprocess study", key='pp_btn'):
+            if not selected_path:
+                st.error('Selected path not available')
+            else:
+                out_dir = ROOT / 'preprocessed' / st.session_state.get('selected_study', 'study')
+                out_dir.mkdir(parents=True, exist_ok=True)
+                with st.spinner('Running preprocessing (may take a while)...'):
+                    try:
+                        import sys
+                        sys.path.insert(0, str(ROOT))
+                        from preprocess import process_directory
+                        ps = int(patch_size) if int(patch_size) > 0 else None
+                        stride = int(patch_stride) if int(patch_stride) > 0 else None
+                        process_directory(selected_path, str(out_dir), target_spacing=float(target_spacing), patch_size=ps, patch_stride=stride, remove_pectoral=bool(remove_pect))
+                        st.success(f'Preprocessing finished. Outputs in: {out_dir}')
+                    except Exception as e:
+                        st.error(f'Preprocessing failed: {e}')
+
+        # Training UI
+        st.markdown("**Training**")
+        tr_col1, tr_col2 = st.columns([1,1])
+        with tr_col1:
+            train_dataset_choice = st.selectbox("Dataset to train on", options=["preprocessed", "preprocessed_all", "custom"], index=1, key='train_dataset_choice')
+            if train_dataset_choice == 'custom':
+                custom_train_path = st.text_input("Custom preprocessed root path", value=str(ROOT / 'preprocessed'), key='train_custom_path')
+            # labels excel file (optional)
+            default_labels = str(ROOT / 'Breast-diagnosis' / 'TCIA-Breast-clinical-data-public-7_16_11.xlsx')
+            labels_excel = st.text_input('Labels Excel path (optional)', value=default_labels, key='train_labels_excel')
+            labels_col = st.text_input('Labels column name', value='Pathology', key='train_labels_col')
+        with tr_col2:
+            model_name = st.selectbox("Backbone", options=['resnet50','resnet101','efficientnet_b4','convnext_tiny','convnext_base'], index=0, key='train_model')
+
+        epochs = st.number_input("Epochs", min_value=1, max_value=500, value=5, step=1, key='train_epochs')
+        batch_size = st.number_input("Batch size", min_value=1, max_value=128, value=8, step=1, key='train_batch')
+        lr = st.number_input("Learning rate", value=1e-4, format="%.6f", key='train_lr')
+        max_samples = st.number_input("Max samples (0 = all)", min_value=0, value=0, step=1, key='train_max_samples')
+
+        if st.button("Start Training", key='train_btn'):
+            # determine training root
+            import subprocess, sys, time
+            if train_dataset_choice == 'preprocessed':
+                train_root = ROOT / 'preprocessed'
+            elif train_dataset_choice == 'preprocessed_all':
+                train_root = ROOT / 'preprocessed_all'
+            else:
+                train_root = Path(custom_train_path)
+
+            if not train_root.exists() or not any(train_root.rglob('*.npy')):
+                st.error(f"No preprocessed .npy files found under: {train_root}")
+            else:
+                logs_dir = ROOT / 'training_logs'
+                logs_dir.mkdir(parents=True, exist_ok=True)
+                timestamp = int(time.time())
+                selected_label = st.session_state.get('selected_study', 'all')
+                log_path = logs_dir / f"train_{selected_label}_{timestamp}.log"
+                cmd = [sys.executable, str(ROOT / 'train.py'), '--preprocessed_root', str(train_root), '--model_name', str(model_name), '--epochs', str(int(epochs)), '--batch_size', str(int(batch_size)), '--lr', str(float(lr))]
+                if int(max_samples) > 0:
+                    cmd += ['--max_samples', str(int(max_samples))]
+                # include labels excel and column if provided
+                if labels_excel:
+                    cmd += ['--labels_excel', str(labels_excel)]
+                    if labels_col:
+                        cmd += ['--labels_col', str(labels_col)]
+                # start subprocess and log output
+                try:
+                    logf = open(str(log_path), 'wb')
+                    proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
+                    st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
+                    st.info("Check the training_logs folder for progress. The training runs in background.")
+                except Exception as e:
+                    st.error(f"Failed to start training: {e}")
+
+    st.markdown("---")
+
+    # If we have a loaded volume in session state, use it
+    if st.session_state.get('volume') is not None:
+        volume = st.session_state['volume']
+        spacing = st.session_state['spacing']
+        selected_path = st.session_state.get('selected_path')
+
+        st.write("Selected study:", st.session_state.get('selected_study'))
+        st.write("Volume shape (slices, rows, cols):", volume.shape)
+
+        # Per-study Preprocessing controls
+        st.markdown("**Preprocessing (run on selected study)**")
+        col1, col2, col3 = st.columns([1,1,1])
+        with col1:
+            target_spacing = st.number_input("Target spacing (mm/px)", value=0.05, format="%.4f", key='pp_spacing')
+        with col2:
+            patch_size = st.number_input("Patch size (px, 0 to skip)", value=512, step=32, key='pp_patch_size')
+        with col3:
+            patch_stride = st.number_input("Patch stride (px)", value=256, step=32, key='pp_patch_stride')
+        remove_pect = st.checkbox("Remove pectoral muscle", value=False, key='pp_remove_pect')
+
+        if st.button("Preprocess study", key='pp_btn'):
+            if not selected_path:
+                st.error('Selected path not available')
+            else:
+                out_dir = ROOT / 'preprocessed' / st.session_state.get('selected_study', 'study')
+                out_dir.mkdir(parents=True, exist_ok=True)
+                with st.spinner('Running preprocessing (may take a while)...'):
+                    try:
+                        import sys
+                        sys.path.insert(0, str(ROOT))
+                        from preprocess import process_directory
+                        ps = int(patch_size) if int(patch_size) > 0 else None
+                        stride = int(patch_stride) if int(patch_stride) > 0 else None
+                        process_directory(selected_path, str(out_dir), target_spacing=float(target_spacing), patch_size=ps, patch_stride=stride, remove_pectoral=bool(remove_pect))
+                        st.success(f'Preprocessing finished. Outputs in: {out_dir}')
+                    except Exception as e:
+                        st.error(f'Preprocessing failed: {e}')
+
+        # Training UI
+        st.markdown("**Training**")
+        tr_col1, tr_col2 = st.columns([1,1])
+        with tr_col1:
+            train_dataset_choice = st.selectbox("Dataset to train on", options=["preprocessed", "preprocessed_all", "custom"], index=1, key='train_dataset_choice')
+            if train_dataset_choice == 'custom':
+                custom_train_path = st.text_input("Custom preprocessed root path", value=str(ROOT / 'preprocessed'), key='train_custom_path')
+            # labels excel file (optional)
+            default_labels = str(ROOT / 'Breast-diagnosis' / 'TCIA-Breast-clinical-data-public-7_16_11.xlsx')
+            labels_excel = st.text_input('Labels Excel path (optional)', value=default_labels, key='train_labels_excel')
+            labels_col = st.text_input('Labels column name', value='Pathology', key='train_labels_col')
+        with tr_col2:
+            model_name = st.selectbox("Backbone", options=['resnet50','resnet101','efficientnet_b4','convnext_tiny','convnext_base'], index=0, key='train_model')
+
+        epochs = st.number_input("Epochs", min_value=1, max_value=500, value=5, step=1, key='train_epochs')
+        batch_size = st.number_input("Batch size", min_value=1, max_value=128, value=8, step=1, key='train_batch')
+        lr = st.number_input("Learning rate", value=1e-4, format="%.6f", key='train_lr')
+        max_samples = st.number_input("Max samples (0 = all)", min_value=0, value=0, step=1, key='train_max_samples')
+
+        if st.button("Start Training", key='train_btn'):
+            # determine training root
+            import subprocess, sys, time
+            if train_dataset_choice == 'preprocessed':
+                train_root = ROOT / 'preprocessed'
+            elif train_dataset_choice == 'preprocessed_all':
+                train_root = ROOT / 'preprocessed_all'
+            else:
+                train_root = Path(custom_train_path)
+
+            if not train_root.exists() or not any(train_root.rglob('*.npy')):
+                st.error(f"No preprocessed .npy files found under: {train_root}")
+            else:
+                logs_dir = ROOT / 'training_logs'
+                logs_dir.mkdir(parents=True, exist_ok=True)
+                timestamp = int(time.time())
+                selected_label = st.session_state.get('selected_study', 'all')
+                log_path = logs_dir / f"train_{selected_label}_{timestamp}.log"
+                cmd = [sys.executable, str(ROOT / 'train.py'), '--preprocessed_root', str(train_root), '--model_name', str(model_name), '--epochs', str(int(epochs)), '--batch_size', str(int(batch_size)), '--lr', str(float(lr))]
+                if int(max_samples) > 0:
+                    cmd += ['--max_samples', str(int(max_samples))]
+                # include labels excel and column if provided
+                if labels_excel:
+                    cmd += ['--labels_excel', str(labels_excel)]
+                    if labels_col:
+                        cmd += ['--labels_col', str(labels_col)]
+                # start subprocess and log output
+                try:
+                    logf = open(str(log_path), 'wb')
+                    proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
+                    st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
+                    st.info("Check the training_logs folder for progress. The training runs in background.")
+                except Exception as e:
+                    st.error(f"Failed to start training: {e}")
+
+    # footer
+    st.write("\nNotes: This viewer uses pydicom, scikit-image and plotly. If missing, install them in your environment. For large volumes the mesh extraction can be memory/CPU-intensive.")

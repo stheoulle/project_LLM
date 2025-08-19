@@ -22,7 +22,7 @@ Practical tips
 
 2) Backbone & Initialization
 
-- Backbones: ResNet-50 / ResNet-101, EfficientNet-B4, ConvNeXt-T/B are good choices. For mammography, larger receptive field and strong low-frequency modeling help.
+- Backbones: ResNet-50.
 - Initialization: use RadImageNet weights or other medical pretrained weights if available (improves convergence). If not available, use ImageNet pretraining + careful LR scheduling.
 - Use libraries: timm for backbones, pretrained weights loader where available.
 
