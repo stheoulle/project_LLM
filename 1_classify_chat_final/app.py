@@ -185,6 +185,44 @@ else:
     study_names = [s[0] for s in studies]
     sel = st.selectbox("Select study", options=["-- choose --"] + study_names)
 
+    # Global "Preprocess ALL" controls
+    st.markdown("**Preprocess ALL studies**")
+    col_a, col_b, col_c = st.columns([1,1,1])
+    with col_a:
+        all_target_spacing = st.number_input("Target spacing for all (mm/px)", value=0.05, format="%.4f", key='all_pp_spacing')
+    with col_b:
+        all_patch_size = st.number_input("Patch size for all (px, 0 to skip)", value=512, step=32, key='all_pp_patch_size')
+    with col_c:
+        all_patch_stride = st.number_input("Patch stride for all (px)", value=256, step=32, key='all_pp_patch_stride')
+    all_remove_pect = st.checkbox("Remove pectoral (all)", value=False, key='all_pp_remove_pect')
+
+    if st.button("Preprocess ALL studies", key='pp_all_btn'):
+        out_root = ROOT / 'preprocessed_all'
+        out_root.mkdir(parents=True, exist_ok=True)
+        try:
+            import sys
+            sys.path.insert(0, str(ROOT))
+            from preprocess import process_directory
+        except Exception as e:
+            st.error(f"Failed to import preprocessing utilities: {e}")
+        else:
+            ps = int(all_patch_size) if int(all_patch_size) > 0 else None
+            stride = int(all_patch_stride) if int(all_patch_stride) > 0 else None
+            total = len(studies)
+            progress = st.progress(0)
+            status_box = st.empty()
+            for idx, (name, p) in enumerate(studies):
+                status_box.text(f'[{idx+1}/{total}] Preprocessing {name}...')
+                out_dir = out_root / name
+                out_dir.mkdir(parents=True, exist_ok=True)
+                try:
+                    process_directory(p, str(out_dir), target_spacing=float(all_target_spacing), patch_size=ps, patch_stride=stride, remove_pectoral=bool(all_remove_pect))
+                    status_box.text(f'[{idx+1}/{total}] Done: {name}')
+                except Exception as e:
+                    status_box.text(f'[{idx+1}/{total}] Failed: {name} — {e}')
+                progress.progress((idx + 1) / total)
+            status_box.text('All preprocessing tasks finished.')
+
     # initialize session state keys
     if 'volume' not in st.session_state:
         st.session_state['volume'] = None
@@ -213,6 +251,7 @@ else:
                         st.session_state['volume'] = volume
                         st.session_state['spacing'] = spacing
                         st.session_state['selected_study'] = sel
+                        st.session_state['selected_path'] = path
                         st.success(f"Loaded study: {sel} (volume shape: {volume.shape})")
                     except Exception as e:
                         st.error(f"Failed to load DICOM series: {e}")
@@ -222,9 +261,39 @@ else:
     if st.session_state.get('volume') is not None:
         volume = st.session_state['volume']
         spacing = st.session_state['spacing']
+        selected_path = st.session_state.get('selected_path')
 
         st.write("Selected study:", st.session_state.get('selected_study'))
         st.write("Volume shape (slices, rows, cols):", volume.shape)
+
+        # Per-study Preprocessing controls
+        st.markdown("**Preprocessing (run on selected study)**")
+        col1, col2, col3 = st.columns([1,1,1])
+        with col1:
+            target_spacing = st.number_input("Target spacing (mm/px)", value=0.05, format="%.4f", key='pp_spacing')
+        with col2:
+            patch_size = st.number_input("Patch size (px, 0 to skip)", value=512, step=32, key='pp_patch_size')
+        with col3:
+            patch_stride = st.number_input("Patch stride (px)", value=256, step=32, key='pp_patch_stride')
+        remove_pect = st.checkbox("Remove pectoral muscle", value=False, key='pp_remove_pect')
+
+        if st.button("Preprocess study", key='pp_btn'):
+            if not selected_path:
+                st.error('Selected path not available')
+            else:
+                out_dir = ROOT / 'preprocessed' / st.session_state.get('selected_study', 'study')
+                out_dir.mkdir(parents=True, exist_ok=True)
+                with st.spinner('Running preprocessing (may take a while)...'):
+                    try:
+                        import sys
+                        sys.path.insert(0, str(ROOT))
+                        from preprocess import process_directory
+                        ps = int(patch_size) if int(patch_size) > 0 else None
+                        stride = int(patch_stride) if int(patch_stride) > 0 else None
+                        process_directory(selected_path, str(out_dir), target_spacing=float(target_spacing), patch_size=ps, patch_stride=stride, remove_pectoral=bool(remove_pect))
+                        st.success(f'Preprocessing finished. Outputs in: {out_dir}')
+                    except Exception as e:
+                        st.error(f'Preprocessing failed: {e}')
 
         vmin = float(np.nanmin(volume))
         vmax = float(np.nanmax(volume))

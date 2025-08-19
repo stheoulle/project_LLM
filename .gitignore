@@ -32,3 +32,5 @@ backups
 ai_model_app_third/docs/text_model.pth
 results/20250814_150536/history.npy
 0_classify_chat/models/sprint1-epoch=0.ckpt
+1_classify_chat_final/preprocessed_all
+1_classify_chat_final/__pycache__/preprocess.cpython-310.pyc
