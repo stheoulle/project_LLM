@@ -1,0 +1,12 @@
+pytorch-lightning
+numpy
+pandas
+scikit-learn
+opencv-python
+albumentations
+pyyaml
+tqdm
+torch==2.5.1
+torchvision==0.20.1
+pydicom
+openslide-python

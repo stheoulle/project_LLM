@@ -23,3 +23,12 @@ ai_model_app_second/models/__pycache__
 ai_model_app_third/docs/passages_embeddings.npz
 ai_model_app_third/docs/passages_index.pkl
 ai_model_app_third/docs/rag_index
+data
+backups
+1_classify_chat_final/Breast-diagnosis
+0_classify_chat/src/__pycache__/data.cpython-310.pyc
+0_classify_chat/src/__pycache__/model.cpython-310.pyc
+0_classify_chat/src/__pycache__/train.cpython-310.pyc
+ai_model_app_third/docs/text_model.pth
+results/20250814_150536/history.npy
+0_classify_chat/models/sprint1-epoch=0.ckpt

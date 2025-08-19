@@ -1,0 +1,6 @@
+streamlit
+pydicom
+scikit-image
+plotly
+matplotlib
+numpy

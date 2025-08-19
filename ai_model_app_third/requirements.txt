@@ -6,3 +6,4 @@ openai
 pandas
 pydicom
 pdfplumber
+transformers
