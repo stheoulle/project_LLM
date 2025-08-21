@@ -342,10 +342,12 @@ else:
                         cmd += ['--labels_col', str(labels_col)]
                 # start subprocess and log output
                 try:
-                    logf = open(str(log_path), 'wb')
-                    proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
-                    st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
-                    st.info("Check the training_logs folder for progress. The training runs in background.")
+                    # Start subprocess with CUDA disabled for the child so it uses CPU only
+                    env = os.environ.copy()
+                    env['CUDA_VISIBLE_DEVICES'] = ''
+                    proc = subprocess.Popen(cmd, env=env)
+                    st.success(f"Training started (PID {proc.pid}). Output will appear in the server console.")
+                    st.info("Training runs in background. Check the server console/logs for progress.")
                 except Exception as e:
                     st.error(f"Failed to start training: {e}")
 
@@ -393,10 +395,12 @@ else:
                 if labels_col_top:
                     cmd += ['--labels_col', str(labels_col_top)]
             try:
-                logf = open(str(log_path), 'wb')
-                proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
-                st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
-                st.info("Check the training_logs folder for progress. The training runs in background.")
+                # Start subprocess with CUDA disabled for the child so it uses CPU only
+                env = os.environ.copy()
+                env['CUDA_VISIBLE_DEVICES'] = ''
+                proc = subprocess.Popen(cmd, env=env)
+                st.success(f"Training started (PID {proc.pid}). Output will appear in the server console.")
+                st.info("Training runs in background. Check the server console/logs for progress.")
             except Exception as e:
                 st.error(f"Failed to start training: {e}")
 
@@ -487,10 +491,12 @@ else:
                         cmd += ['--labels_col', str(labels_col)]
                 # start subprocess and log output
                 try:
-                    logf = open(str(log_path), 'wb')
-                    proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
-                    st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
-                    st.info("Check the training_logs folder for progress. The training runs in background.")
+                    # Start subprocess with CUDA disabled for the child so it uses CPU only
+                    env = os.environ.copy()
+                    env['CUDA_VISIBLE_DEVICES'] = ''
+                    proc = subprocess.Popen(cmd, env=env)
+                    st.success(f"Training started (PID {proc.pid}). Output will appear in the server console.")
+                    st.info("Training runs in background. Check the server console/logs for progress.")
                 except Exception as e:
                     st.error(f"Failed to start training: {e}")
 
@@ -581,12 +587,16 @@ else:
                         cmd += ['--labels_col', str(labels_col)]
                 # start subprocess and log output
                 try:
-                    logf = open(str(log_path), 'wb')
-                    proc = subprocess.Popen(cmd, stdout=logf, stderr=logf)
-                    st.success(f"Training started (PID {proc.pid}). Logs are being written to: {log_path}")
-                    st.info("Check the training_logs folder for progress. The training runs in background.")
+                    # Start subprocess with CUDA disabled for the child so it uses CPU only
+                    env = os.environ.copy()
+                    env['CUDA_VISIBLE_DEVICES'] = ''
+                    proc = subprocess.Popen(cmd, env=env)
+                    st.success(f"Training started (PID {proc.pid}). Output will appear in the server console.")
+                    st.info("Training runs in background. Check the server console/logs for progress.")
                 except Exception as e:
                     st.error(f"Failed to start training: {e}")
+
+    st.markdown("---")
 
     # footer
     st.write("\nNotes: This viewer uses pydicom, scikit-image and plotly. If missing, install them in your environment. For large volumes the mesh extraction can be memory/CPU-intensive.")

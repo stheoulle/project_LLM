@@ -16,6 +16,9 @@ import os
 import glob
 import json
 from typing import Optional
+from contextlib import nullcontext
+import sys
+from tqdm import tqdm
 
 try:
     import torch
@@ -160,7 +163,40 @@ def run_training(preprocessed_root: str,
                  labels_excel: Optional[str] = None,
                  labels_col: str = 'Pathology'):
     preprocessed_root = str(preprocessed_root)
-    device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
+
+    # Safe device detection with graceful fallback if CUDA/NVML initialization fails
+    if device is None:
+        # try to detect CUDA but be robust against NVML / driver errors
+        try:
+            try:
+                cuda_available = torch.cuda.is_available()
+            except Exception as e:
+                print('Warning: torch.cuda.is_available() raised:', e, file=sys.stderr, flush=True)
+                cuda_available = False
+
+            if cuda_available:
+                try:
+                    # probe current device to force initialization and catch errors
+                    torch.cuda.current_device()
+                    _ = torch.cuda.device_count()
+                    device = 'cuda'
+                except Exception as e:
+                    print('Warning: CUDA initialization failed, falling back to CPU:', e, file=sys.stderr, flush=True)
+                    device = 'cpu'
+            else:
+                device = 'cpu'
+        except Exception:
+            device = 'cpu'
+    else:
+        # user provided device: validate it
+        if device == 'cuda':
+            try:
+                torch.cuda.current_device()
+            except Exception as e:
+                print('Warning: requested CUDA device unavailable, falling back to CPU:', e, file=sys.stderr, flush=True)
+                device = 'cpu'
+
+    print('Using device:', device, file=sys.stderr, flush=True)
 
     labels_df = None
     if labels_excel is not None:
@@ -170,7 +206,7 @@ def run_training(preprocessed_root: str,
             raise RuntimeError('pandas is required to read Excel labels. Install with: pip install pandas openpyxl')
         try:
             labels_df = pd.read_excel(labels_excel)
-            print(f'Loaded labels from {labels_excel}, shape={labels_df.shape}')
+            print(f'Loaded labels from {labels_excel}, shape={labels_df.shape}', file=sys.stderr, flush=True)
         except Exception as e:
             raise RuntimeError(f'Failed to read labels Excel: {e}')
 
@@ -179,6 +215,11 @@ def run_training(preprocessed_root: str,
         # subsample
         ds.files = ds.files[:max_samples]
     dl = DataLoader(ds, batch_size=batch_size, shuffle=True, collate_fn=collate_batch)
+
+    print(f'Dataset size: {len(ds)} files, batch_size: {batch_size}', file=sys.stderr, flush=True)
+    batches_per_epoch = len(dl)
+    print(f'Batches per epoch: {batches_per_epoch}', file=sys.stderr, flush=True)
+    print(f'Model: {model_name}, lr: {lr}, epochs: {epochs}', file=sys.stderr, flush=True)
 
     model, feat_dim = get_backbone(name=model_name, pretrained=True, in_channels=1, radimagenet_path=radimagenet_path)
     model = model.to(device)
@@ -192,39 +233,81 @@ def run_training(preprocessed_root: str,
     model.train()
     head.train()
 
+    # prepare amp context manager (use nullcontext when running on CPU)
+    amp_ctx = (torch.amp.autocast('cuda') if device != 'cpu' else nullcontext())
+
     for epoch in range(1, epochs + 1):
+        print(f'Starting epoch {epoch}/{epochs}', file=sys.stderr, flush=True)
         running_loss = 0.0
         total = 0
         correct = 0
-        for imgs, labels in dl:
+
+        # Use tqdm to show progress per batch for UI (write to stderr so it appears in terminal)
+        batch_iter = tqdm(dl, desc=f'Epoch {epoch}/{epochs}', leave=False, unit='batch', file=sys.stderr)
+        for batch_idx, (imgs, labels) in enumerate(batch_iter, start=1):
             imgs = imgs.to(device)
             labels = labels.to(device)
             optimizer.zero_grad()
-            with torch.cuda.amp.autocast(enabled=(device != 'cpu')):
-                feats = model.forward_features(imgs) if hasattr(model, 'forward_features') else model(imgs)
-                # some timm models return (B, feat_dim, 1, 1) or (B, feat_dim)
-                if feats.ndim > 2:
-                    feats = feats.view(feats.shape[0], -1)
-                logits = head(feats).view(-1)
-                loss = criterion(logits, labels)
-            loss.backward()
-            optimizer.step()
 
-            running_loss += loss.item() * imgs.shape[0]
+            # choose amp context based on current device (re-evaluated each iteration so fallback works)
+            amp_ctx = (torch.amp.autocast('cuda') if device != 'cpu' else nullcontext())
+
+            try:
+                with amp_ctx:
+                    feats = model.forward_features(imgs) if hasattr(model, 'forward_features') else model(imgs)
+                    # some timm models return (B, feat_dim, 1, 1) or (B, feat_dim)
+                    if feats.ndim > 2:
+                        feats = feats.view(feats.shape[0], -1)
+                    logits = head(feats).view(-1)
+                    loss = criterion(logits, labels)
+                loss.backward()
+                optimizer.step()
+            except Exception as e:
+                # detect NVML / CUDACachingAllocator style failures and fallback to CPU
+                msg = str(e).lower()
+                if any(k in msg for k in ('nvml', 'cudacachingallocator', 'driver/library', 'nvml_success')):
+                    print('Warning: CUDA runtime error detected during forward (likely driver/library mismatch):', e, file=sys.stderr, flush=True)
+                    print('Falling back to CPU for remainder of training.', file=sys.stderr, flush=True)
+                    device = 'cpu'
+                    # move model and head to CPU
+                    model = model.to(device)
+                    head = head.to(device)
+                    # move current batch to cpu
+                    imgs = imgs.to(device)
+                    labels = labels.to(device)
+                    # recompute on CPU without amp
+                    with nullcontext():
+                        feats = model.forward_features(imgs) if hasattr(model, 'forward_features') else model(imgs)
+                        if feats.ndim > 2:
+                            feats = feats.view(feats.shape[0], -1)
+                        logits = head(feats).view(-1)
+                        loss = criterion(logits, labels)
+                    loss.backward()
+                    optimizer.step()
+                else:
+                    # unknown error -> re-raise
+                    raise
+
+            batch_loss = loss.item()
+            running_loss += batch_loss * imgs.shape[0]
             total += imgs.shape[0]
-            preds = (torch.sigmoid(logits) > 0.5).float()
-            correct += (preds == labels).sum().item()
+            batch_correct = ( (torch.sigmoid(logits) > 0.5).float() == labels ).sum().item()
+            correct += batch_correct
+            batch_acc = batch_correct / imgs.shape[0]
+
+            # update tqdm postfix
+            batch_iter.set_postfix({'batch': f'{batch_idx}/{batches_per_epoch}', 'loss': f'{batch_loss:.4f}', 'batch_acc': f'{batch_acc:.3f}'})
 
         avg_loss = running_loss / max(1, total)
         acc = correct / max(1, total)
-        print(f'Epoch {epoch}/{epochs} - loss: {avg_loss:.4f} acc: {acc:.4f}')
+        print(f'Epoch {epoch}/{epochs} - loss: {avg_loss:.4f} acc: {acc:.4f}', file=sys.stderr, flush=True)
 
     # save final model
     out_dir = Path(preprocessed_root) / '..' / 'training_out'
     out_dir = out_dir.resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
     torch.save({'model_state_dict': model.state_dict(), 'head_state_dict': head.state_dict()}, out_dir / f'{model_name}_final.pth')
-    print('Training finished. Checkpoint saved to', out_dir)
+    print('Training finished. Checkpoint saved to', out_dir, file=sys.stderr, flush=True)
 
 
 if __name__ == '__main__':

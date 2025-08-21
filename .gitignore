@@ -34,3 +34,12 @@ results/20250814_150536/history.npy
 0_classify_chat/models/sprint1-epoch=0.ckpt
 1_classify_chat_final/preprocessed_all
 1_classify_chat_final/__pycache__/preprocess.cpython-310.pyc
+classify_chat_final/Breast-diagnosis
+manifest-1617905855234
+classify_chat_final/preprocessed_all
+classify_chat_final/__pycache__/model_backbones.cpython-311.pyc
+classify_chat_final/__pycache__/preprocess.cpython-311.pyc
+IPSY_/.~lock.BCS-DBT-file-paths-validation-v2.csv#
+IPSY_/__pycache__/dataset.cpython-311.pyc
+IPSY_/__pycache__/duke_dbt_data.cpython-311.pyc
+IPSY_/__pycache__/model.cpython-311.pyc
