@@ -1,45 +1,46 @@
 import os
-from typing import Optional, List
-
-import numpy as np
+from typing import Optional
 import pandas as pd
-from skimage.transform import resize
-from skimage.exposure import rescale_intensity
-from torch.utils.data import Dataset
+import numpy as np
 import torch
-
-from duke_dbt_data import dcmread_image
-
+from torch.utils.data import Dataset
 import torch.nn.functional as F
-
+import pydicom
 
 CLASS_COLUMNS = ["Normal", "Actionable", "Benign", "Cancer"]
 
-
-def _load_image(path: str, view: str, root: Optional[str] = None) -> np.ndarray:
-    if root is not None:
-        path = os.path.join(root, path)
-    # path may be a relative path inside the dataset
-    arr = dcmread_image(path, view)
-    # ensure float32
-    img = arr.astype(np.float32)
-    # rescale intensities to 0..1
-    img = rescale_intensity(img, in_range='image', out_range=(0.0, 1.0))
-    img = torch.from_numpy(img).float()  # conversion en tensor float
+def _load_image(path, view, root=None):
+    """Charge un volume DICOM 3D et renvoie un numpy array [D, H, W]."""
+    full_path = os.path.join(root, path) if root else path
+    # Lecture DICOM
+    if full_path.endswith(".npy"):
+        img = np.load(full_path)
+    else:
+        # Lecture DICOM, on suppose un dossier avec slices
+        # tri par InstanceNumber si nécessaire
+        ds = pydicom.dcmread(full_path)
+        img = ds.pixel_array.astype(np.float32)
     return img
 
+def resize_tensor(img: torch.Tensor, target_size=(64, 224, 224)) -> torch.Tensor:
+    """
+    Redimensionne un tenseur 3D [C, D, H, W] ou 4D [D, H, W] vers [C, D_out, H_out, W_out].
+    """
+    if isinstance(img, np.ndarray):
+        img = torch.tensor(img, dtype=torch.float32)  # [D, H, W]
 
-def resize_tensor(img, target_size=(85, 224, 224)):
-    """
-    Redimensionne un tensor 3D [D, H, W] vers target_size.
-    """
-    img = img.unsqueeze(0)  # ajoute batch dim: [1, D, H, W]
-    img = F.interpolate(img.unsqueeze(0).float(), size=target_size, mode='trilinear', align_corners=False)
-    img = img.squeeze(0).squeeze(0)
+    # ajouter une dimension channel si nécessaire
+    if img.ndim == 3:
+        img = img.unsqueeze(0)  # [1, D, H, W]
+
+    # ajouter batch dimension pour F.interpolate
+    img = img.unsqueeze(0)  # [1, C, D, H, W]
+    img = F.interpolate(img, size=target_size, mode='trilinear', align_corners=False)
+    img = img.squeeze(0)  # [C, D, H, W]
     return img
 
 class DBTDataset(Dataset):
-    """PyTorch Dataset pour classification IPSY DBT avec redimensionnement automatique."""
+    """Dataset PyTorch pour classification DBT 3D."""
 
     def __init__(
         self,
@@ -47,29 +48,34 @@ class DBTDataset(Dataset):
         filepaths_csv: str,
         root: Optional[str] = None,
         transform=None,
-        target_size=(85, 224, 224),  # profondeur, hauteur, largeur
+        target_size=(64, 224, 224),
+        verbose: bool = False,
     ):
         self.root = root
         self.transform = transform
         self.target_size = target_size
+        self.verbose = verbose
 
         df_labels = pd.read_csv(labels_csv)
         df_paths = pd.read_csv(filepaths_csv)
 
-        # Harmoniser noms de colonnes
+        # Harmonisation des colonnes
         label_cols = [c for c in CLASS_COLUMNS if c in df_labels.columns]
-        if len(label_cols) != 4:
-            if "Actionnable" in df_labels.columns:
-                df_labels = df_labels.rename(columns={"Actionnable": "Actionable"})
+        if len(label_cols) != 4 and "Actionnable" in df_labels.columns:
+            df_labels = df_labels.rename(columns={"Actionnable": "Actionable"})
             label_cols = [c for c in CLASS_COLUMNS if c in df_labels.columns]
 
         key = ["PatientID", "StudyUID", "View"]
         merged = pd.merge(df_labels, df_paths, on=key)
-
-        # Calculer index de classe
-        merged["label_idx"] = merged[["Normal", "Actionable", "Benign", "Cancer"]].values.argmax(axis=1)
-
+        merged["label_idx"] = merged[CLASS_COLUMNS].values.argmax(axis=1)
         self.df = merged.reset_index(drop=True)
+
+        # Préparer le pas d'affichage pour environ 5% d'avancement
+        total = len(self.df)
+        try:
+            self._progress_step = max(1, int(total / 20))  # 20 steps => 5% chacun
+        except Exception:
+            self._progress_step = 1
 
     def __len__(self):
         return len(self.df)
@@ -77,22 +83,26 @@ class DBTDataset(Dataset):
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
         path_col = "descriptive_path_x"
-        path = os.path.join(self.root, row[path_col])
-        img = _load_image(path, row["View"], root=self.root)  # numpy array [D, H, W]
+        path = os.path.join(self.root, row[path_col]) if self.root else row[path_col]
 
-        # convertir en tensor float et ajouter channel dim
-        img = torch.tensor(img, dtype=torch.float32)          # [D, H, W]
-        img = img.unsqueeze(0)                                # [1, D, H, W] -> 1 channel
-        img = img.unsqueeze(0)                                # [1, 1, D, H, W] -> batch dim simulée pour interpolate
+        # Charger le volume 3D
+        img = _load_image(path, row["View"], root=self.root)
 
-        # resize vers target_size
-        target_d = min(img.shape[2], 64)  # optionnel : limiter le nombre de slices
-        img = F.interpolate(img, size=(target_d, *self.target_size), mode='trilinear', align_corners=False)
-        
-        img = img.squeeze(0)  # retirer batch dim simulée -> [1, D, H, W]
+        # Redimensionner
+        img = resize_tensor(img, target_size=self.target_size)
 
+        # Appliquer transformation éventuelle
         if self.transform:
             img = self.transform(img)
 
         label = row["label_idx"]
+
+        # Affichage d'avancement si demandé
+        if self.verbose:
+            total = len(self.df)
+            # afficher régulièrement tous les _progress_step éléments et au dernier
+            if (idx % self._progress_step == 0) or (idx == total - 1):
+                pct = (idx + 1) / total * 100 if total > 0 else 100.0
+                print(f"Dataset progress: {idx+1}/{total} ({pct:.1f}%)")
+
         return img, label
