@@ -26,12 +26,24 @@ except Exception:
     raise RuntimeError('torch is required for training. Install with pip install torch')
 
 from model_backbones import get_backbone
+from model_arch import GlobalLocalModel
 
 
 class NumpyImageDataset(Dataset):
     def __init__(self, root: str, transform=None, infer_labels: bool = True, labels_df=None, labels_col: str = 'Pathology'):
         self.root = Path(root)
-        self.files = list(self.root.rglob('*.npy'))
+        # only consider top-level preprocessed full images (exclude patch files and patch folders)
+        all_npy = list(self.root.rglob('*.npy'))
+        files = []
+        for p in all_npy:
+            # skip files inside a folder that ends with _patches
+            if any(part.endswith('_patches') for part in p.parts):
+                continue
+            # skip files named patch_*.npy
+            if p.name.startswith('patch_'):
+                continue
+            files.append(p)
+        self.files = files
         self.transform = transform
         self.infer_labels = infer_labels
         self.labels_df = labels_df
@@ -115,38 +127,74 @@ class NumpyImageDataset(Dataset):
                     label = 1.0
                 else:
                     label = 0.0
-        return arr, np.float32(label)
+
+        # gather patches if available: look for sibling folder <stem>_patches
+        patches_dir = p.parent / f"{p.stem}_patches"
+        patches = None
+        if patches_dir.exists() and patches_dir.is_dir():
+            patch_files = sorted(patches_dir.glob('*.npy'))
+            if patch_files:
+                patches = [np.load(pp) for pp in patch_files]
+                # ensure channel-first for patches
+                patches = [((pp if pp.ndim == 3 and pp.shape[0] == 1 else (pp[np.newaxis, ...] if pp.ndim==2 else np.transpose(pp,(2,0,1))))).astype(np.float32) for pp in patches]
+        return arr, np.float32(label), patches
 
 
 def collate_batch(batch):
-    """Collate a batch of (numpy_image, label) pairs.
-    Pads all images in the batch to the same spatial size (max H,W) with zeros and stacks into a tensor.
+    """Collate a batch of (global_image, label, patches_list) tuples.
+    Pads global images in the batch to the same H,W and stacks.
+    Aggregates patches across the batch into a single tensor and returns patch_counts per sample.
     """
     import torch
     import torch.nn.functional as F
 
-    imgs = [torch.from_numpy(b[0]) for b in batch]
+    globals_list = [torch.from_numpy(b[0]) for b in batch]
     labels = torch.from_numpy(np.array([b[1] for b in batch], dtype=np.float32))
+    patches_list = [b[2] for b in batch]
 
-    # determine max height and width in this batch
-    max_h = max(img.shape[1] for img in imgs)
-    max_w = max(img.shape[2] for img in imgs)
-
-    padded = []
-    for img in imgs:
+    # pad globals to same H,W
+    max_h = max(img.shape[1] for img in globals_list)
+    max_w = max(img.shape[2] for img in globals_list)
+    padded_globals = []
+    for img in globals_list:
         c, h, w = img.shape
         pad_h = max_h - h
         pad_w = max_w - w
-        # pad format for F.pad: (pad_left, pad_right, pad_top, pad_bottom)
         pad = (0, pad_w, 0, pad_h)
-        if pad_h == 0 and pad_w == 0:
-            img_p = img
-        else:
-            img_p = F.pad(img, pad, value=0.0)
-        padded.append(img_p)
+        img_p = img if (pad_h == 0 and pad_w == 0) else F.pad(img, pad, value=0.0)
+        padded_globals.append(img_p)
+    globals_tensor = torch.stack(padded_globals, dim=0)
 
-    imgs = torch.stack(padded, dim=0)
-    return imgs, labels
+    # aggregate patches
+    have_patches = any(pl is not None and len(pl) > 0 for pl in patches_list)
+    if not have_patches:
+        return globals_tensor, labels, None, [0] * len(batch)
+
+    # flatten all patches and record counts per sample
+    all_patches = []
+    patch_counts = []
+    for pl in patches_list:
+        if pl is None or len(pl) == 0:
+            patch_counts.append(0)
+            continue
+        patch_counts.append(len(pl))
+        for pp in pl:
+            all_patches.append(torch.from_numpy(pp))
+
+    # pad patches to max patch H,W
+    max_ph = max(p.shape[1] for p in all_patches)
+    max_pw = max(p.shape[2] for p in all_patches)
+    padded = []
+    for p in all_patches:
+        c, h, w = p.shape
+        pad_h = max_ph - h
+        pad_w = max_pw - w
+        pad = (0, pad_w, 0, pad_h)
+        p_p = p if (pad_h == 0 and pad_w == 0) else F.pad(p, pad, value=0.0)
+        padded.append(p_p)
+    patches_tensor = torch.stack(padded, dim=0) if padded else None
+
+    return globals_tensor, labels, patches_tensor, patch_counts
 
 
 def run_training(preprocessed_root: str,
@@ -180,32 +228,28 @@ def run_training(preprocessed_root: str,
         ds.files = ds.files[:max_samples]
     dl = DataLoader(ds, batch_size=batch_size, shuffle=True, collate_fn=collate_batch)
 
-    model, feat_dim = get_backbone(name=model_name, pretrained=True, in_channels=1, radimagenet_path=radimagenet_path)
+    # create GlobalLocalModel
+    model = GlobalLocalModel(global_backbone=model_name, pretrained=True, in_channels=1, radimagenet_path=radimagenet_path, share_local_global=True)
     model = model.to(device)
-    # append a simple classification head
-    head = nn.Linear(feat_dim, 1)
-    head = head.to(device)
 
-    optimizer = AdamW(list(model.parameters()) + list(head.parameters()), lr=lr)
+    optimizer = AdamW(model.parameters(), lr=lr)
     criterion = nn.BCEWithLogitsLoss()
 
     model.train()
-    head.train()
 
     for epoch in range(1, epochs + 1):
         running_loss = 0.0
         total = 0
         correct = 0
-        for imgs, labels in dl:
+        for imgs, labels, patches, patch_counts in dl:
             imgs = imgs.to(device)
             labels = labels.to(device)
+            if patches is not None:
+                patches = patches.to(device)
             optimizer.zero_grad()
             with torch.cuda.amp.autocast(enabled=(device != 'cpu')):
-                feats = model.forward_features(imgs) if hasattr(model, 'forward_features') else model(imgs)
-                # some timm models return (B, feat_dim, 1, 1) or (B, feat_dim)
-                if feats.ndim > 2:
-                    feats = feats.view(feats.shape[0], -1)
-                logits = head(feats).view(-1)
+                logits = model(imgs, patches=patches, patch_counts=patch_counts)
+                logits = logits.view(-1)
                 loss = criterion(logits, labels)
             loss.backward()
             optimizer.step()
@@ -223,7 +267,7 @@ def run_training(preprocessed_root: str,
     out_dir = Path(preprocessed_root) / '..' / 'training_out'
     out_dir = out_dir.resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
-    torch.save({'model_state_dict': model.state_dict(), 'head_state_dict': head.state_dict()}, out_dir / f'{model_name}_final.pth')
+    torch.save({'model_state_dict': model.state_dict()}, out_dir / f'{model_name}_final.pth')
     print('Training finished. Checkpoint saved to', out_dir)
 
 
